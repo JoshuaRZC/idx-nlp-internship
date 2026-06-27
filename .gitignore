@@ -229,3 +229,5 @@ data/models/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/models/.gitkeep
+!data/processed/taxonomy.json
+!data/processed/sample_queries.json
