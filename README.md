@@ -4,12 +4,6 @@ An NLP system for turning real estate listing text into structured, searchable, 
 
 The project works with MLS listing data and focuses on the language inside property descriptions: amenities, property features, search intent, buyer-facing summaries, and compliance-sensitive wording.
 
-## Status
-
-In progress.
-
-This repository currently contains the project structure, setup notes, and initial dependency file. Core implementation work will be added as the NLP pipeline is built.
-
 ## Project Goals
 
 - Normalize and clean MLS listing remarks for downstream NLP tasks
@@ -51,6 +45,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 │   └── real_estate_nlp/  # Reusable project package
 │       └── api/          # FastAPI application code
 ├── tests/                # Pytest test suite
+├── docker-compose.yml    # Local MySQL service definition
 ├── requirements.txt      # Python dependencies
 └── README.md
 ```
@@ -59,8 +54,8 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 
 | Component | Status |
 | --- | --- |
-| Environment setup | In progress |
-| MySQL data loading | In progress |
+| Environment setup | Complete |
+| MySQL data loading | Complete |
 | Listing sample extraction | In progress |
 | Taxonomy construction | In progress |
 | Text cleaning and normalization | In progress |
@@ -73,17 +68,45 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | FastAPI service | In progress |
 | Demo interface | In progress |
 
-## Setup
+## Environment Setup
 
 Use Python 3.11 or newer.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+conda create -n idx-nlp python=3.11
+conda activate idx-nlp
 pip install -r requirements.txt
 ```
 
-The project expects a local MySQL database containing the MLS tables. Docker-based setup and import commands will be documented as the database workflow is finalized.
+## Data Setup
+
+Raw MLS SQL files are not committed to this repository. Place the downloaded SQL files before starting MySQL:
+
+```text
+data/raw/
+  rets_property.sql
+  rets_openhouse.sql
+  california_sold.sql
+```
+
+Start the local MySQL container and check container status:
+
+```bash
+docker compose up -d
+docker compose ps
+```
+
+The MySQL container initializes the `real_estate` database and runs SQL files from `data/raw/` on first startup.
+
+Local database connection:
+
+```text
+host: 127.0.0.1
+port: 3307
+user: root
+password: root
+database: real_estate
+```
 
 ## Usage
 
@@ -103,7 +126,7 @@ raw MLS data
 
 ## Testing
 
-Run the test suite with:
+Run the full test suite with:
 
 ```bash
 pytest
