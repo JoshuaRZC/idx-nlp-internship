@@ -1,0 +1,3068 @@
+{
+  "version": "0.1",
+  "name": "Real Estate Listing Taxonomy",
+  "description": "Week 1 taxonomy seed for real estate listing remarks and search queries.",
+  "generated_from": "data/processed/taxonomy_seed_cleaned.csv",
+  "categories": [
+    "property_type",
+    "room",
+    "amenity",
+    "interior_feature",
+    "exterior_feature",
+    "location",
+    "condition",
+    "transaction_or_listing"
+  ],
+  "category_counts": {
+    "property_type": 22,
+    "room": 50,
+    "amenity": 30,
+    "interior_feature": 63,
+    "exterior_feature": 36,
+    "location": 44,
+    "condition": 31,
+    "transaction_or_listing": 28
+  },
+  "terms": [
+    {
+      "id": "property_type_001",
+      "term": "condo",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 112,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "property_type_002",
+      "term": "main residence",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "property_type_003",
+      "term": "single story",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 25,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "property_type_004",
+      "term": "duplex",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 17,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "property_type_005",
+      "term": "townhouse",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 13,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "property_type_006",
+      "term": "fourplex",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 2,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "property_type_007",
+      "term": "triplex",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 1,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "property_type_008",
+      "term": "adu",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_009",
+      "term": "apartment",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_010",
+      "term": "attached home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_011",
+      "term": "condominium",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_012",
+      "term": "detached home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_013",
+      "term": "estate home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_014",
+      "term": "guest house",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_015",
+      "term": "manufactured home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_016",
+      "term": "mobile home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_017",
+      "term": "multi-family property",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_018",
+      "term": "new construction home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_019",
+      "term": "ranch home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_020",
+      "term": "single family home",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_021",
+      "term": "single family residence",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "property_type_022",
+      "term": "townhome",
+      "category": "property_type",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "room_001",
+      "term": "kitchen",
+      "category": "room",
+      "aliases": [],
+      "frequency": 958,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_002",
+      "term": "bedroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 770,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_003",
+      "term": "bathroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 543,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_004",
+      "term": "primary suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 339,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_005",
+      "term": "living room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 305,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_006",
+      "term": "family room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 166,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_007",
+      "term": "dining area",
+      "category": "room",
+      "aliases": [],
+      "frequency": 164,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_008",
+      "term": "home office",
+      "category": "room",
+      "aliases": [],
+      "frequency": 146,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_009",
+      "term": "laundry room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 141,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_010",
+      "term": "dining room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 101,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_011",
+      "term": "loft",
+      "category": "room",
+      "aliases": [],
+      "frequency": 90,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_012",
+      "term": "great room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 75,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_013",
+      "term": "gourmet kitchen",
+      "category": "room",
+      "aliases": [],
+      "frequency": 71,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_014",
+      "term": "primary bedroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 70,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_015",
+      "term": "updated kitchen",
+      "category": "room",
+      "aliases": [],
+      "frequency": 69,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_016",
+      "term": "formal dining",
+      "category": "room",
+      "aliases": [],
+      "frequency": 67,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_017",
+      "term": "full bathroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 64,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_018",
+      "term": "spacious primary suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 62,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_019",
+      "term": "bonus room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 60,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_020",
+      "term": "den",
+      "category": "room",
+      "aliases": [],
+      "frequency": 54,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_021",
+      "term": "formal dining room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 46,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_022",
+      "term": "multi-generational living",
+      "category": "room",
+      "aliases": [],
+      "frequency": 44,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_023",
+      "term": "walk-in pantry",
+      "category": "room",
+      "aliases": [],
+      "frequency": 42,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_024",
+      "term": "en-suite bathroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 39,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_025",
+      "term": "full bathrooms",
+      "category": "room",
+      "aliases": [],
+      "frequency": 37,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_026",
+      "term": "indoor laundry",
+      "category": "room",
+      "aliases": [],
+      "frequency": 37,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_027",
+      "term": "generously sized bedrooms",
+      "category": "room",
+      "aliases": [],
+      "frequency": 33,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_028",
+      "term": "in-unit laundry",
+      "category": "room",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_029",
+      "term": "multigenerational living",
+      "category": "room",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_030",
+      "term": "chef's kitchen",
+      "category": "room",
+      "aliases": [],
+      "frequency": 30,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_031",
+      "term": "closet space",
+      "category": "room",
+      "aliases": [],
+      "frequency": 27,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_032",
+      "term": "media room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 26,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_033",
+      "term": "master bedroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 25,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_034",
+      "term": "master suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 25,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_035",
+      "term": "primary bathroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 25,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_036",
+      "term": "game room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_037",
+      "term": "secondary bedroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_038",
+      "term": "secondary bedrooms",
+      "category": "room",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_039",
+      "term": "spacious kitchen",
+      "category": "room",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_040",
+      "term": "laundry area",
+      "category": "room",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_041",
+      "term": "powder room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_042",
+      "term": "bedroom suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 21,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_043",
+      "term": "en suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 21,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_044",
+      "term": "guest suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_045",
+      "term": "indoor laundry room",
+      "category": "room",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_046",
+      "term": "modern kitchen",
+      "category": "room",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_047",
+      "term": "updated bathroom",
+      "category": "room",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_048",
+      "term": "dedicated laundry",
+      "category": "room",
+      "aliases": [],
+      "frequency": 18,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "room_049",
+      "term": "living room dining area",
+      "category": "room",
+      "aliases": [],
+      "frequency": 13,
+      "ngram_type": "4-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "room_050",
+      "term": "primary bedroom suite",
+      "category": "room",
+      "aliases": [],
+      "frequency": 8,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "amenity_001",
+      "term": "pool",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 433,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "amenity_002",
+      "term": "spa",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 239,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "amenity_003",
+      "term": "clubhouse",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 77,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "amenity_004",
+      "term": "pool and spa",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 70,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_005",
+      "term": "fitness center",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 55,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_006",
+      "term": "sparkling pool",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 54,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_007",
+      "term": "tennis courts",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 47,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_008",
+      "term": "hiking trails",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 36,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_009",
+      "term": "community pool",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 33,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_010",
+      "term": "playground",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "amenity_011",
+      "term": "swimming pool",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_012",
+      "term": "community amenities",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 28,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_013",
+      "term": "sauna",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "amenity_014",
+      "term": "bbq area",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_015",
+      "term": "hot tub",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_016",
+      "term": "pickleball courts",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_017",
+      "term": "built-in bbq",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_018",
+      "term": "walking trails",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 18,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "amenity_019",
+      "term": "basketball court",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_020",
+      "term": "bike trails",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_021",
+      "term": "community gym",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_022",
+      "term": "community spa",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_023",
+      "term": "concierge service",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_024",
+      "term": "dog park",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_025",
+      "term": "golf course",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_026",
+      "term": "gym",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_027",
+      "term": "recreation room",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_028",
+      "term": "security gate",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_029",
+      "term": "sports court",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "amenity_030",
+      "term": "walking path",
+      "category": "amenity",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "interior_feature_001",
+      "term": "flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 378,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_002",
+      "term": "fireplace",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 375,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_003",
+      "term": "appliances",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 359,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_004",
+      "term": "cabinetry",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 279,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_005",
+      "term": "floor plan",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 269,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_006",
+      "term": "windows",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 262,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_007",
+      "term": "island",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 210,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_008",
+      "term": "walk-in closet",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 180,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_009",
+      "term": "stainless steel",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 178,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_010",
+      "term": "stainless steel appliances",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 155,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_011",
+      "term": "steel appliances",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 155,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_012",
+      "term": "quartz countertops",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 113,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_013",
+      "term": "pantry",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 106,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_014",
+      "term": "soaking tub",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 94,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_015",
+      "term": "granite countertops",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 90,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_016",
+      "term": "recessed lighting",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 86,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_017",
+      "term": "abundant natural light",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 85,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_018",
+      "term": "open floor",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 83,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_019",
+      "term": "vaulted ceilings",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 81,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_020",
+      "term": "open floor plan",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 80,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_021",
+      "term": "cozy fireplace",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 70,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_022",
+      "term": "soaring ceilings",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 70,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_023",
+      "term": "walk-in shower",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 68,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_024",
+      "term": "center island",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 63,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_025",
+      "term": "hardwood floors",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 55,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_026",
+      "term": "custom cabinetry",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 51,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_027",
+      "term": "high ceilings",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 50,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_028",
+      "term": "luxury vinyl",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 50,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_029",
+      "term": "vinyl plank",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 46,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_030",
+      "term": "laminate flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 45,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_031",
+      "term": "plank flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 45,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_032",
+      "term": "ceiling fans",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 44,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_033",
+      "term": "vinyl plank flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 40,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_034",
+      "term": "sliding glass doors",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 39,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_035",
+      "term": "luxury vinyl plank",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 37,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_036",
+      "term": "open-concept floor",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 36,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_037",
+      "term": "open-concept floor plan",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 36,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_038",
+      "term": "tile flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 36,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_039",
+      "term": "first floor",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_040",
+      "term": "large windows",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_041",
+      "term": "dual-pane windows",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_042",
+      "term": "wood flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_043",
+      "term": "second floor",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 29,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_044",
+      "term": "floor-to-ceiling",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 28,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_045",
+      "term": "hardwood flooring",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 28,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_046",
+      "term": "main floor",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 27,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_047",
+      "term": "gas fireplace",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 26,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_048",
+      "term": "wood floors",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_049",
+      "term": "abundant cabinetry",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_050",
+      "term": "ceiling fan",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_051",
+      "term": "large island",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_052",
+      "term": "separate shower",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_053",
+      "term": "floors throughout",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 21,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_054",
+      "term": "expansive windows",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_055",
+      "term": "stone countertops",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_056",
+      "term": "ample cabinetry",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_057",
+      "term": "pane windows",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_058",
+      "term": "tile backsplash",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_059",
+      "term": "tub shower",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "interior_feature_060",
+      "term": "thoughtfully designed floor plan",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 18,
+      "ngram_type": "4-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_061",
+      "term": "abundance of natural light",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 17,
+      "ngram_type": "4-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_062",
+      "term": "spacious open floor plan",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 12,
+      "ngram_type": "4-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "interior_feature_063",
+      "term": "open concept kitchen",
+      "category": "interior_feature",
+      "aliases": [],
+      "frequency": 1,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_001",
+      "term": "garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 543,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_002",
+      "term": "backyard",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 381,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_003",
+      "term": "patio",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 328,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_004",
+      "term": "parking",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 316,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_005",
+      "term": "car garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 183,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_006",
+      "term": "solar",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 178,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_007",
+      "term": "yard",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 159,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_008",
+      "term": "balcony",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 132,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_009",
+      "term": "landscaping",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 122,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_010",
+      "term": "driveway",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 103,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_011",
+      "term": "outdoor living",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 95,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_012",
+      "term": "covered patio",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 76,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_013",
+      "term": "two-car garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 64,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_014",
+      "term": "private balcony",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 63,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_015",
+      "term": "private backyard",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 57,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_016",
+      "term": "indoor-outdoor living",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 53,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_017",
+      "term": "private patio",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 45,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_018",
+      "term": "attached garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 39,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_019",
+      "term": "corner lot",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 39,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_020",
+      "term": "front yard",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 38,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_021",
+      "term": "attached car garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 34,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_022",
+      "term": "rv parking",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 34,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_023",
+      "term": "parking spaces",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 33,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_024",
+      "term": "parking space",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_025",
+      "term": "guest parking",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 28,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_026",
+      "term": "mature landscaping",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 28,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_027",
+      "term": "acre lot",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 27,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_028",
+      "term": "detached garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 27,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_029",
+      "term": "outdoor kitchen",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 26,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_030",
+      "term": "ample parking",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_031",
+      "term": "attached two-car garage",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 24,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "exterior_feature_032",
+      "term": "fully fenced",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 20,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_033",
+      "term": "back patio",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_034",
+      "term": "front porch",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_035",
+      "term": "side yard",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 18,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "exterior_feature_036",
+      "term": "paid solar panels",
+      "category": "exterior_feature",
+      "aliases": [],
+      "frequency": 3,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_001",
+      "term": "schools",
+      "category": "location",
+      "aliases": [],
+      "frequency": 219,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_002",
+      "term": "neighborhood",
+      "category": "location",
+      "aliases": [],
+      "frequency": 201,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_003",
+      "term": "beach",
+      "category": "location",
+      "aliases": [],
+      "frequency": 144,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_004",
+      "term": "downtown",
+      "category": "location",
+      "aliases": [],
+      "frequency": 135,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_005",
+      "term": "easy access",
+      "category": "location",
+      "aliases": [],
+      "frequency": 129,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_006",
+      "term": "cul-de-sac",
+      "category": "location",
+      "aliases": [],
+      "frequency": 78,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_007",
+      "term": "freeway",
+      "category": "location",
+      "aliases": [],
+      "frequency": 75,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_008",
+      "term": "mountain views",
+      "category": "location",
+      "aliases": [],
+      "frequency": 63,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_009",
+      "term": "gated community",
+      "category": "location",
+      "aliases": [],
+      "frequency": 61,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_010",
+      "term": "direct access",
+      "category": "location",
+      "aliases": [],
+      "frequency": 59,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_011",
+      "term": "school district",
+      "category": "location",
+      "aliases": [],
+      "frequency": 56,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_012",
+      "term": "convenient access",
+      "category": "location",
+      "aliases": [],
+      "frequency": 49,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_013",
+      "term": "walking distance",
+      "category": "location",
+      "aliases": [],
+      "frequency": 49,
+      "ngram_type": "2-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_014",
+      "term": "panoramic views",
+      "category": "location",
+      "aliases": [],
+      "frequency": 42,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_015",
+      "term": "ocean views",
+      "category": "location",
+      "aliases": [],
+      "frequency": 40,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_016",
+      "term": "quiet cul-de-sac",
+      "category": "location",
+      "aliases": [],
+      "frequency": 40,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_017",
+      "term": "near shopping",
+      "category": "location",
+      "aliases": [],
+      "frequency": 39,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_018",
+      "term": "close proximity",
+      "category": "location",
+      "aliases": [],
+      "frequency": 37,
+      "ngram_type": "2-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_019",
+      "term": "freeway access",
+      "category": "location",
+      "aliases": [],
+      "frequency": 35,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_020",
+      "term": "top-rated schools",
+      "category": "location",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_021",
+      "term": "high school",
+      "category": "location",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_022",
+      "term": "shopping centers",
+      "category": "location",
+      "aliases": [],
+      "frequency": 28,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_023",
+      "term": "elementary school",
+      "category": "location",
+      "aliases": [],
+      "frequency": 23,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_024",
+      "term": "city lights",
+      "category": "location",
+      "aliases": [],
+      "frequency": 22,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_025",
+      "term": "sweeping views",
+      "category": "location",
+      "aliases": [],
+      "frequency": 21,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_026",
+      "term": "near schools",
+      "category": "location",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_027",
+      "term": "waterfront",
+      "category": "location",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "location_028",
+      "term": "close to shopping",
+      "category": "location",
+      "aliases": [],
+      "frequency": 18,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "location_029",
+      "term": "shopping restaurants",
+      "category": "location",
+      "aliases": [],
+      "frequency": 18,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "location_030",
+      "term": "close to shopping dining",
+      "category": "location",
+      "aliases": [],
+      "frequency": 11,
+      "ngram_type": "4-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_031",
+      "term": "private gated community",
+      "category": "location",
+      "aliases": [],
+      "frequency": 2,
+      "ngram_type": "trigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "location_032",
+      "term": "beach access",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_033",
+      "term": "canyon view",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_034",
+      "term": "city view",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_035",
+      "term": "close to schools",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_036",
+      "term": "commuter friendly",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_037",
+      "term": "corner location",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_038",
+      "term": "golf course view",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_039",
+      "term": "lake view",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_040",
+      "term": "mountain view",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_041",
+      "term": "near downtown",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_042",
+      "term": "near freeway",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_043",
+      "term": "ocean view",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "location_044",
+      "term": "quiet neighborhood",
+      "category": "location",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_001",
+      "term": "updated",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 372,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "condition_002",
+      "term": "remodeled",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 222,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "condition_003",
+      "term": "upgraded",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 211,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "condition_004",
+      "term": "move-in ready",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 147,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_005",
+      "term": "turnkey",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 86,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "sample_supported_seed"
+    },
+    {
+      "id": "condition_006",
+      "term": "renovated",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 68,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "condition_007",
+      "term": "beautifully updated",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 66,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_008",
+      "term": "brand new",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 52,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_009",
+      "term": "remodeled kitchen",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 47,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_010",
+      "term": "beautifully remodeled",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 41,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_011",
+      "term": "new flooring",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 36,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_012",
+      "term": "thoughtfully updated",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 36,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_013",
+      "term": "modern finishes",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 35,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_014",
+      "term": "move-in ready home",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 35,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "condition_015",
+      "term": "modern comfort",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 30,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_016",
+      "term": "fresh interior paint",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 29,
+      "ngram_type": "3-gram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "condition_017",
+      "term": "new roof",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 29,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_018",
+      "term": "modern design",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 27,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_019",
+      "term": "beautifully upgraded",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 26,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_020",
+      "term": "new carpet",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 26,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_021",
+      "term": "fully remodeled",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 25,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_022",
+      "term": "modern luxury",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 19,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "condition_023",
+      "term": "fixer upper",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_024",
+      "term": "freshly painted",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_025",
+      "term": "move-in condition",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_026",
+      "term": "newly built",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_027",
+      "term": "recently remodeled",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_028",
+      "term": "recently renovated",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_029",
+      "term": "renovated kitchen",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_030",
+      "term": "upgraded home",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "condition_031",
+      "term": "well maintained",
+      "category": "condition",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_001",
+      "term": "rental",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 122,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "transaction_or_listing_002",
+      "term": "investment",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 80,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "transaction_or_listing_003",
+      "term": "rental income",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 54,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "transaction_or_listing_004",
+      "term": "income potential",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 32,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "transaction_or_listing_005",
+      "term": "no hoa",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 31,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "transaction_or_listing_006",
+      "term": "hoa dues",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 30,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "transaction_or_listing_007",
+      "term": "low hoa",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 27,
+      "ngram_type": "bigram",
+      "source": "listing_sample_frequency",
+      "review_status": "cleaned_seed"
+    },
+    {
+      "id": "transaction_or_listing_008",
+      "term": "lease",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 16,
+      "ngram_type": "unigram",
+      "source": "listing_sample_frequency",
+      "review_status": "ngram_added_seed"
+    },
+    {
+      "id": "transaction_or_listing_009",
+      "term": "assumable loan",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_010",
+      "term": "cash offer",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_011",
+      "term": "closing costs",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_012",
+      "term": "contingent sale",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_013",
+      "term": "conventional loan",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_014",
+      "term": "fha loan",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_015",
+      "term": "hoa",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_016",
+      "term": "investment property",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_017",
+      "term": "land lease",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_018",
+      "term": "lease option",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_019",
+      "term": "owner financing",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_020",
+      "term": "pending sale",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_021",
+      "term": "price reduction",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_022",
+      "term": "probate sale",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_023",
+      "term": "property tax",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_024",
+      "term": "rental property",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_025",
+      "term": "seller credit",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_026",
+      "term": "seller financing",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_027",
+      "term": "short sale",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    },
+    {
+      "id": "transaction_or_listing_028",
+      "term": "va loan",
+      "category": "transaction_or_listing",
+      "aliases": [],
+      "frequency": 0,
+      "ngram_type": "domain_term",
+      "source": "domain_supplement",
+      "review_status": "supplemented_seed"
+    }
+  ]
+}
