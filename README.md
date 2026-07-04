@@ -56,9 +56,10 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | --- | --- |
 | Environment setup | Complete |
 | MySQL data loading | Complete |
-| Listing sample extraction | In progress |
-| Taxonomy construction | In progress |
-| Text cleaning and normalization | In progress |
+| Listing sample extraction | Complete |
+| Taxonomy construction | Complete |
+| Sample query set | Complete |
+| Text cleaning and normalization | Complete |
 | Entity extraction | In progress |
 | Query parsing to SQL filters | In progress |
 | Semantic search | In progress |
@@ -110,19 +111,16 @@ database: real_estate
 
 ## Usage
 
-In progress.
+Current local workflow:
 
-Planned workflow:
-
-```text
-raw MLS data
-  -> MySQL import
-  -> sample extraction
-  -> text cleaning
-  -> entity and signal extraction
-  -> query parsing and semantic search
-  -> API and demo interface
+```bash
+python scripts/data_loading.py
+python scripts/taxonomy_builder.py
+python scripts/taxonomy_csv_to_json.py
+python scripts/generate_cleaned_dataset.py
 ```
+
+The workflow currently extracts a listing sample, builds taxonomy seed terms, converts the curated taxonomy to JSON, and generates cleaned listing remarks.
 
 ## Testing
 
@@ -132,7 +130,44 @@ Run the full test suite with:
 pytest
 ```
 
-Tests will be added alongside each pipeline component.
+Run weekly validation tests directly:
+
+```bash
+pytest tests/test_week1.py
+pytest tests/test_week2.py
+```
+
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, and text cleaning edge cases.
+
+## Current Artifacts
+
+- `data/processed/taxonomy.json`
+  - Curated real estate taxonomy for listing remarks and search queries.
+
+- `data/processed/sample_queries.json`
+  - Labeled search-query examples with intent, entities, and difficulty.
+
+- `data/processed/listing_sample_cleaned.csv`
+  - Local generated dataset with original `remarks` and `remarks_cleaned`.
+  - Ignored by Git as generated data.
+
+- `scripts/text_cleaning.py`
+  - Text normalization pipeline for MLS listing remarks.
+
+- `scripts/generate_cleaned_dataset.py`
+  - Generates the cleaned listing sample.
+
+- `notebooks/01_remark_exploration.ipynb`
+  - Week 1 listing, taxonomy, and query exploration.
+
+- `notebooks/02_text_cleaning_exploration.ipynb`
+  - Week 2 raw-vs-cleaned text profiling and before/after review.
+
+- `docs/week1_report.md`
+  - Week 1 summary and validation notes.
+
+- `docs/week2_report.md`
+  - Week 2 summary and validation notes.
 
 ## Evaluation
 
