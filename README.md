@@ -40,9 +40,9 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 │   └── models/           # Local embeddings, FAISS indexes, and trained model artifacts
 ├── docs/                 # Technical notes, reports, schema references, and final writeups
 ├── notebooks/            # Exploratory analysis and evaluation notebooks
-├── scripts/              # Command-line scripts for data loading and artifact generation
+├── scripts/              # Command-line entry points for local data and artifact tasks
 ├── src/
-│   └── real_estate_nlp/  # Reusable project package
+│   └── real_estate_nlp/  # Reusable project package for pipeline and API code
 │       └── api/          # FastAPI application code
 ├── tests/                # Pytest test suite
 ├── docker-compose.yml    # Local MySQL service definition
