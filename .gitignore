@@ -222,6 +222,7 @@ __marimo__/
 instructions/
 .vscode/
 *_CN.*
+AGENTS.md
 
 # Local MLS data and generated artifacts
 data/raw/*
