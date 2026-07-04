@@ -221,6 +221,7 @@ __marimo__/
 .DS_Store
 instructions/
 .vscode/
+*_CN.*
 
 # Local MLS data and generated artifacts
 data/raw/*
