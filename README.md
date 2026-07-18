@@ -60,7 +60,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Taxonomy construction | Complete |
 | Sample query set | Complete |
 | Text cleaning and normalization | Complete |
-| Entity extraction | In progress |
+| Entity extraction | Complete |
 | Query parsing to SQL filters | In progress |
 | Semantic search | In progress |
 | Intent classification | In progress |
@@ -118,9 +118,10 @@ python scripts/data_loading.py
 python scripts/taxonomy_builder.py
 python scripts/taxonomy_csv_to_json.py
 python scripts/generate_cleaned_dataset.py
+python scripts/evaluate_entities.py --match-mode strict --error-limit 20
 ```
 
-The workflow currently extracts a listing sample, builds taxonomy seed terms, converts the curated taxonomy to JSON, and generates cleaned listing remarks.
+The workflow currently extracts a listing sample, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, and evaluates the Week 3 entity extractor.
 
 ## Testing
 
@@ -135,9 +136,10 @@ Run weekly validation tests directly:
 ```bash
 pytest tests/test_week1.py
 pytest tests/test_week2.py
+pytest tests/test_week3.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, and text cleaning edge cases.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, and entity extraction behavior.
 
 ## Current Artifacts
 
@@ -157,11 +159,31 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `scripts/generate_cleaned_dataset.py`
   - Generates the cleaned listing sample.
 
+- `scripts/entity_extractor.py`
+  - Rule-based entity extractor for listing remarks.
+  - Extracts numeric facts, taxonomy terms, amenities, rooms, property features, location signals, and transaction terms.
+
+- `scripts/evaluate_entities.py`
+  - Evaluates entity predictions with precision, recall, and F1.
+  - Supports strict, overlap, value, and span-style matching.
+
+- `scripts/train_ner.py`
+  - Trains the optional spaCy NER experiment model.
+
+- `data/processed/entity_eval_labels.json`
+  - Local reviewed evaluation set with 200 listing remarks and 2,619 labeled entities.
+
+- `data/models/entity_ner/`
+  - Local saved spaCy NER experiment model.
+
 - `notebooks/01_remark_exploration.ipynb`
   - Week 1 listing, taxonomy, and query exploration.
 
 - `notebooks/02_text_cleaning_exploration.ipynb`
   - Week 2 raw-vs-cleaned text profiling and before/after review.
+
+- `notebooks/03_entity_extraction_evaluation.ipynb`
+  - Week 3 rule, NER, and hybrid extraction comparison with error analysis.
 
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
@@ -169,15 +191,25 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `docs/week2_report.md`
   - Week 2 summary and validation notes.
 
+- `docs/week3_report.md`
+  - Week 3 entity extraction summary and validation notes.
+
 ## Evaluation
 
-In progress.
+Current entity extraction results on the reviewed held-out evaluation set:
 
-Planned evaluation areas:
+| System | Match mode | Precision | Recall | F1 |
+| --- | --- | ---: | ---: | ---: |
+| Rule extractor | Strict | 0.889 | 0.814 | 0.850 |
+| Rule extractor | Overlap | 0.916 | 0.839 | 0.876 |
+| Rule extractor | Value | 0.925 | 0.848 | 0.885 |
+| spaCy NER experiment | Span | 0.822 | 0.727 | 0.772 |
+| Hybrid extractor | Span | 0.877 | 0.831 | 0.853 |
+
+Remaining evaluation areas:
 
 - Taxonomy coverage over listing remarks
 - Text cleaning edge-case coverage
-- Entity extraction precision, recall, and F1
 - Query parser accuracy on labeled search examples
 - Semantic search relevance and latency
 - Intent classification accuracy
