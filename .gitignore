@@ -233,3 +233,8 @@ data/models/*
 !data/models/.gitkeep
 !data/processed/taxonomy.json
 !data/processed/sample_queries.json
+!data/models/entity_ner_baseline_0640/
+!data/models/entity_ner_baseline_0640/**
+
+# Local experiment notes
+docs/entity_extraction_experiment_notes.md
