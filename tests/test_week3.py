@@ -27,10 +27,23 @@ def test_extract_bathrooms_with_decimal():
     assert values_for(entities, "bathrooms") == [2.5]
 
 
+def test_extract_bathrooms_with_written_fraction():
+    extractor = EntityExtractor()
+    entities = extractor.extract_bathrooms("powder room with one and a half bath")
+    assert values_for(entities, "bathrooms") == [1.5]
+
+
 def test_bathroom_count_ignores_ordinals_and_large_false_counts():
     extractor = EntityExtractor()
     entities = extractor.extract_bathrooms("the second bathroom is near 280 bathroom lane")
     assert values_for(entities, "bathrooms") == []
+
+
+def test_bedroom_bathroom_counts_ignore_acre_context():
+    extractor = EntityExtractor()
+    text = "almost 1 bedroom 3 bathroom of an acre"
+    assert values_for(extractor.extract_bedrooms(text), "bedrooms") == []
+    assert values_for(extractor.extract_bathrooms(text), "bathrooms") == []
 
 
 def test_extract_listing_price():
@@ -57,16 +70,36 @@ def test_sqft_does_not_capture_lot_size():
     assert values_for(entities, "sqft") == []
 
 
+def test_sqft_does_not_capture_described_lot_size():
+    extractor = EntityExtractor()
+    entities = extractor.extract_sqft("8721 square feet private flat lot")
+    assert values_for(entities, "sqft") == []
+
+
 def test_extract_acre_lot_size():
     extractor = EntityExtractor()
     entities = extractor.extract_lot_size("private 0.25 acre lot")
     assert values_for(entities, "lot_size") == [0.25]
 
 
+def test_extract_leading_decimal_acre_lot_size():
+    extractor = EntityExtractor()
+    entity = first_entity(extractor.extract_lot_size("private .35 acre lot"), "lot_size")
+    assert entity["value"] == 0.35
+    assert entity["text"] == ".35 acre lot"
+
+
 def test_extract_square_foot_lot_size():
     extractor = EntityExtractor()
     entities = extractor.extract_lot_size("large 7500 square feet lot")
     assert values_for(entities, "lot_size") == [7500]
+
+
+def test_extract_described_square_foot_lot_size():
+    extractor = EntityExtractor()
+    entity = first_entity(extractor.extract_lot_size("8721 square feet private flat lot"), "lot_size")
+    assert entity["value"] == 8721
+    assert entity["text"] == "8721 square feet private flat lot"
 
 
 def test_extract_lot_dimensions():
@@ -103,6 +136,12 @@ def test_extract_attached_garage_feature():
     extractor = EntityExtractor()
     entities = extractor.extract_parking("attached garage with storage")
     assert values_for(entities, "parking") == ["attached garage"]
+
+
+def test_parking_feature_skips_laundry_context():
+    extractor = EntityExtractor()
+    entities = extractor.extract_parking("includes in garage laundry")
+    assert values_for(entities, "parking") == []
 
 
 def test_extract_monthly_hoa_fee():
@@ -153,10 +192,48 @@ def test_taxonomy_skips_plural_bedroom_bathroom_room_terms():
     assert values_for(entities, "room") == []
 
 
+def test_taxonomy_skips_plural_room_terms_without_counts():
+    extractor = EntityExtractor()
+    entities = extractor.extract_taxonomy_terms("bedrooms are upstairs and bathrooms are updated")
+    assert values_for(entities, "room") == []
+
+
+def test_taxonomy_skips_room_kitchen_inside_feature_phrase():
+    extractor = EntityExtractor()
+    entities = extractor.extract_taxonomy_terms("modern kitchen lighting")
+    assert values_for(entities, "room") == []
+
+
+def test_taxonomy_skips_plural_living_areas_alias():
+    extractor = EntityExtractor()
+    entities = extractor.extract_taxonomy_terms("separate living areas with good flow")
+    assert values_for(entities, "room") == []
+
+
+def test_taxonomy_skips_beach_inside_property_or_city_phrase():
+    extractor = EntityExtractor()
+    assert values_for(extractor.extract_taxonomy_terms("classic beach house"), "location") == []
+    assert values_for(extractor.extract_taxonomy_terms("long beach location"), "location") == []
+
+
+def test_taxonomy_skips_solar_lease_context():
+    extractor = EntityExtractor()
+    entities = extractor.extract_taxonomy_terms("option to purchase or lease the solar")
+    assert values_for(entities, "transaction_or_listing") == []
+
+
 def test_extract_all_keeps_longer_taxonomy_match():
     extractor = EntityExtractor()
     entities = extractor.extract_all("community pool")
     assert values_for(entities, "amenity") == ["community pool"]
+
+
+def test_extract_all_maps_eval_style_phrases():
+    extractor = EntityExtractor()
+    text = "open concept living with a breakfast bar and indoor laundry room"
+    entities = extractor.extract_all(text)
+    assert values_for(entities, "interior_feature") == ["open concept", "breakfast bar"]
+    assert values_for(entities, "room") == ["indoor laundry room"]
 
 
 def test_extract_all_keeps_structured_sqft_over_room_term():

@@ -23,8 +23,10 @@ class EntityExtractor:
         "fifth": 5,
         "sixth": 6,
     }
+    DECIMAL_NUMBER_PATTERN = r"(?:\d+(?:\.\d+)?|\.\d+)"
     NUMBER_PATTERN = r"(?:\d{1,3}(?:,\s*\d{3})+|\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight|nine|ten|single|first|second|third|fourth|fifth|sixth)"
     COUNT_NUMBER_PATTERN = r"(?:\d{1,2}(?:\.\d+)?|one|two|three|four|five|six|seven|eight|nine|ten|single)"
+    SQFT_UNIT_PATTERN = r"(?:square feet|square foot|sq\.?\s*feet|sqft|sq ft|sq|sf)"
 
     METHOD_PRIORITY = {
         "regex": 1,
@@ -36,8 +38,8 @@ class EntityExtractor:
         "price": 1,
         "hoa_fee": 1,
         "year_built": 1,
+        "lot_size": 1,
         "sqft": 2,
-        "lot_size": 2,
         "bedrooms": 2,
         "bathrooms": 2,
         "parking": 2,
@@ -63,7 +65,6 @@ class EntityExtractor:
         ("condition", "modern design", "modern design"),
         ("condition", "modern luxury", "modern luxury"),
         ("condition", "move-in ready home", "move in ready home"),
-        ("condition", "upgraded", "upgraded"),
         ("exterior_feature", "patio", "patio"),
         ("exterior_feature", "back patio", "back patio"),
         ("exterior_feature", "ample parking", "ample parking"),
@@ -98,6 +99,7 @@ class EntityExtractor:
         ("room", "multi-generational living", "multi generational living"),
         ("room", "spacious kitchen", "spacious kitchen"),
         ("room", "updated kitchen", "updated kitchen"),
+        ("property_type", "new construction home", "new construction home"),
     }
 
     PHRASE_ENTITIES = [
@@ -107,9 +109,11 @@ class EntityExtractor:
         ("updated bathrooms", "condition", "updated bathroom"),
         ("upgraded kitchen", "condition", "upgraded"),
         ("upgraded flooring", "condition", "upgraded flooring"),
+        ("brand new flooring", "condition", "new flooring"),
         ("new tile", "condition", "new tile"),
         ("new construction", "condition", "new construction"),
         ("brand new construction", "condition", "brand new"),
+        ("modern living", "condition", "modern"),
         ("newer windows", "condition", "newer windows"),
         ("unfinished construction", "condition", "unfinished construction"),
         ("custom built", "condition", "custom built"),
@@ -129,7 +133,12 @@ class EntityExtractor:
         ("renovate", "condition", "renovation"),
         ("renovation project", "condition", "renovation project"),
         ("recently updated", "condition", "updated"),
+        ("fixer", "condition", "fixer upper"),
+        ("fixer upper", "condition", "fixer upper"),
+        ("major fixer upper", "condition", "fixer upper"),
+        ("true fixer upper", "condition", "fixer upper"),
         ("updated throughout", "condition", "updated"),
+        ("updated piping", "condition", "updated piping"),
         ("fully updated", "condition", "updated"),
         ("updated bath", "condition", "updated bathroom"),
         ("upgrades", "condition", "upgrades"),
@@ -137,6 +146,8 @@ class EntityExtractor:
         ("several upgrades", "condition", "upgrades"),
         ("modern upgrades", "condition", "upgrades"),
         ("premium upgrades", "condition", "upgrades"),
+        ("tastefully renovated", "condition", "renovated"),
+        ("professionally renovated", "condition", "renovated"),
         ("needed some tlc", "condition", "tlc"),
 
         ("spacious kitchen", "room", "kitchen"),
@@ -145,31 +156,31 @@ class EntityExtractor:
         ("eat in kitchen", "room", "eat-in kitchen"),
         ("newer kitchen", "room", "kitchen"),
         ("open kitchen", "room", "open kitchen"),
-        ("breakfast bar", "room", "breakfast bar"),
         ("primary suite", "room", "primary suite"),
         ("primary suites", "room", "primary suite"),
         ("owner's suite", "room", "primary suite"),
         ("secondary bedrooms", "room", "secondary bedroom"),
         ("large closet", "room", "closet space"),
         ("large master", "room", "master bedroom"),
+        ("beach house", "property_type", "beach house"),
+        ("geodesic dome", "property_type", "geodesic dome"),
         ("art studio", "room", "studio"),
         ("office studio", "room", "studio"),
         ("main residence", "room", "main residence"),
         ("pantry", "room", "pantry"),
         ("walk in pantry", "room", "walk-in pantry"),
-        ("indoor laundry room", "room", "indoor laundry"),
-        ("inside laundry room", "room", "indoor laundry"),
+        ("indoor laundry room", "room", "indoor laundry room"),
+        ("inside laundry room", "room", "indoor laundry room"),
         ("inside laundry", "room", "indoor laundry"),
         ("in unit laundry", "room", "laundry room"),
-        ("inside laundry room", "room", "indoor laundry"),
         ("laundry area", "room", "laundry room"),
-        ("in garage laundry", "room", "laundry room"),
         ("laundry hookups", "room", "laundry room"),
         ("in home laundry", "room", "laundry room"),
         ("ensuite bathroom", "room", "en suite bathroom"),
         ("en suite bathroom", "room", "en suite bathroom"),
         ("en suite bath", "room", "en suite bathroom"),
         ("ensuite bath", "room", "en suite bathroom"),
+        ("ensuite", "room", "en suite"),
         ("on suite bath", "room", "en suite"),
         ("formal dinning room", "room", "formal dining room"),
         ("dinning room", "room", "dining room"),
@@ -177,6 +188,9 @@ class EntityExtractor:
 
         ("washer and dryer", "interior_feature", "washer dryer"),
         ("washer dryer", "interior_feature", "washer dryer"),
+        ("breakfast bar", "interior_feature", "breakfast bar"),
+        ("open modern concept", "interior_feature", "open concept"),
+        ("open concept living", "interior_feature", "open concept"),
         ("open concept", "interior_feature", "open concept"),
         ("open concept floorplan", "interior_feature", "open floor plan"),
         ("open concept floor plan", "interior_feature", "open floor plan"),
@@ -184,9 +198,12 @@ class EntityExtractor:
         ("open, airy floor plan", "interior_feature", "open floor plan"),
         ("functional floorplan", "interior_feature", "floor plan"),
         ("central air conditioning", "interior_feature", "central air conditioning"),
+        ("split air conditioning", "interior_feature", "air conditioning"),
         ("central air", "interior_feature", "central air conditioning"),
         ("heating ventilation and air conditioning", "interior_feature", "air conditioning"),
         ("central heating ventilation and air conditioning", "interior_feature", "central air conditioning"),
+        ("abundant natural light", "interior_feature", "natural light"),
+        ("abundance of natural light", "interior_feature", "natural light"),
         ("natural sunlight", "interior_feature", "natural light"),
         ("stone fireplace", "interior_feature", "fireplace"),
         ("gas burning fireplace", "interior_feature", "fireplace"),
@@ -202,6 +219,11 @@ class EntityExtractor:
         ("caesarstone countertops", "interior_feature", "quartz countertops"),
         ("sliding doors", "interior_feature", "sliding glass doors"),
         ("designer cabinetry", "interior_feature", "cabinetry"),
+        ("newer cabinets", "interior_feature", "cabinetry"),
+        ("custom cabinets", "interior_feature", "cabinetry"),
+        ("european style cabinets", "interior_feature", "cabinetry"),
+        ("shaker style cabinets", "interior_feature", "cabinetry"),
+        ("shaker cabinets", "interior_feature", "cabinetry"),
         ("white shaker cabinets", "interior_feature", "cabinetry"),
         ("ample cabinetry", "interior_feature", "cabinetry"),
         ("convenient island", "interior_feature", "center island"),
@@ -211,9 +233,11 @@ class EntityExtractor:
         ("ceiling fans", "interior_feature", "ceiling fan"),
         ("high vaulted ceilings", "interior_feature", "vaulted ceilings"),
         ("subway tile backsplash", "interior_feature", "tile backsplash"),
+        ("third floor", "interior_feature", "third floor"),
 
         ("private deck", "exterior_feature", "deck"),
         ("covered deck", "exterior_feature", "deck"),
+        ("roof top deck", "exterior_feature", "roof deck"),
         ("private patio", "exterior_feature", "patio"),
         ("back patio", "exterior_feature", "patio"),
         ("rooftop patio", "exterior_feature", "patio"),
@@ -233,6 +257,7 @@ class EntityExtractor:
         ("front and back yard", "exterior_feature", "yard"),
         ("chain link fence", "exterior_feature", "fence"),
         ("fully fenced", "exterior_feature", "fenced"),
+        ("fenced backyard", "exterior_feature", "fenced backyard"),
         ("fenced pastures", "exterior_feature", "fenced"),
         ("mature landscaping", "exterior_feature", "landscaping"),
         ("solar system", "exterior_feature", "solar"),
@@ -247,6 +272,7 @@ class EntityExtractor:
         ("landscaped backyard", "exterior_feature", "backyard"),
         ("spacious yard", "exterior_feature", "yard"),
         ("private yard", "exterior_feature", "yard"),
+        ("paver driveway", "exterior_feature", "driveway"),
         ("outdoor oasis", "exterior_feature", "outdoor living"),
         ("outdoor entertainment", "exterior_feature", "outdoor living"),
         ("outdoor space", "exterior_feature", "outdoor living"),
@@ -300,6 +326,8 @@ class EntityExtractor:
         ("on site parking", "parking", "parking"),
         ("parking behind the back patio", "parking", "parking"),
         ("assigned spot", "parking", "assigned parking"),
+        ("rv access", "parking", "rv parking"),
+        ("gated rv access", "parking", "rv parking"),
         ("2 car parking space", "parking", 2),
         ("two underground parking spaces", "parking", 2),
         ("attached 2 cars garage", "parking", 2),
@@ -318,6 +346,7 @@ class EntityExtractor:
         ("tenant occupied", "transaction_or_listing", "tenant occupied"),
         ("55 age restricted community", "transaction_or_listing", "55 community"),
         ("55 community", "transaction_or_listing", "55 community"),
+        ("upper end unit", "property_type", "end unit"),
     ]
 
     def __init__(self, taxonomy_path="data/processed/taxonomy.json", ner_model=None):
@@ -350,7 +379,7 @@ class EntityExtractor:
         entities.extend(self.extract_stories(text))
         entities.extend(self.extract_parking(text))
         entities.extend(self.extract_hoa(text))
-        return entities
+        return self._resolve_conflicts(entities)
 
     def extract_phrase_entities(self, text):
         entities = []
@@ -371,14 +400,22 @@ class EntityExtractor:
 
     def extract_bedrooms(self, text):
         patterns = [
+            (r"\b(fifth)\s+(?:bedroom|bed)\b", "ordinal_bedroom_count"),
             (rf"\b({self.COUNT_NUMBER_PATTERN})\s*(?:bedroom|bedrooms|bed|beds|br|bd)\b", "bedroom_count"),
             (rf"\b({self.COUNT_NUMBER_PATTERN})\s+(?:spacious|additional|guest|secondary)\s+(?:bed\s*rooms?|bedrooms|bedroom|beds?)\b", "described_bedroom_count"),
         ]
-        return self._extract_number_patterns(text, "bedrooms", patterns, max_value=20)
+        return self._extract_number_patterns(
+            text,
+            "bedrooms",
+            patterns,
+            max_value=20,
+            skip_context=self._invalid_bed_bath_context,
+        )
 
     def extract_bathrooms(self, text):
         entities = []
         patterns = [
+            (r"\bone\s+and\s+a\s+half\s+(?:bathroom|bath)\b", "word_fraction_bathroom"),
             (rf"\b({self.COUNT_NUMBER_PATTERN})\s*(?:n?bathroom|n?bathrooms|n?bath|n?baths|ba|bth)\b", "bathroom_count"),
             (rf"\b({self.COUNT_NUMBER_PATTERN})\s+full\s+(?:bathroom|bath)\b", "full_bathroom_count"),
             (rf"\b({self.COUNT_NUMBER_PATTERN})\s+half\s+(?:bathroom|bath)\b", "half_bathroom_count"),
@@ -388,7 +425,11 @@ class EntityExtractor:
         ]
         for pattern, source in patterns:
             for match in re.finditer(pattern, text, flags=re.I):
-                if source == "half_bathroom":
+                if self._invalid_bed_bath_context(text, match):
+                    continue
+                if source == "word_fraction_bathroom":
+                    value = 1.5
+                elif source == "half_bathroom":
                     value = 0.5
                 elif source == "full_bathroom":
                     value = 1
@@ -399,7 +440,7 @@ class EntityExtractor:
                 if value > 20:
                     continue
                 entities.append(self._entity("bathrooms", value, match, source))
-        return entities
+        return self._resolve_conflicts(entities)
 
     def extract_price(self, text):
         patterns = [
@@ -418,8 +459,8 @@ class EntityExtractor:
         pattern = (
             r"(?<!\w)(?:(?:approximately|approx\.?|about|around|over)\s+)?"
             r"(\d{1,3}(?:,\s*\d{3})+|\d{3,6}(?:\.\d+)?)"
-            r"\s*(?:square feet|square foot|sqft|sq ft|sq|sf)\b"
-            r"(?!\s*(?:lot|parcel|site|corner\s+lot))"
+            rf"\s*{self.SQFT_UNIT_PATTERN}\b"
+            r"(?!\s*(?:(?:private|flat|level|usable|large|commercial|corner)\s+){0,4}(?:lot|parcel|site))"
         )
         entities = []
         for match in re.finditer(pattern, text, flags=re.I):
@@ -438,22 +479,27 @@ class EntityExtractor:
     def extract_lot_size(self, text):
         entities = []
         patterns = [
-            (r"(?<!\w)(?:(?:approximately|approx\.?|about|around|over|almost)\s+)?(\d+(?:\.\d+)?)\s*acres?(?:\s+(?:lot|parcel|site))?\b", "acre_lot"),
-            (r"\blot size is\s+(\d{1,3}(?:,\s*\d{3})+|\d{3,7}(?:\.\d+)?)\s*(?:square feet|square foot|sq\.?\s*feet|sqft|sq ft|sq|sf)\b", "sqft_lot"),
-            (r"\blot size of\s+(?:(?:approximately|approx\.?|about|around|over)\s+)?(\d{1,3}(?:,\s*\d{3})+|\d{3,7}(?:\.\d+)?)\s*(?:square feet|square foot|sq\.?\s*feet|sqft|sq ft|sq|sf)\b", "sqft_lot"),
-            (r"(?<!\w)(\d{1,3}(?:,\s*\d{3})+|\d{3,7}(?:\.\d+)?)\s*(?:square feet|square foot|sq\.?\s*feet|sqft|sq ft|sq|sf)\s+corner\s+lot\b", "sqft_lot"),
-            (r"(?<!\w)(?:(?:approximately|approx\.?|about|around|over)\s+)?(\d{1,3}(?:,\s*\d{3})+|\d{3,7}(?:\.\d+)?)\s*(?:square feet|square foot|sq\.?\s*feet|sqft|sq ft|sq|sf)\s*(?:lot|parcel|site)\b", "sqft_lot"),
+            (rf"(?<!\w)({self.DECIMAL_NUMBER_PATTERN})\s+and\s+({self.DECIMAL_NUMBER_PATTERN})\s*acres?\b", "compound_acre_lot"),
+            (rf"(?<!\w)(?:(?:approximately|approx\.?|about|around|over|almost)\s+)?({self.DECIMAL_NUMBER_PATTERN})\s*(?:expansive\s+)?acres?(?:\s+(?:commercial\s+)?(?:lot|parcel|site))?\b", "acre_lot"),
+            (rf"\blot size is\s+(\d{{1,3}}(?:,\s*\d{{3}})+|\d{{3,7}}(?:\.\d+)?)\s*{self.SQFT_UNIT_PATTERN}\b", "sqft_lot"),
+            (rf"\blot size of\s+(?:(?:approximately|approx\.?|about|around|over)\s+)?(\d{{1,3}}(?:,\s*\d{{3}})+|\d{{3,7}}(?:\.\d+)?)\s*{self.SQFT_UNIT_PATTERN}\b", "sqft_lot"),
+            (rf"(?<!\w)(\d{{1,3}}(?:,\s*\d{{3}})+|\d{{3,7}}(?:\.\d+)?)\s*{self.SQFT_UNIT_PATTERN}\s+(?:(?:private|flat|level|usable|large|commercial|corner)\s+){{0,4}}lot\b", "sqft_lot"),
+            (rf"(?<!\w)(?:(?:approximately|approx\.?|about|around|over)\s+)?(\d{{1,3}}(?:,\s*\d{{3}})+|\d{{3,7}}(?:\.\d+)?)\s*{self.SQFT_UNIT_PATTERN}\s*(?:lot|parcel|site)\b", "sqft_lot"),
             (r"\b(\d+(?:\.\d+)?)\s+by\s+(\d+(?:\.\d+)?)\s+foot\s+lot\b", "lot_dimensions"),
             (r"\bjust under half an acre\b", "half_acre_lot"),
         ]
 
         for pattern, source in patterns:
             for match in re.finditer(pattern, text, flags=re.I):
+                if source == "acre_lot" and self._invalid_lot_context(text, match):
+                    continue
                 if source == "lot_dimensions":
                     value = {
                         "width_ft": float(match.group(1)),
                         "depth_ft": float(match.group(2)),
                     }
+                elif source == "compound_acre_lot":
+                    value = self._to_number(match.group(1)) + self._to_number(match.group(2))
                 elif source == "half_acre_lot":
                     value = 0.5
                 else:
@@ -471,7 +517,7 @@ class EntityExtractor:
                     )
                 else:
                     entities.append(self._entity("lot_size", value, match, source))
-        return entities
+        return self._resolve_conflicts(entities)
 
     def extract_year_built(self, text):
         patterns = [
@@ -507,6 +553,8 @@ class EntityExtractor:
         entities.extend(self._extract_number_patterns(text, "parking", patterns, max_value=12))
 
         for match in re.finditer(r"\b(?:attached|detached)\s+garage\b|\bgarage\b|\bcarport\b", text, flags=re.I):
+            if self._invalid_parking_feature_context(text, match):
+                continue
             entities.append(self._entity("parking", match.group(0).lower(), match, "parking_feature"))
         return entities
 
@@ -517,7 +565,16 @@ class EntityExtractor:
             text,
             flags=re.I,
         ):
-            entities.append(self._entity("hoa_fee", self._to_number(match.group(1)), match, "monthly_hoa_fee"))
+            entities.append(
+                self._entity_from_span(
+                    "hoa_fee",
+                    self._to_number(match.group(1)),
+                    text,
+                    match.start(),
+                    match.end(1),
+                    "monthly_hoa_fee",
+                )
+            )
 
         for match in re.finditer(r"\bno homeowners association\b", text, flags=re.I):
             entities.append(self._entity("hoa_fee", 0, match, "no_hoa"))
@@ -552,11 +609,56 @@ class EntityExtractor:
             return True
 
         head = full_text[max(0, match.start() - 25): match.start()].lower()
+        if label == "location" and value == "beach":
+            if re.search(r"\blong\s+$", head) or re.match(r"\s+(?:house|walks?)\b", tail):
+                return True
+
+        if label == "transaction_or_listing" and value == "lease":
+            context = full_text[max(0, match.start() - 15): match.end() + 15].lower()
+            if "solar" in context or "purchase or" in context:
+                return True
+
+        if label == "condition" and value == "upgraded":
+            if re.match(r"\s+(?:power|cabinetry|cabinets|hardware|fixtures)\b", tail):
+                return True
+
+        if label == "amenity" and value == "community amenities" and re.search(r"\bnewer\s+$", head):
+            return True
+
+        if label == "exterior_feature" and value == "landscaping":
+            if re.search(r"(?:ready\s+for\s+more|more)\s+$", head):
+                return True
+
+        if label == "interior_feature":
+            if value == "cabinetry" and matched_text == "cabinets":
+                return True
+            if value == "appliances" and re.match(r"\s+included\b", tail):
+                return True
+            if value == "natural light" and re.search(r"\babundant\s+$|\babundance\s+of\s+$", head):
+                return True
+            if value == "air conditioning" and re.search(r"\bsplit\s+$", head):
+                return True
+            if value == "pantry" and re.search(r"\bwalk\s+in\s+$", head):
+                return True
+
+        if label == "exterior_feature" and value == "garage":
+            if re.search(r"\bin\s+$", head) and re.match(r"\s+laundry\b", tail):
+                return True
+
+        if label == "room" and (value == "kitchen" or matched_text.endswith(" kitchen")):
+            if re.search(r"\b(?:brand\s+new|new|updated|remodeled)\s+$", head):
+                return True
+            if re.match(r"\s+(?:lighting|cabinet|cabinets|cabinetry|counter|counters|countertops|backsplash)\b", tail):
+                return True
+
         if label == "room" and value in {"bedroom", "bathroom"}:
             if matched_text in {"bedrooms", "bathrooms"}:
                 return True
             if re.search(rf"(?:{self.COUNT_NUMBER_PATTERN})\s+$", head):
                 return True
+
+        if label == "room" and value == "living room" and matched_text == "living areas":
+            return True
 
         return False
 
@@ -579,16 +681,43 @@ class EntityExtractor:
             normalized.append(item)
         return normalized
 
-    def _extract_number_patterns(self, text, label, patterns, cast=None, max_value=None):
+    def _extract_number_patterns(self, text, label, patterns, cast=None, max_value=None, skip_context=None):
         entities = []
         for pattern, source in patterns:
             for match in re.finditer(pattern, text, flags=re.I):
+                if skip_context and skip_context(text, match):
+                    continue
                 value = match.group(1)
                 value = cast(value) if cast else self._to_number(value)
                 if max_value is not None and value > max_value:
                     continue
                 entities.append(self._entity(label, value, match, source))
         return entities
+
+    def _invalid_bed_bath_context(self, text, match):
+        head = text[max(0, match.start() - 15): match.start()].lower()
+        tail = text[match.end(): match.end() + 40].lower()
+        if match.groups() and str(match.group(1)).lower() in {"first", "second", "third", "fourth", "fifth", "sixth"}:
+            if re.search(r"\bthe\s+$", head):
+                return True
+        return bool(
+            re.match(r"\s+of\s+an?\s+acre\b", tail)
+            or re.match(rf"\s+{self.COUNT_NUMBER_PATTERN}\s+(?:bathroom|bath|ba)\s+of\s+an?\s+acre\b", tail)
+            or re.match(r"\s+a\s+block\b", tail)
+            or re.search(r"\bwithin\s+$", head)
+        )
+
+    def _invalid_lot_context(self, text, match):
+        tail = text[match.end(): match.end() + 25].lower()
+        return bool(re.match(r"\s+of\s+(?:blm|public|state|federal)\s+land\b", tail))
+
+    def _invalid_parking_feature_context(self, text, match):
+        head = text[max(0, match.start() - 8): match.start()].lower()
+        tail = text[match.end(): match.end() + 12].lower()
+        return bool(
+            (re.search(r"\bin\s+$", head) and re.match(r"\s+laundry\b", tail))
+            or re.match(r"\s+door\b", tail)
+        )
 
     def _entity(self, label, value, match, source):
         return {
