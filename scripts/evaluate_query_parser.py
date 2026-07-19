@@ -111,9 +111,8 @@ def score_field(expected, predicted):
 
 
 def evaluate(queries, parser, include_soft_signals=False):
-    total_fields = 0
-    correct_fields = 0
-    coverage_queries = 0
+    total_expected_fields = 0
+    matched_expected_fields = 0
     exact_queries = 0
     hard_exact_queries = 0
     soft_exact_queries = 0
@@ -132,13 +131,13 @@ def evaluate(queries, parser, include_soft_signals=False):
         predicted_hard = normalize_filters(parsed["hard_filters"])
         predicted_soft = normalize_filters(parsed["soft_signals"])
 
-        coverage_correct = True
+        expected_fields_matched = True
         for key, expected_value in expected.items():
-            total_fields += 1
+            total_expected_fields += 1
             if key in predicted and score_field(expected_value, predicted[key]):
-                correct_fields += 1
+                matched_expected_fields += 1
             else:
-                coverage_correct = False
+                expected_fields_matched = False
                 missed[key] += 1
 
         for key in predicted:
@@ -151,16 +150,14 @@ def evaluate(queries, parser, include_soft_signals=False):
             if key not in expected_soft:
                 soft_extra[key] += 1
 
-        exact_correct = predicted == expected
-        hard_exact_correct = predicted_hard == expected_hard
-        soft_exact_correct = predicted_soft == expected_soft
-        if coverage_correct:
-            coverage_queries += 1
-        if exact_correct:
+        full_filter_exact_match = predicted == expected
+        hard_filter_exact_match = predicted_hard == expected_hard
+        soft_signal_exact_match = predicted_soft == expected_soft
+        if full_filter_exact_match:
             exact_queries += 1
-        if hard_exact_correct:
+        if hard_filter_exact_match:
             hard_exact_queries += 1
-        if soft_exact_correct:
+        if soft_signal_exact_match:
             soft_exact_queries += 1
 
         rows.append(
@@ -173,23 +170,20 @@ def evaluate(queries, parser, include_soft_signals=False):
                 "predicted_hard": predicted_hard,
                 "expected_soft": expected_soft,
                 "predicted_soft": predicted_soft,
-                "coverage_correct": coverage_correct,
-                "exact_correct": exact_correct,
-                "hard_exact_correct": hard_exact_correct,
-                "soft_exact_correct": soft_exact_correct,
+                "expected_fields_matched": expected_fields_matched,
+                "full_filter_exact_match": full_filter_exact_match,
+                "hard_filter_exact_match": hard_filter_exact_match,
+                "soft_signal_exact_match": soft_signal_exact_match,
             }
         )
 
     return {
         "total_queries": len(queries),
-        "total_fields": total_fields,
-        "correct_fields": correct_fields,
-        "coverage_field_accuracy": correct_fields / total_fields if total_fields else 0,
-        "coverage_query_accuracy": coverage_queries / len(queries) if queries else 0,
-        "exact_query_accuracy": hard_exact_queries / len(queries) if queries else 0,
-        "full_exact_query_accuracy": exact_queries / len(queries) if queries else 0,
-        "hard_exact_query_accuracy": hard_exact_queries / len(queries) if queries else 0,
-        "soft_exact_query_accuracy": soft_exact_queries / len(queries) if queries else 0,
+        "total_expected_fields": total_expected_fields,
+        "matched_expected_fields": matched_expected_fields,
+        "full_filter_exact_match_rate": exact_queries / len(queries) if queries else 0,
+        "hard_filter_exact_match_rate": hard_exact_queries / len(queries) if queries else 0,
+        "soft_signal_exact_match_rate": soft_exact_queries / len(queries) if queries else 0,
         "missed_fields": dict(missed.most_common()),
         "extra_fields": dict(extra.most_common()),
         "hard_extra_fields": dict(hard_extra.most_common()),
@@ -214,13 +208,14 @@ def main():
     )
 
     print(f"Queries: {report['total_queries']}")
-    print(f"Fields: {report['correct_fields']}/{report['total_fields']}")
-    print(f"Coverage field accuracy: {report['coverage_field_accuracy']:.3f}")
-    print(f"Coverage query accuracy: {report['coverage_query_accuracy']:.3f}")
-    print(f"Exact query accuracy: {report['exact_query_accuracy']:.3f}")
+    print(
+        f"Expected fields matched: "
+        f"{report['matched_expected_fields']}/{report['total_expected_fields']}"
+    )
+    print(f"Hard-filter exact match rate: {report['hard_filter_exact_match_rate']:.3f}")
     if args.include_soft_signals:
-        print(f"Full exact query accuracy: {report['full_exact_query_accuracy']:.3f}")
-        print(f"Soft-signal exact query accuracy: {report['soft_exact_query_accuracy']:.3f}")
+        print(f"Soft-signal exact match rate: {report['soft_signal_exact_match_rate']:.3f}")
+        print(f"Full-filter exact match rate: {report['full_filter_exact_match_rate']:.3f}")
     print("Missed fields:")
     for key, count in report["missed_fields"].items():
         print(f"  {key}: {count}")
@@ -235,7 +230,7 @@ def main():
         for key, count in report["soft_extra_fields"].items():
             print(f"  {key}: {count}")
 
-    failure_key = "exact_correct" if args.include_soft_signals else "hard_exact_correct"
+    failure_key = "full_filter_exact_match" if args.include_soft_signals else "hard_filter_exact_match"
     failures = [row for row in report["rows"] if not row[failure_key]]
     if failures and args.error_limit:
         print("\nExamples:")

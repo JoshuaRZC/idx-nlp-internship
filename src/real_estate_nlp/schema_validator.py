@@ -75,10 +75,15 @@ class SchemaValidator:
     SQFT_MIN = 100
     SQFT_MAX = 50_000
 
-    def __init__(self, cities=None, listing_sample_path="data/processed/listing_sample.csv"):
-        self.valid_cities = set(cities or QueryParser.KNOWN_CITIES)
-        sample_path = Path(listing_sample_path)
-        if sample_path.exists():
+    def __init__(
+        self,
+        cities=None,
+        city_list_path=QueryParser.DEFAULT_CITY_LIST_PATH,
+        listing_sample_path=None,
+    ):
+        self.valid_cities = set(cities or QueryParser(city_list_path=city_list_path).cities)
+        sample_path = Path(listing_sample_path) if listing_sample_path else None
+        if sample_path and sample_path.exists():
             city_values = pd.read_csv(sample_path, usecols=["L_City"])["L_City"].dropna()
             self.valid_cities.update(city.strip() for city in city_values.astype(str) if city.strip())
 

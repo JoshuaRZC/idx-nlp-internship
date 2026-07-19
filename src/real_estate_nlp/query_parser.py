@@ -4,6 +4,9 @@ from pathlib import Path
 
 
 class QueryParser:
+    DEFAULT_TAXONOMY_PATH = "data/processed/taxonomy.json"
+    DEFAULT_CITY_LIST_PATH = "data/processed/valid_cities.json"
+
     MONEY_PATTERN = r"\$?\s*\d+(?:,\d{3})*(?:\.\d+)?\s*(?:k|m|million|millions)?"
     SQFT_PATTERN = r"\d{3,6}(?:,\d{3})?"
 
@@ -272,13 +275,30 @@ class QueryParser:
         "sort",
     }
 
-    def __init__(self, taxonomy_path="data/processed/taxonomy.json", cities=None):
-        self.taxonomy_path = Path(taxonomy_path)
-        if not self.taxonomy_path.exists() and not self.taxonomy_path.is_absolute():
-            self.taxonomy_path = Path(__file__).resolve().parents[2] / self.taxonomy_path
-
-        self.cities = sorted(cities or self.KNOWN_CITIES, key=len, reverse=True)
+    def __init__(
+        self,
+        taxonomy_path=DEFAULT_TAXONOMY_PATH,
+        cities=None,
+        city_list_path=DEFAULT_CITY_LIST_PATH,
+    ):
+        self.taxonomy_path = self._project_path(taxonomy_path)
+        self.city_list_path = self._project_path(city_list_path)
+        self.cities = sorted(cities or self._load_city_list() or self.KNOWN_CITIES, key=len, reverse=True)
         self.phrase_rules = self._build_phrase_rules()
+
+    def _project_path(self, path):
+        path = Path(path)
+        if path.exists() or path.is_absolute():
+            return path
+        return Path(__file__).resolve().parents[2] / path
+
+    def _load_city_list(self):
+        if not self.city_list_path.exists():
+            return []
+
+        with self.city_list_path.open() as f:
+            payload = json.load(f)
+        return [city for city in payload.get("cities", []) if isinstance(city, str) and city.strip()]
 
     def _parse_filters(self, query):
         text = self._normalize_query(query)
@@ -469,14 +489,18 @@ class QueryParser:
 
     def _parse_location(self, text):
         filters = {}
+        county_spans = []
         for phrase, county in self.COUNTY_ALIASES.items():
-            if self._contains_phrase(text, phrase):
+            for match in re.finditer(self._phrase_pattern(phrase), text):
                 filters["county"] = county
+                county_spans.append(match.span())
 
         for city in self.cities:
-            if self._contains_phrase(text, city.lower()):
+            for match in re.finditer(self._phrase_pattern(city.lower()), text):
+                if self._overlaps_any(match.span(), county_spans):
+                    continue
                 filters["city"] = city
-                break
+                return filters
 
         return filters
 
@@ -518,21 +542,23 @@ class QueryParser:
             ("without sounding too salesy", "neutral"),
             ("strongest lifestyle features", "concise"),
             ("compliance", "compliance-safe wording"),
-            ("summarize", "general"),
         ]
         filters = {}
         for phrase, value in rules:
             if self._contains_phrase(text, phrase):
                 field = "style_preference" if value in {"concise", "neutral"} else "summary_focus"
                 self._add(filters, field, value)
+        if "summary_focus" not in filters and self._contains_phrase(text, "summarize"):
+            self._add(filters, "summary_focus", "general")
         return filters
 
     def _parse_phrases(self, text):
         matches = []
         spans = []
+        protected_spans = self._protected_location_spans(text)
         for phrase, field, value in self.phrase_rules:
             for match in re.finditer(self._phrase_pattern(phrase), text):
-                if self._skip_phrase_match(text, match, field, value):
+                if self._skip_phrase_match(text, match, field, value, protected_spans):
                     continue
                 target_field = self._negated_field(text, match.start(), field)
                 if self._overlaps(match.span(), spans, target_field):
@@ -634,16 +660,82 @@ class QueryParser:
         )
         if negations:
             tail = window[negations[-1].end():]
+            if re.search(r"\btoo\s+far\s+from\s+the\s+$", tail):
+                return field
             if re.search(r"\b(?:show|only|but|instead|rather)\b", tail):
                 return field
             return f"{field}_exclude"
         return field
 
-    def _skip_phrase_match(self, text, match, field, value):
-        before = text[max(0, match.start() - 8):match.start()]
+    def _skip_phrase_match(self, text, match, field, value, protected_spans):
+        before = text[max(0, match.start() - 24):match.start()]
+        after = text[match.end():match.end() + 16]
+        value_key = self._value_key(value)
+
+        if field == "location_features" and self._overlaps_any(match.span(), protected_spans):
+            return True
         if field == "property_type" and value == "house" and before.endswith("open "):
             return True
+        if field == "property_type" and value_key == "house":
+            return not re.search(r"\bhouses?\s+in\b|\bshow me houses?\b", text)
+        if field == "property_type" and value_key in {"guest house", "main house"}:
+            return True
+        if field == "exterior_features" and value_key in {
+            "driveway",
+            "garage",
+            "parking",
+            "rv parking",
+            "solar",
+            "solar panels",
+            "attached garage",
+        }:
+            return True
+        if field == "exterior_features" and value_key == "yard":
+            return "maintenance" in after
+        if field == "interior_features" and value_key == "fireplace":
+            return True
+        if field == "condition" and value_key in {
+            "remodeled kitchen",
+            "updated kitchen",
+            "updated bathroom",
+            "updated bathrooms",
+        }:
+            return True
+        if field == "condition" and value_key == "remodeled":
+            return bool(re.match(r"\s+kitchen\b", after))
+        if field == "room" and value_key == "updated kitchen":
+            return True
+        if field == "room" and value_key == "separate bedrooms":
+            return self._contains_phrase(text, "parents can stay downstairs")
+        if field == "location_features" and value_key == "private":
+            return bool(re.match(r"\s+(?:backyard|pool|yard|patio|driveway)\b", after))
+        if field == "amenities" and value_key == "pool":
+            return bool(re.search(r"\badd\s+a\s+$", before))
+        if field == "investment_features" and value_key == "upside":
+            return "cosmetic " in before
+        if field == "transaction_features" and value_key in {"rental", "rental income"}:
+            return True
+        if field == "use_case" and value_key == "entertaining":
+            return "outdoor " in before
+        if field == "use_case" and value_key == "family":
+            return "buyer" in match.group(0) or bool(re.match(r"\s+buyer\b", after))
+        if field == "use_case" and value_key == "kids":
+            return self._contains_phrase(text, "parents can stay downstairs")
         return False
+
+    def _protected_location_spans(self, text):
+        phrases = [city.lower() for city in self.cities]
+        phrases.extend(self.COUNTY_ALIASES)
+
+        spans = []
+        for phrase in phrases:
+            spans.extend(match.span() for match in re.finditer(self._phrase_pattern(phrase), text))
+        return spans
+
+    def _value_key(self, value):
+        if isinstance(value, list):
+            return "|".join(str(item).lower() for item in value)
+        return str(value).lower()
 
     def _parse_money(self, text):
         match = re.search(r"(\d+(?:,\d{3})*(?:\.\d+)?)\s*(k|m|million|millions)?", text)
@@ -730,6 +822,9 @@ class QueryParser:
             existing_field == field and span[0] < existing[1] and existing[0] < span[1]
             for existing, existing_field in spans
         )
+
+    def _overlaps_any(self, span, spans):
+        return any(span[0] < existing[1] and existing[0] < span[1] for existing in spans)
 
     def _like_param(self, value):
         value = str(value).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")

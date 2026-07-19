@@ -1,5 +1,8 @@
+import json
+
 from src.real_estate_nlp.query_parser import QueryParser
 from src.real_estate_nlp.schema_validator import SchemaValidator
+from scripts.generate_city_list import build_city_payload
 from scripts.evaluate_query_parser import evaluate
 
 
@@ -18,6 +21,45 @@ def test_parse_city_and_price_cap():
         "homes in Irvine under 1 million",
         {"city": "Irvine", "price_max": 1_000_000},
     )
+
+
+def test_parse_city_from_generated_city_list():
+    assert_filter(
+        "homes in San Jose under 1.2 million",
+        {"city": "San Jose", "price_max": 1_200_000},
+    )
+
+
+def test_city_blocklist_avoids_common_adjective_false_positive():
+    filters = parser().parse("nice homes under 900k", flat=True)
+
+    assert "city" not in filters
+    assert filters["price_max"] == 900_000
+
+
+def test_county_phrase_does_not_create_city_filter():
+    filters = parser().parse("homes in Orange County with a pool", flat=True)
+
+    assert filters["county"] == "Orange"
+    assert "city" not in filters
+
+
+def test_valid_city_asset_loaded():
+    with open("data/processed/valid_cities.json") as f:
+        payload = json.load(f)
+
+    assert len(payload["cities"]) >= 500
+    assert "San Jose" in payload["cities"]
+    assert "Other" not in payload["cities"]
+
+
+def test_city_list_builder_blocks_ambiguous_values():
+    payload = build_city_payload(
+        [("San Jose", 100), ("Nice", 10), ("Other", 5)],
+        {"Nice", "Other"},
+    )
+
+    assert payload == {"cities": ["San Jose"], "blocked": ["Nice", "Other"]}
 
 
 def test_parse_property_type_and_city():
@@ -159,6 +201,13 @@ def test_parse_written_bath_count():
     )
 
 
+def test_parse_multigenerational_family_context():
+    assert_filter(
+        "find homes where parents can stay downstairs and kids have separate bedrooms",
+        {"room": ["downstairs bedroom"], "use_case": ["multi-generational"]},
+    )
+
+
 def test_parse_cul_de_sac():
     assert_filter(
         "homes in a cul de sac in Irvine",
@@ -201,7 +250,7 @@ def test_parse_rv_parking():
 def test_parse_fireplace_and_central_air():
     assert_filter(
         "houses with a fireplace and central air",
-        {"property_type": ["house"], "fireplace": True, "amenities": ["fireplace", "central air"]},
+        {"fireplace": True, "amenities": ["fireplace", "central air"]},
     )
 
 
@@ -261,7 +310,7 @@ def test_parse_exterior_features():
 def test_parse_pet_use_case():
     assert_filter(
         "find houses with a private backyard for dogs",
-        {"property_type": ["house"], "exterior_features": ["private backyard"], "use_case": ["pets"]},
+        {"exterior_features": ["private backyard"], "use_case": ["pets"]},
     )
 
 
@@ -346,6 +395,30 @@ def test_parse_summary_focus():
         "give me a neutral summary and avoid any wording that could raise compliance issues",
         {"summary_focus": ["neutral summary", "compliance-safe wording"]},
     )
+
+
+def test_city_name_does_not_create_beach_signal():
+    result = parser().parse("homes in Newport Beach", flat=True)
+
+    assert result == {"city": "Newport Beach"}
+
+
+def test_parking_amenities_do_not_duplicate_as_exterior_features():
+    result = parser().parse("listings with a garage", flat=True)
+
+    assert result == {"amenities": ["garage"]}
+
+
+def test_private_backyard_does_not_create_private_location_signal():
+    result = parser().parse("find houses with a private backyard for dogs", flat=True)
+
+    assert result == {"exterior_features": ["private backyard"], "use_case": ["pets"]}
+
+
+def test_specific_summary_focus_does_not_add_general_focus():
+    result = parser().parse("summarize the amenities in this listing", flat=True)
+
+    assert result == {"summary_focus": ["amenities"]}
 
 
 def test_parse_query_returns_intent_envelope():
@@ -477,6 +550,13 @@ def test_validator_accepts_valid_parser_output():
     assert errors == []
 
 
+def test_validator_accepts_generated_city_list_city():
+    valid, errors = SchemaValidator().validate_query({"city": "San Jose"})
+
+    assert valid
+    assert errors == []
+
+
 def test_validator_accepts_parse_query_envelope():
     parsed = parser().parse_query("open houses this weekend in Pasadena")
     valid, errors = SchemaValidator().validate_query(parsed)
@@ -574,11 +654,10 @@ def test_evaluation_reports_exact_match_accuracy():
 
     report = evaluate(queries, parser())
 
-    assert report["coverage_field_accuracy"] == 1
-    assert report["coverage_query_accuracy"] == 1
-    assert report["exact_query_accuracy"] == 1
-    assert report["full_exact_query_accuracy"] == 1
-    assert report["hard_exact_query_accuracy"] == 1
+    assert report["matched_expected_fields"] == 2
+    assert report["total_expected_fields"] == 2
+    assert report["full_filter_exact_match_rate"] == 1
+    assert report["hard_filter_exact_match_rate"] == 1
 
 
 def test_evaluation_separates_coverage_from_extra_fields():
@@ -592,12 +671,11 @@ def test_evaluation_separates_coverage_from_extra_fields():
 
     report = evaluate(queries, parser())
 
-    assert report["coverage_field_accuracy"] == 1
-    assert report["coverage_query_accuracy"] == 1
-    assert report["exact_query_accuracy"] == 1
-    assert report["full_exact_query_accuracy"] == 0
-    assert report["hard_exact_query_accuracy"] == 1
-    assert report["soft_exact_query_accuracy"] == 0
-    assert report["extra_fields"] == {"amenities": 1, "exterior_features": 1}
+    assert report["matched_expected_fields"] == 2
+    assert report["total_expected_fields"] == 2
+    assert report["full_filter_exact_match_rate"] == 0
+    assert report["hard_filter_exact_match_rate"] == 1
+    assert report["soft_signal_exact_match_rate"] == 0
+    assert report["extra_fields"] == {"amenities": 1}
     assert report["hard_extra_fields"] == {}
-    assert report["soft_extra_fields"] == {"amenities": 1, "exterior_features": 1}
+    assert report["soft_extra_fields"] == {"amenities": 1}

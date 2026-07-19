@@ -61,7 +61,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Sample query set | Complete |
 | Text cleaning and normalization | Complete |
 | Entity extraction | Complete |
-| Query parsing to SQL filters | In progress |
+| Query parsing to SQL filters | Complete |
 | Semantic search | In progress |
 | Intent classification | In progress |
 | Listing summarization | In progress |
@@ -118,10 +118,12 @@ python scripts/data_loading.py
 python scripts/taxonomy_builder.py
 python scripts/taxonomy_csv_to_json.py
 python scripts/generate_cleaned_dataset.py
+python scripts/generate_city_list.py
 python scripts/evaluate_entities.py --match-mode strict --error-limit 20
+python scripts/evaluate_query_parser.py --include-soft-signals --error-limit 20
 ```
 
-The workflow currently extracts a listing sample, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, and evaluates the Week 3 entity extractor.
+The workflow currently extracts a listing sample, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, evaluates the Week 3 entity extractor, and evaluates the Week 4 query parser.
 
 ## Testing
 
@@ -137,9 +139,10 @@ Run weekly validation tests directly:
 pytest tests/test_week1.py
 pytest tests/test_week2.py
 pytest tests/test_week3.py
+pytest tests/test_week4.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, and entity extraction behavior.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, and SQL injection protection.
 
 ## Current Artifacts
 
@@ -148,6 +151,10 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `data/processed/sample_queries.json`
   - Labeled search-query examples with intent, entities, and difficulty.
+
+- `data/processed/valid_cities.json`
+  - City list generated from `rets_property.L_City`.
+  - Used by the query parser and schema validator.
 
 - `data/processed/listing_sample_cleaned.csv`
   - Local generated dataset with original `remarks` and `remarks_cleaned`.
@@ -159,6 +166,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `scripts/generate_cleaned_dataset.py`
   - Generates the cleaned listing sample.
 
+- `scripts/generate_city_list.py`
+  - Generates `data/processed/valid_cities.json` from the local MySQL database.
+
 - `scripts/entity_extractor.py`
   - Rule-based entity extractor for listing remarks.
   - Extracts numeric facts, taxonomy terms, amenities, rooms, property features, location signals, and transaction terms.
@@ -169,6 +179,16 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `scripts/train_ner.py`
   - Trains the optional spaCy NER experiment model.
+
+- `src/real_estate_nlp/query_parser.py`
+  - Parses natural-language search queries into hard SQL filters and soft search signals.
+  - Generates parameterized SQL clauses for database-backed filters.
+
+- `src/real_estate_nlp/schema_validator.py`
+  - Validates parser output before SQL generation or downstream use.
+
+- `scripts/evaluate_query_parser.py`
+  - Evaluates query parser output against the labeled Week 1 search-query set.
 
 - `data/processed/entity_eval_labels.json`
   - Local reviewed evaluation set with 200 listing remarks and 2,619 labeled entities.
@@ -185,6 +205,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/03_entity_extraction_evaluation.ipynb`
   - Week 3 rule, NER, and hybrid extraction comparison with error analysis.
 
+- `notebooks/04_query_parser_evaluation.ipynb`
+  - Week 4 parser output review, hard/soft filter evaluation, SQL generation examples, and validation checks.
+
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
 
@@ -193,6 +216,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week3_report.md`
   - Week 3 entity extraction summary and validation notes.
+
+- `docs/week4_report.md`
+  - Week 4 query parser summary and validation notes.
 
 ## Evaluation
 
@@ -206,14 +232,14 @@ Current entity extraction results on the reviewed held-out evaluation set:
 | spaCy NER experiment | Span | 0.822 | 0.727 | 0.772 |
 | Hybrid extractor | Span | 0.877 | 0.831 | 0.853 |
 
-Remaining evaluation areas:
+Current query parser results on the 120 labeled Week 1 sample queries:
 
-- Taxonomy coverage over listing remarks
-- Text cleaning edge-case coverage
-- Query parser accuracy on labeled search examples
-- Semantic search relevance and latency
-- Intent classification accuracy
-- Compliance checker recall and precision
+| Metric | Value |
+| --- | ---: |
+| Hard-filter exact match rate | 1.000 |
+| Soft-signal exact match rate | 1.000 |
+| Full-filter exact match rate | 0.917 |
+| Expected fields matched | 205 / 205 |
 
 ## Final Deliverables
 
