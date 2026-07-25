@@ -62,7 +62,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Text cleaning and normalization | Complete |
 | Entity extraction | Complete |
 | Query parsing to SQL filters | Complete |
-| Semantic search | In progress |
+| Semantic search | Complete |
 | Intent classification | In progress |
 | Listing summarization | In progress |
 | Fair Housing compliance checker | In progress |
@@ -119,11 +119,14 @@ python scripts/taxonomy_builder.py
 python scripts/taxonomy_csv_to_json.py
 python scripts/generate_cleaned_dataset.py
 python scripts/generate_city_list.py
+python scripts/generate_semantic_sample.py
+python scripts/build_semantic_index.py --source sample_10k --local-files-only
+python scripts/build_semantic_index.py --source full --local-files-only
 python scripts/evaluate_entities.py --match-mode strict --error-limit 20
 python scripts/evaluate_query_parser.py --include-soft-signals --error-limit 20
 ```
 
-The workflow currently extracts a listing sample, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, evaluates the Week 3 entity extractor, and evaluates the Week 4 query parser.
+The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, evaluates the Week 3 entity extractor, and evaluates the Week 4 query parser.
 
 ## Testing
 
@@ -140,9 +143,10 @@ pytest tests/test_week1.py
 pytest tests/test_week2.py
 pytest tests/test_week3.py
 pytest tests/test_week4.py
+pytest tests/test_week5.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, and SQL injection protection.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, and Week 5 semantic-search components.
 
 ## Current Artifacts
 
@@ -160,6 +164,10 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
   - Local generated dataset with original `remarks` and `remarks_cleaned`.
   - Ignored by Git as generated data.
 
+- `data/processed/listing_semantic_sample_10k.csv`
+  - Local fixed 10k sample for Week 5 semantic search and latency review.
+  - Ignored by Git as generated data.
+
 - `scripts/text_cleaning.py`
   - Text normalization pipeline for MLS listing remarks.
 
@@ -168,6 +176,18 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `scripts/generate_city_list.py`
   - Generates `data/processed/valid_cities.json` from the local MySQL database.
+
+- `scripts/generate_semantic_sample.py`
+  - Generates the fixed 10k listing sample for semantic-search experiments.
+
+- `scripts/build_semantic_index.py`
+  - Builds local FAISS indexes for the 10k sample or full `rets_property` remarks.
+
+- `src/real_estate_nlp/semantic_search.py`
+  - Embedding-based listing retrieval with configurable sentence-transformers model, FAISS indexing, save/load support, and candidate reranking.
+
+- `src/real_estate_nlp/keyword_search.py`
+  - BM25 keyword-search baseline for Week 5 comparison.
 
 - `scripts/entity_extractor.py`
   - Rule-based entity extractor for listing remarks.
@@ -196,6 +216,10 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `data/models/entity_ner/`
   - Local saved spaCy NER experiment model.
 
+- `data/models/semantic/`
+  - Local FAISS indexes, embeddings, and metadata for semantic search.
+  - Ignored by Git as generated model artifacts.
+
 - `notebooks/01_remark_exploration.ipynb`
   - Week 1 listing, taxonomy, and query exploration.
 
@@ -207,6 +231,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `notebooks/04_query_parser_evaluation.ipynb`
   - Week 4 parser output review, hard/soft filter evaluation, SQL generation examples, and validation checks.
+
+- `notebooks/05_semantic_search_evaluation.ipynb`
+  - Week 5 semantic vs BM25 comparison, latency study, and 50 query-result relevance review.
 
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
