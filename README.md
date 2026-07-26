@@ -233,7 +233,7 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
   - Week 4 parser output review, hard/soft filter evaluation, SQL generation examples, and validation checks.
 
 - `notebooks/05_semantic_search_evaluation.ipynb`
-  - Week 5 semantic vs BM25 comparison, latency study, and 50 query-result relevance review.
+  - Week 5 MiniLM, MPNet, and BM25 comparison with latency checks and graded proxy relevance metrics.
 
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
@@ -246,6 +246,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week4_report.md`
   - Week 4 query parser summary and validation notes.
+
+- `docs/week5_report.md`
+  - Week 5 semantic search summary, model comparison, latency notes, and validation results.
 
 ## Evaluation
 
@@ -267,6 +270,14 @@ Current query parser results on the 120 labeled Week 1 sample queries:
 | Soft-signal exact match rate | 1.000 |
 | Full-filter exact match rate | 0.917 |
 | Expected fields matched | 205 / 205 |
+
+Current semantic search results on the fixed 10k listing sample:
+
+| Method | Precision@5 | NDCG@5 | MRR |
+| --- | ---: | ---: | ---: |
+| BM25 | 0.82 | 0.858 | 0.90 |
+| MPNet | 0.84 | 0.781 | 0.90 |
+| MiniLM | 0.82 | 0.730 | 0.90 |
 
 ## Final Deliverables
 
