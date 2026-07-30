@@ -352,7 +352,7 @@ class EntityExtractor:
     def __init__(self, taxonomy_path="data/processed/taxonomy.json", ner_model=None):
         self.taxonomy_path = Path(taxonomy_path)
         if not self.taxonomy_path.exists() and not self.taxonomy_path.is_absolute():
-            self.taxonomy_path = Path(__file__).resolve().parents[1] / self.taxonomy_path
+            self.taxonomy_path = Path(__file__).resolve().parents[2] / self.taxonomy_path
         self.ner_model = ner_model
         self.taxonomy_terms = self._load_taxonomy_terms(self.taxonomy_path)
 

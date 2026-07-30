@@ -1,10 +1,15 @@
 import argparse
+import sys
 from pathlib import Path
 
 import mysql.connector
 import pandas as pd
 
-from text_cleaning import TextCleaner
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.real_estate_nlp.text_cleaner import TextCleaner
 
 
 QUERY = """

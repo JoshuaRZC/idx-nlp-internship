@@ -1,4 +1,4 @@
-from scripts.entity_extractor import EntityExtractor
+from src.real_estate_nlp.entity_extractor import EntityExtractor
 
 
 def values_for(entities, label):

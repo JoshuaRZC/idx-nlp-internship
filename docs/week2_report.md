@@ -28,7 +28,7 @@ This week focused on building a text cleaning and normalization pipeline for rea
 
 ## Current Artifacts
 
-- `scripts/text_cleaning.py`
+- `src/real_estate_nlp/text_cleaner.py`
   - Contains the `TextCleaner` class and normalization methods.
   - Includes the abbreviation dictionary and profiling helper.
 

@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from scripts.text_cleaning import TextCleaner
+from src.real_estate_nlp.text_cleaner import TextCleaner
 
 
 def test_unicode_non_breaking_space():

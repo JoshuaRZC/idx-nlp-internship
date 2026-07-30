@@ -35,7 +35,7 @@ This week focused on named entity extraction for real estate listing remarks. Th
 
 ## Current Artifacts
 
-- `scripts/entity_extractor.py`
+- `src/real_estate_nlp/entity_extractor.py`
   - Contains the rule-based extractor, taxonomy matching, phrase rules, conflict handling, and NER interface.
 
 - `scripts/evaluate_entities.py`

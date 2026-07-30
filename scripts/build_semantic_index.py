@@ -9,8 +9,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from text_cleaning import TextCleaner
 from src.real_estate_nlp.semantic_search import DEFAULT_MODEL_NAME, SemanticSearcher
+from src.real_estate_nlp.text_cleaner import TextCleaner
 
 
 FULL_QUERY = """
