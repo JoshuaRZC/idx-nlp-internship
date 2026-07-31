@@ -63,6 +63,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Entity extraction | Complete |
 | Query parsing to SQL filters | Complete |
 | Semantic search | Complete |
+| Listing signal extraction | Complete |
 | Intent classification | In progress |
 | Listing summarization | In progress |
 | Fair Housing compliance checker | In progress |
@@ -122,11 +123,16 @@ python scripts/generate_city_list.py
 python scripts/generate_semantic_sample.py
 python scripts/build_semantic_index.py --source sample_10k --local-files-only
 python scripts/build_semantic_index.py --source full --local-files-only
+python scripts/extract_listing_signals.py --input-csv data/processed/listing_semantic_sample_10k.csv
+python scripts/extract_listing_signals.py
+python scripts/select_listing_signal_eval_sample.py
+python scripts/build_listing_signal_eval_labels.py
+python scripts/evaluate_listing_signals.py
 python scripts/evaluate_entities.py --match-mode strict --error-limit 20
 python scripts/evaluate_query_parser.py --include-soft-signals --error-limit 20
 ```
 
-The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, evaluates the Week 3 entity extractor, and evaluates the Week 4 query parser.
+The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, extracts listing-level signals, evaluates the Week 3 entity extractor, and evaluates the Week 4 query parser.
 
 ## Testing
 
@@ -144,9 +150,10 @@ pytest tests/test_week2.py
 pytest tests/test_week3.py
 pytest tests/test_week4.py
 pytest tests/test_week5.py
+pytest tests/test_week6.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, and Week 5 semantic-search components.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, and listing-level signal extraction.
 
 ## Current Artifacts
 
@@ -168,7 +175,7 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
   - Local fixed 10k sample for Week 5 semantic search and latency review.
   - Ignored by Git as generated data.
 
-- `scripts/text_cleaning.py`
+- `src/real_estate_nlp/text_cleaner.py`
   - Text normalization pipeline for MLS listing remarks.
 
 - `scripts/generate_cleaned_dataset.py`
@@ -189,9 +196,28 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `src/real_estate_nlp/keyword_search.py`
   - BM25 keyword-search baseline for Week 5 comparison.
 
-- `scripts/entity_extractor.py`
+- `src/real_estate_nlp/entity_extractor.py`
   - Rule-based entity extractor for listing remarks.
   - Extracts numeric facts, taxonomy terms, amenities, rooms, property features, location signals, and transaction terms.
+
+- `src/real_estate_nlp/signal_extractor.py`
+  - Converts full listing records into listing-level signals for search, filtering, indexing, and ranking.
+
+- `scripts/extract_listing_signals.py`
+  - Generates compact listing-level JSONL signals from MySQL or a local CSV input.
+  - The full-table run writes `listing_signals.jsonl`; a CSV input can be used for smaller local runs.
+
+- `scripts/evaluate_listing_signals.py`
+  - Evaluates structured numeric fields, remark-derived numeric fallbacks, and text signals against the local Week 6 gold labels.
+
+- `data/processed/listing_signal_eval_labels.json`
+  - Local reviewed evaluation set of 200 real listings for Week 6 signal extraction.
+  - Ignored by Git with the source records and evaluation results.
+
+- `data/processed/listing_signals.jsonl`
+  - Local generated Week 6 listing-signal output for the full `rets_property` table.
+  - Current full run contains 53,122 records.
+  - Ignored by Git as generated data.
 
 - `scripts/evaluate_entities.py`
   - Evaluates entity predictions with precision, recall, and F1.
@@ -235,6 +261,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/05_semantic_search_evaluation.ipynb`
   - Week 5 MiniLM, MPNet, and BM25 comparison with latency checks and graded proxy relevance metrics.
 
+- `notebooks/06_listing_signal_extraction.ipynb`
+  - Week 6 signal schema review, coverage profile, common signal values, examples, and light error analysis.
+
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
 
@@ -249,6 +278,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week5_report.md`
   - Week 5 semantic search summary, model comparison, latency notes, and validation results.
+
+- `docs/week6_report.md`
+  - Week 6 listing signal extraction summary, schema notes, coverage checks, and validation results.
 
 ## Evaluation
 
@@ -278,6 +310,28 @@ Current semantic search results on the fixed 10k listing sample:
 | BM25 | 0.82 | 0.858 | 0.90 |
 | MPNet | 0.84 | 0.781 | 0.90 |
 | MiniLM | 0.82 | 0.730 | 0.90 |
+
+Current listing signal quality on the reviewed Week 6 evaluation set:
+
+| Metric | Value |
+| --- | ---: |
+| Structured field accuracy | 1.000 |
+| Free-text F1 | 0.799 |
+| Keyword integrity | 1.000 |
+
+Current listing signal coverage on the full `rets_property` output (53,122 records):
+
+| Signal bucket | Coverage |
+| --- | ---: |
+| Interior features | 83.9% |
+| Exterior features | 78.4% |
+| Location features | 76.0% |
+| Rooms | 71.5% |
+| Condition | 66.7% |
+| Amenities | 56.6% |
+| Parking | 49.4% |
+| Investment features | 17.3% |
+| Financing terms | 2.8% |
 
 ## Final Deliverables
 
