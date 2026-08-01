@@ -64,7 +64,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Query parsing to SQL filters | Complete |
 | Semantic search | Complete |
 | Listing signal extraction | Complete |
-| Intent classification | In progress |
+| Intent classification | Complete |
 | Listing summarization | In progress |
 | Fair Housing compliance checker | In progress |
 | FastAPI service | In progress |
@@ -130,9 +130,12 @@ python scripts/build_listing_signal_eval_labels.py
 python scripts/evaluate_listing_signals.py
 python scripts/evaluate_entities.py --match-mode strict --error-limit 20
 python scripts/evaluate_query_parser.py --include-soft-signals --error-limit 20
+python scripts/train_query_intent_classifier.py
+python scripts/evaluate_query_intent_classifier.py --split dev --output data/processed/query_intent_dev_results.json
+python scripts/evaluate_query_intent_classifier.py
 ```
 
-The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, extracts listing-level signals, evaluates the Week 3 entity extractor, and evaluates the Week 4 query parser.
+The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, extracts listing-level signals, evaluates the Week 3 entity extractor and Week 4 query parser, and trains a language-based search-intent classifier.
 
 ## Testing
 
@@ -151,9 +154,10 @@ pytest tests/test_week3.py
 pytest tests/test_week4.py
 pytest tests/test_week5.py
 pytest tests/test_week6.py
+pytest tests/test_week7.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, and listing-level signal extraction.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, and query-intent classification.
 
 ## Current Artifacts
 
@@ -236,6 +240,22 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `scripts/evaluate_query_parser.py`
   - Evaluates query parser output against the labeled Week 1 search-query set.
 
+- `src/real_estate_nlp/query_intent_classifier.py`
+  - Classifies search-query language as browsing, researching, or high-intent inquiry.
+  - Replaces known city names with a shared token before vectorization to prevent location-label shortcuts.
+  - Uses calibrated logistic-regression probabilities and exposes an uncertainty flag.
+
+- `scripts/train_query_intent_classifier.py`
+  - Trains the Week 7 classifier from the curated query-intent labels.
+
+- `scripts/evaluate_query_intent_classifier.py`
+  - Evaluates the saved classifier on the fixed held-out split and writes local metrics.
+
+- `data/processed/query_intent_labels.json`
+  - Curated Week 7 dataset with 504 manually authored real-estate queries.
+  - Contains 360 training queries, 72 development queries, and 72 independent final-test queries.
+  - Versioned because it is a reusable, non-sensitive training and evaluation asset.
+
 - `data/processed/entity_eval_labels.json`
   - Local reviewed evaluation set with 200 listing remarks and 2,619 labeled entities.
 
@@ -244,6 +264,10 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `data/models/semantic/`
   - Local FAISS indexes, embeddings, and metadata for semantic search.
+  - Ignored by Git as generated model artifacts.
+
+- `data/models/query_intent/`
+  - Local saved classifier and metadata for Week 7 intent inference.
   - Ignored by Git as generated model artifacts.
 
 - `notebooks/01_remark_exploration.ipynb`
@@ -264,6 +288,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/06_listing_signal_extraction.ipynb`
   - Week 6 signal schema review, coverage profile, common signal values, examples, and light error analysis.
 
+- `notebooks/07_query_intent_classification.ipynb`
+  - Week 7 label review, held-out metrics, confidence analysis, error examples, and parser integration output.
+
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
 
@@ -281,6 +308,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week6_report.md`
   - Week 6 listing signal extraction summary, schema notes, coverage checks, and validation results.
+
+- `docs/week7_report.md`
+  - Week 7 query-intent classification summary, held-out evaluation, and integration notes.
 
 ## Evaluation
 
@@ -332,6 +362,16 @@ Current listing signal coverage on the full `rets_property` output (53,122 recor
 | Parking | 49.4% |
 | Investment features | 17.3% |
 | Financing terms | 2.8% |
+
+Current language-intent classification results on the independent Week 7 final-test query set:
+
+| Metric | Value |
+| --- | ---: |
+| Held-out queries | 72 |
+| Accuracy | 0.958 |
+| Browsing F1 | 0.933 |
+| Researching F1 | 1.000 |
+| High-intent inquiry F1 | 0.941 |
 
 ## Final Deliverables
 

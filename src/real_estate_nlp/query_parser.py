@@ -280,11 +280,13 @@ class QueryParser:
         taxonomy_path=DEFAULT_TAXONOMY_PATH,
         cities=None,
         city_list_path=DEFAULT_CITY_LIST_PATH,
+        intent_classifier=None,
     ):
         self.taxonomy_path = self._project_path(taxonomy_path)
         self.city_list_path = self._project_path(city_list_path)
         self.cities = sorted(cities or self._load_city_list() or self.KNOWN_CITIES, key=len, reverse=True)
         self.phrase_rules = self._build_phrase_rules()
+        self.intent_classifier = intent_classifier
 
     def _project_path(self, path):
         path = Path(path)
@@ -322,12 +324,15 @@ class QueryParser:
             return filters
 
         hard_filters, soft_signals = self.split_filters(filters)
-        return {
+        result = {
             "intent": self._infer_intent(query, filters),
             "filters": filters,
             "hard_filters": hard_filters,
             "soft_signals": soft_signals,
         }
+        if self.intent_classifier is not None:
+            result["language_intent"] = self.intent_classifier.predict(query)
+        return result
 
     def parse_query(self, query):
         return self.parse(query)

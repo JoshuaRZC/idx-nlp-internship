@@ -233,6 +233,7 @@ data/models/*
 !data/models/.gitkeep
 !data/processed/taxonomy.json
 !data/processed/sample_queries.json
+!data/processed/query_intent_labels.json
 !data/processed/valid_cities.json
 !data/models/entity_ner/
 !data/models/entity_ner/**

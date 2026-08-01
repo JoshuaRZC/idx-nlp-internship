@@ -1,0 +1,4042 @@
+{
+  "description": "Manually authored real estate queries labeled from wording alone for Week 7 language-intent classification.",
+  "labels": [
+    "browsing",
+    "researching",
+    "high_intent_inquiry"
+  ],
+  "items": [
+    {
+      "id": "intent_001",
+      "query": "show me homes in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_002",
+      "query": "homes for sale in Pasadena",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_003",
+      "query": "what listings are in Long Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_004",
+      "query": "places to look at in Anaheim",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_005",
+      "query": "homes around Santa Monica",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_006",
+      "query": "properties in Chino Hills",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_007",
+      "query": "houses in Riverside",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_008",
+      "query": "what is available in Torrance",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_009",
+      "query": "listings around Newport Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_010",
+      "query": "homes in Corona",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_011",
+      "query": "places for sale in San Diego",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_012",
+      "query": "houses to browse in Palm Springs",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "city_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_013",
+      "query": "homes with a pool",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_014",
+      "query": "places with a fireplace",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_015",
+      "query": "show listings with a backyard",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_016",
+      "query": "homes that have solar panels",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_017",
+      "query": "properties with a garage",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_018",
+      "query": "homes with a balcony",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_019",
+      "query": "houses with a spa",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_020",
+      "query": "listings with central air",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_021",
+      "query": "show me homes with a patio",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_022",
+      "query": "places with a community gym",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_023",
+      "query": "homes with an EV charger",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_024",
+      "query": "properties with a tennis court",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "amenity_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_025",
+      "query": "condos in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_026",
+      "query": "townhomes in Pasadena",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_027",
+      "query": "single family homes in Long Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_028",
+      "query": "duplexes for sale in Riverside",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_029",
+      "query": "show detached homes in Anaheim",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_030",
+      "query": "homes that are not condos",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_031",
+      "query": "properties with an ADU",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_032",
+      "query": "small homes in Santa Monica",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_033",
+      "query": "new townhouses in Chino Hills",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_034",
+      "query": "condos near downtown San Diego",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_035",
+      "query": "show me multi family properties",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_036",
+      "query": "houses with one story",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "property_type_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_037",
+      "query": "three bedroom homes in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_038",
+      "query": "two bath condos in Pasadena",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_039",
+      "query": "four bedroom houses in Riverside",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_040",
+      "query": "homes with a primary suite",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_041",
+      "query": "places with a guest room",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_042",
+      "query": "homes with two full bathrooms",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_043",
+      "query": "five bedroom properties in Corona",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_044",
+      "query": "houses with a downstairs bedroom",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_045",
+      "query": "show three bed townhomes",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_046",
+      "query": "four bed homes near Long Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_047",
+      "query": "condos with two bathrooms",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_048",
+      "query": "homes with room for an office",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "bedroom_bathroom_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_049",
+      "query": "homes under 800k",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_050",
+      "query": "properties below 1 million",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_051",
+      "query": "houses between 900k and 1.2m",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_052",
+      "query": "condos under 700k in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_053",
+      "query": "show homes around 1.5 million",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_054",
+      "query": "places under 950k in Pasadena",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_055",
+      "query": "homes above 2 million",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_056",
+      "query": "townhomes below 850k",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_057",
+      "query": "listings from 600k to 800k",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_058",
+      "query": "houses under 1.1m in Riverside",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_059",
+      "query": "condos around 750k",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_060",
+      "query": "show me affordable homes in Corona",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "price_range_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_061",
+      "query": "move in ready homes",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_062",
+      "query": "remodeled homes in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_063",
+      "query": "turnkey condos",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_064",
+      "query": "new construction houses",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_065",
+      "query": "updated homes in Pasadena",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_066",
+      "query": "properties with modern finishes",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_067",
+      "query": "homes with a renovated kitchen",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_068",
+      "query": "show clean homes that are ready",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_069",
+      "query": "recently renovated townhomes",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_070",
+      "query": "houses with newer appliances",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_071",
+      "query": "remodeled properties in Long Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_072",
+      "query": "homes with cosmetic upside",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "condition_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_073",
+      "query": "homes with ocean views",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_074",
+      "query": "houses with mountain views",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_075",
+      "query": "properties with a large lot",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_076",
+      "query": "homes with a private backyard",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_077",
+      "query": "show listings with a covered patio",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_078",
+      "query": "places with usable land",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_079",
+      "query": "homes with city lights views",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_080",
+      "query": "houses near the beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_081",
+      "query": "properties with a landscaped yard",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_082",
+      "query": "homes with a canyon view",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_083",
+      "query": "show places with outdoor space",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_084",
+      "query": "homes with a rooftop deck",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "view_and_outdoor_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_085",
+      "query": "homes near parks",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_086",
+      "query": "properties close to restaurants",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_087",
+      "query": "houses near shopping",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_088",
+      "query": "quiet homes in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_089",
+      "query": "walkable places in Long Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_090",
+      "query": "homes near the freeway",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_091",
+      "query": "properties near good schools",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_092",
+      "query": "coastal homes",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_093",
+      "query": "houses in a cul de sac",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_094",
+      "query": "homes with a home office",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_095",
+      "query": "places with an open floor plan",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_096",
+      "query": "listings with natural light",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "lifestyle_feature_discovery",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_097",
+      "query": "what homes can I browse in Irvine",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_098",
+      "query": "let me see houses in Pasadena",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_099",
+      "query": "I want to look through Long Beach listings",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_100",
+      "query": "show what is on the market in Anaheim",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_101",
+      "query": "what kind of homes are in Riverside",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_102",
+      "query": "pull up some Santa Monica properties",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_103",
+      "query": "I would like to browse condos in San Diego",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_104",
+      "query": "let me look at homes in Corona",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_105",
+      "query": "can I see listings in Torrance",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_106",
+      "query": "show available places in Chino Hills",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_107",
+      "query": "what properties are out there in Newport Beach",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_108",
+      "query": "I want to browse Palm Springs homes",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "casual_listing_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_109",
+      "query": "show homes with pools in Irvine",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_110",
+      "query": "places with a garage and backyard",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_111",
+      "query": "three bedroom homes in Pasadena",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_112",
+      "query": "condos with balconies in Long Beach",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_113",
+      "query": "homes under 900k with a patio",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_114",
+      "query": "townhomes with fireplaces",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_115",
+      "query": "houses with solar in Riverside",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_116",
+      "query": "updated homes with open layouts",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_117",
+      "query": "homes near parks with outdoor space",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_118",
+      "query": "properties with ocean views",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_119",
+      "query": "four bedroom homes with a pool",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_120",
+      "query": "homes with a large kitchen",
+      "label": "browsing",
+      "split": "dev",
+      "template_family": "combined_feature_exploration",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_121",
+      "query": "which is better for a family Irvine or Pasadena",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_122",
+      "query": "how does Long Beach compare with Torrance for buying",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_123",
+      "query": "what is the difference between living in Anaheim and Riverside",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_124",
+      "query": "which coastal area has more affordable homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_125",
+      "query": "compare Santa Monica and Newport Beach home prices",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_126",
+      "query": "which city has more townhomes Irvine or Corona",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_127",
+      "query": "how does Chino Hills compare with Corona for schools",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_128",
+      "query": "what areas are similar to Pasadena but less expensive",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_129",
+      "query": "which part of San Diego has more condos",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_130",
+      "query": "compare Palm Springs and Riverside for a second home",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_131",
+      "query": "what is the tradeoff between Long Beach and Irvine",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_132",
+      "query": "which neighborhood is more walkable Pasadena or Santa Monica",
+      "label": "researching",
+      "split": "train",
+      "template_family": "area_comparison",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_133",
+      "query": "which areas have lower property taxes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_134",
+      "query": "how much HOA is typical for Irvine condos",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_135",
+      "query": "what should I expect to pay for insurance near the coast",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_136",
+      "query": "which cities have lower monthly ownership costs",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_137",
+      "query": "are utilities higher in Palm Springs homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_138",
+      "query": "how do HOA fees compare for townhomes and condos",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_139",
+      "query": "what costs come with an older home in Pasadena",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_140",
+      "query": "are property taxes different across Orange County cities",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_141",
+      "query": "how much should I budget for maintenance on a pool",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_142",
+      "query": "what are common closing costs for a 900k home",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_143",
+      "query": "which homes usually have the lowest HOA",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_144",
+      "query": "how expensive is upkeep for a large lot",
+      "label": "researching",
+      "split": "train",
+      "template_family": "ownership_cost_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_145",
+      "query": "which areas are good for a short commute to Irvine",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_146",
+      "query": "where should I look for a quiet neighborhood near restaurants",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_147",
+      "query": "what parts of San Diego are close to the beach and parks",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_148",
+      "query": "which cities have walkable downtown areas",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_149",
+      "query": "where can I find homes near good transit",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_150",
+      "query": "what neighborhoods have larger lots without a long commute",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_151",
+      "query": "which areas are best for access to hiking",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_152",
+      "query": "where are schools and shopping close together",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_153",
+      "query": "what parts of Long Beach feel less busy",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_154",
+      "query": "which cities are practical for commuting to Los Angeles",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_155",
+      "query": "where should a first time buyer look in Orange County",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_156",
+      "query": "what areas have more single story homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "location_suitability",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_157",
+      "query": "is a condo or townhome better for low maintenance",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_158",
+      "query": "what are the pros and cons of a duplex",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_159",
+      "query": "how does a single family home compare with a condo",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_160",
+      "query": "is a townhouse a good alternative to a detached home",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_161",
+      "query": "what should I know before buying a fixer upper",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_162",
+      "query": "are ADUs worth considering for a buyer",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_163",
+      "query": "how do newer homes compare with remodeled older homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_164",
+      "query": "what are the tradeoffs of a home with a large lot",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_165",
+      "query": "is a one story home easier to maintain",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_166",
+      "query": "what is different about buying a multi family property",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_167",
+      "query": "should I consider new construction or resale",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_168",
+      "query": "what are the benefits of a community pool versus a private pool",
+      "label": "researching",
+      "split": "train",
+      "template_family": "property_type_tradeoffs",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_169",
+      "query": "is this a good time to buy in Irvine",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_170",
+      "query": "how has the Pasadena market changed this year",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_171",
+      "query": "are prices falling in Riverside",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_172",
+      "query": "what months have more listings in Long Beach",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_173",
+      "query": "when do homes near the beach usually come on the market",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_174",
+      "query": "is competition high for San Diego condos",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_175",
+      "query": "how quickly do turnkey homes sell in Anaheim",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_176",
+      "query": "are open house weekends busier in spring",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_177",
+      "query": "what is the market like for Palm Springs second homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_178",
+      "query": "how long do homes usually stay listed in Corona",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_179",
+      "query": "are buyers paying over asking in Santa Monica",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_180",
+      "query": "when is the best season to shop for a townhome",
+      "label": "researching",
+      "split": "train",
+      "template_family": "market_timing_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_181",
+      "query": "what makes a property good for rental income",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_182",
+      "query": "which areas are better for a small investment property",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_183",
+      "query": "how do I evaluate ADU potential",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_184",
+      "query": "what should I check before buying a duplex to rent out",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_185",
+      "query": "are beach rentals a good investment",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_186",
+      "query": "which home features help resale value",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_187",
+      "query": "how can I tell if a fixer has value add potential",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_188",
+      "query": "what makes a neighborhood attractive to tenants",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_189",
+      "query": "should I prioritize a guest house or separate entrance",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_190",
+      "query": "how do I compare cash flow between two rentals",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_191",
+      "query": "what permits matter for an ADU",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_192",
+      "query": "which properties are easier to rent to families",
+      "label": "researching",
+      "split": "train",
+      "template_family": "investment_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_193",
+      "query": "is a pool worth the extra maintenance",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_194",
+      "query": "do buyers value a remodeled kitchen more than a large yard",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_195",
+      "query": "how important is a garage for resale",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_196",
+      "query": "are solar panels a good reason to pay more",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_197",
+      "query": "does an ocean view add enough value",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_198",
+      "query": "should I choose more square feet or a better location",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_199",
+      "query": "is a fireplace useful in Southern California",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_200",
+      "query": "how much does a new roof matter when comparing homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_201",
+      "query": "are high ceilings worth paying for",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_202",
+      "query": "does a private backyard improve resale",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_203",
+      "query": "what features make a condo easier to sell",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_204",
+      "query": "is a covered patio useful year round",
+      "label": "researching",
+      "split": "train",
+      "template_family": "feature_tradeoff_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_205",
+      "query": "what should I know before touring homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_206",
+      "query": "how much down payment do I need for a 1 million home",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_207",
+      "query": "what questions should I ask about an HOA",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_208",
+      "query": "how do I compare two listings fairly",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_209",
+      "query": "what documents do I need before making an offer",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_210",
+      "query": "how can I spot expensive repairs in a listing",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_211",
+      "query": "what does seller financing usually mean",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_212",
+      "query": "how do I estimate a reasonable offer",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_213",
+      "query": "what should I look for during an open house",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_214",
+      "query": "how can I tell if a listing price is fair",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_215",
+      "query": "what is important when buying a first home",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_216",
+      "query": "how should I prepare to buy a condo",
+      "label": "researching",
+      "split": "train",
+      "template_family": "buyer_preparation_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_217",
+      "query": "how can I tell whether a remodel was done well",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_218",
+      "query": "what should I inspect in a newly renovated house",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_219",
+      "query": "is cosmetic upside worth taking on",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_220",
+      "query": "how much work does a fixer upper usually need",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_221",
+      "query": "what makes a home truly move in ready",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_222",
+      "query": "how do I compare an updated home with a new build",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_223",
+      "query": "which repairs matter most in an older property",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_224",
+      "query": "what should I ask about a remodeled kitchen",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_225",
+      "query": "how can I estimate renovation costs",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_226",
+      "query": "are turnkey homes usually priced fairly",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_227",
+      "query": "what condition issues are expensive to fix",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_228",
+      "query": "how do I evaluate a house with deferred maintenance",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "renovation_and_condition_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_229",
+      "query": "how much home can I afford with a fixed budget",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_230",
+      "query": "what is the difference between a conventional and FHA loan",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_231",
+      "query": "how do interest rates affect my price range",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_232",
+      "query": "what does preapproval change when I start searching",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_233",
+      "query": "how should I compare mortgage payments across homes",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_234",
+      "query": "what loan options work for a first time buyer",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_235",
+      "query": "how much cash should I keep after closing",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_236",
+      "query": "what is a realistic budget for a condo with HOA dues",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_237",
+      "query": "how do I calculate the total monthly cost of a house",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_238",
+      "query": "what is the benefit of a larger down payment",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_239",
+      "query": "how can I compare affordability across cities",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_240",
+      "query": "what financing questions should I ask a lender",
+      "label": "researching",
+      "split": "dev",
+      "template_family": "financing_and_affordability_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_241",
+      "query": "schedule a tour of homes in Irvine",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_242",
+      "query": "can I tour a Pasadena condo today",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_243",
+      "query": "I want to see houses in Long Beach this afternoon",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_244",
+      "query": "set up a showing for Riverside homes",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_245",
+      "query": "please arrange a tour of a townhome in Anaheim",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_246",
+      "query": "can an agent show me properties in Corona",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_247",
+      "query": "I need to visit homes in San Diego this weekend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_248",
+      "query": "book a viewing for homes near Newport Beach",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_249",
+      "query": "help me tour three bedroom homes in Chino Hills",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_250",
+      "query": "can I see a Palm Springs house tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_251",
+      "query": "find a time to view condos in Santa Monica",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_252",
+      "query": "I want an in person showing for Irvine listings",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "tour_request",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_253",
+      "query": "open houses in Irvine this weekend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_254",
+      "query": "which Pasadena homes are open on Sunday",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_255",
+      "query": "show open houses near Long Beach today",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_256",
+      "query": "I need open house times for Anaheim",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_257",
+      "query": "are there open houses in Riverside tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_258",
+      "query": "find San Diego open houses with pools",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_259",
+      "query": "what condos have open houses this Saturday",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_260",
+      "query": "show homes open near Newport Beach this weekend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_261",
+      "query": "I want to visit an open house in Corona",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_262",
+      "query": "which Chino Hills listings are open this afternoon",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_263",
+      "query": "find a Palm Springs open house I can attend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_264",
+      "query": "show Sunday open houses under 1 million",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "open_house_plan",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_265",
+      "query": "I need to move to Irvine by September",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_266",
+      "query": "find a home in Pasadena before my lease ends",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_267",
+      "query": "we are relocating to Long Beach next month",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_268",
+      "query": "I need a house in Riverside before school starts",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_269",
+      "query": "help me find an Anaheim home for an August move",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_270",
+      "query": "we need to buy in San Diego within sixty days",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_271",
+      "query": "find a condo before I start work in Santa Monica",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_272",
+      "query": "I am moving to Corona this summer",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_273",
+      "query": "we need a Newport Beach home before the holidays",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_274",
+      "query": "show listings for a quick move to Chino Hills",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_275",
+      "query": "I need to close on a Palm Springs home this fall",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_276",
+      "query": "find a place in Torrance before our current home sells",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "move_timeline",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_277",
+      "query": "show me new listings in Irvine today",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_278",
+      "query": "alert me to new Pasadena homes under 1 million",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_279",
+      "query": "what just came on the market in Long Beach",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_280",
+      "query": "find newly listed houses in Anaheim",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_281",
+      "query": "I want the latest condos in Riverside",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_282",
+      "query": "show fresh listings in San Diego with a pool",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_283",
+      "query": "send me new townhomes in Corona",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_284",
+      "query": "which Newport Beach homes were listed this week",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_285",
+      "query": "show new Chino Hills listings with four bedrooms",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_286",
+      "query": "find recent Palm Springs listings",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_287",
+      "query": "what homes were listed in Torrance this morning",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_288",
+      "query": "alert me when a remodeled Santa Monica condo appears",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "new_listing_alert",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_289",
+      "query": "help me make an offer on an Irvine home",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_290",
+      "query": "I am ready to bid on a house in Pasadena",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_291",
+      "query": "find homes where I can submit an offer quickly",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_292",
+      "query": "I want to make an offer on a Long Beach condo",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_293",
+      "query": "show listings that are ready for offers in Anaheim",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_294",
+      "query": "help me prepare an offer for Riverside",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_295",
+      "query": "I need a home in San Diego where the seller can close soon",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_296",
+      "query": "find a townhouse in Corona before I write an offer",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_297",
+      "query": "which homes in Newport Beach might accept a quick close",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_298",
+      "query": "I am ready to buy a Chino Hills home",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_299",
+      "query": "show properties in Palm Springs where I can make an offer",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_300",
+      "query": "help me find a home before I place a bid",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "offer_preparation",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_301",
+      "query": "connect me with an agent for Irvine homes",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_302",
+      "query": "I need an agent to help with Pasadena condos",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_303",
+      "query": "have someone call me about Long Beach listings",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_304",
+      "query": "put me in touch with an agent in Anaheim",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_305",
+      "query": "I want to speak with an agent about Riverside homes",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_306",
+      "query": "contact an agent for San Diego properties",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_307",
+      "query": "can a realtor help me find a home in Corona",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_308",
+      "query": "I need listing details from an agent in Newport Beach",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_309",
+      "query": "ask an agent about Chino Hills townhomes",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_310",
+      "query": "I want a callback about Palm Springs houses",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_311",
+      "query": "please contact me about Torrance condos",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_312",
+      "query": "help me speak with someone about Santa Monica homes",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "agent_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_313",
+      "query": "find homes available for immediate move in",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_314",
+      "query": "which Irvine listings can close quickly",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_315",
+      "query": "show Pasadena homes that are vacant now",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_316",
+      "query": "I need a Long Beach house available this month",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_317",
+      "query": "find an Anaheim condo ready for occupancy",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_318",
+      "query": "which Riverside homes can I move into soon",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_319",
+      "query": "show San Diego listings with flexible closing",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_320",
+      "query": "I need a Corona home that is available now",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_321",
+      "query": "find Newport Beach homes with quick possession",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_322",
+      "query": "show Chino Hills houses ready this week",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_323",
+      "query": "I need a Palm Springs place before next month",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_324",
+      "query": "which Torrance homes are ready to close",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "availability_urgency",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_325",
+      "query": "we need a four bedroom Irvine home under 1.2m before school starts",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_326",
+      "query": "find a Pasadena condo under 800k that we can tour this week",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_327",
+      "query": "I need a Long Beach house with a yard for our move next month",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_328",
+      "query": "show Anaheim homes with a pool that are open this weekend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_329",
+      "query": "we are ready to buy a Riverside townhome with a garage",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_330",
+      "query": "find a San Diego condo near work for an August move",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_331",
+      "query": "I need a Corona home with three bedrooms and a quick close",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_332",
+      "query": "show Newport Beach listings we can visit tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_333",
+      "query": "find a Chino Hills house with an ADU before our family arrives",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_334",
+      "query": "we need a Palm Springs home for a purchase this fall",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_335",
+      "query": "show Torrance condos under 900k that are available now",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_336",
+      "query": "find a Santa Monica place I can tour today",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "specific_purchase_need",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_337",
+      "query": "can I arrange a showing in Irvine this week",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_338",
+      "query": "please put me on a tour of Pasadena homes",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_339",
+      "query": "I want to speak with a realtor about Long Beach condos",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_340",
+      "query": "help me book a viewing in Anaheim",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_341",
+      "query": "can someone show me Riverside houses tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_342",
+      "query": "I need an agent to schedule San Diego tours",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_343",
+      "query": "set up a visit to a Corona townhome",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_344",
+      "query": "who can help me see homes in Newport Beach",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_345",
+      "query": "I want to view Chino Hills listings this weekend",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_346",
+      "query": "please have an agent contact me about Palm Springs",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_347",
+      "query": "can I tour a Torrance home after work",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_348",
+      "query": "help me arrange a Santa Monica condo viewing",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "showing_and_contact",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_349",
+      "query": "find an Irvine home before my job begins",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_350",
+      "query": "we need to purchase in Pasadena before October",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_351",
+      "query": "show Long Beach listings that just became available",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_352",
+      "query": "I want a new Anaheim listing sent to me today",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_353",
+      "query": "find a Riverside home for a fast closing",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_354",
+      "query": "show San Diego open houses I can attend tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_355",
+      "query": "we need a Corona house before our baby arrives",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_356",
+      "query": "alert me to Newport Beach homes listed this week",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_357",
+      "query": "find a Chino Hills property where I can offer soon",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_358",
+      "query": "I need a Palm Springs home ready for our arrival",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_359",
+      "query": "show Torrance condos that can close next month",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_360",
+      "query": "find Santa Monica listings before our relocation date",
+      "label": "high_intent_inquiry",
+      "split": "dev",
+      "template_family": "deadline_and_listing_action",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_361",
+      "query": "I want to browse homes in Irvine",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_362",
+      "query": "can I see listings in Pasadena",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_363",
+      "query": "I would like to look through homes in Long Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_364",
+      "query": "what is on the market in Anaheim",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_365",
+      "query": "I want to explore houses in Riverside",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_366",
+      "query": "can I pull up listings in San Diego",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_367",
+      "query": "I would like to browse homes in Newport Beach",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_368",
+      "query": "can I look at properties in Corona",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_369",
+      "query": "what homes are out there in Chino Hills",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_370",
+      "query": "I want to browse places in Palm Springs",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_371",
+      "query": "can I see homes in Torrance",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_372",
+      "query": "I would like to explore Santa Monica listings",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "conversational_browsing_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_373",
+      "query": "I want to browse Irvine homes with a pool",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_374",
+      "query": "can I see Pasadena condos with balconies",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_375",
+      "query": "what Long Beach homes have a backyard",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_376",
+      "query": "I would like to look at Anaheim townhomes",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_377",
+      "query": "can I browse Riverside houses under 900k",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_378",
+      "query": "what San Diego listings have a garage",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_379",
+      "query": "I want to explore Newport Beach homes near parks",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_380",
+      "query": "can I see Corona homes with three bedrooms",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_381",
+      "query": "what Chino Hills houses have a patio",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_382",
+      "query": "I would like to browse Palm Springs condos",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_383",
+      "query": "can I look at Torrance homes with fireplaces",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_384",
+      "query": "what Santa Monica listings have ocean views",
+      "label": "browsing",
+      "split": "train",
+      "template_family": "informal_feature_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_385",
+      "query": "I want to understand how Irvine home prices compare",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_386",
+      "query": "can I learn about Pasadena condo HOA fees",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_387",
+      "query": "what should I know about Long Beach property taxes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_388",
+      "query": "I would like to compare Anaheim and Riverside for buying",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_389",
+      "query": "can I understand the tradeoffs of a pool in Riverside",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_390",
+      "query": "what should I research before buying in San Diego",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_391",
+      "query": "I want to learn about Newport Beach insurance costs",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_392",
+      "query": "can I compare Corona townhomes and condos",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_393",
+      "query": "what should I know about Chino Hills schools",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_394",
+      "query": "I would like to understand Palm Springs maintenance costs",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_395",
+      "query": "can I learn how Torrance homes hold value",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_396",
+      "query": "what should I compare before buying in Santa Monica",
+      "label": "researching",
+      "split": "train",
+      "template_family": "conversational_research_questions",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_397",
+      "query": "what can I learn about the Irvine market",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_398",
+      "query": "can I compare Pasadena neighborhoods",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_399",
+      "query": "I want to know how Long Beach prices are changing",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_400",
+      "query": "what should I consider about Anaheim new construction",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_401",
+      "query": "can I understand Riverside commute tradeoffs",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_402",
+      "query": "I want to learn which San Diego areas are walkable",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_403",
+      "query": "what should I know about Newport Beach rental demand",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_404",
+      "query": "can I compare Corona ownership costs",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_405",
+      "query": "I want to understand Chino Hills resale value",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_406",
+      "query": "what should I research about Palm Springs second homes",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_407",
+      "query": "can I learn about Torrance school areas",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_408",
+      "query": "I want to compare Santa Monica condo options",
+      "label": "researching",
+      "split": "train",
+      "template_family": "informal_market_research",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_409",
+      "query": "I want to tour homes in Irvine",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_410",
+      "query": "can I see a Pasadena condo in person",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_411",
+      "query": "I would like to schedule a Long Beach showing",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_412",
+      "query": "can an agent show me Anaheim houses tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_413",
+      "query": "I want to book a Riverside home tour",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_414",
+      "query": "can I arrange a San Diego viewing this weekend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_415",
+      "query": "I would like an agent to show Newport Beach listings",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_416",
+      "query": "can I schedule a Corona property visit",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_417",
+      "query": "I want to see Chino Hills homes with a realtor",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_418",
+      "query": "can I book a Palm Springs viewing",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_419",
+      "query": "I would like to tour Torrance homes after work",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_420",
+      "query": "can I arrange an in person Santa Monica condo showing",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "action_request_contrasts",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_421",
+      "query": "I need an Irvine home before my move date",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_422",
+      "query": "find a Pasadena condo I can offer on this month",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_423",
+      "query": "show Long Beach homes available for a quick close",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_424",
+      "query": "I need to visit Anaheim open houses this weekend",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_425",
+      "query": "find a Riverside house I can move into soon",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_426",
+      "query": "I want a San Diego listing sent to me today",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_427",
+      "query": "show Newport Beach homes that can close next month",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_428",
+      "query": "I need a Corona townhome before school begins",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_429",
+      "query": "find Chino Hills homes I can tour tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_430",
+      "query": "I want a Palm Springs property ready now",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_431",
+      "query": "show Torrance condos with immediate availability",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_432",
+      "query": "I need to contact an agent about Santa Monica homes today",
+      "label": "high_intent_inquiry",
+      "split": "train",
+      "template_family": "timed_purchase_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_433",
+      "query": "I'd like to explore what is for sale in Irvine",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_434",
+      "query": "could you pull up some Pasadena homes",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_435",
+      "query": "I am just looking at Long Beach listings",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_436",
+      "query": "let me browse properties around Anaheim",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_437",
+      "query": "what homes can I look through in Riverside",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_438",
+      "query": "I would like to check out San Diego houses",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_439",
+      "query": "show me what is available to browse in Newport Beach",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_440",
+      "query": "can I take a look at Corona listings",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_441",
+      "query": "I am browsing homes in Chino Hills",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_442",
+      "query": "what is there to look at in Palm Springs",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_443",
+      "query": "I would like to browse around Torrance",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_444",
+      "query": "could I explore Santa Monica properties",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_casual_market_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_445",
+      "query": "I am browsing Irvine homes with a yard",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_446",
+      "query": "could you show Pasadena condos under 800k",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_447",
+      "query": "I would like to look at Long Beach homes with a garage",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_448",
+      "query": "what Anaheim listings have a pool",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_449",
+      "query": "let me see Riverside houses with four bedrooms",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_450",
+      "query": "I am browsing San Diego townhomes",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_451",
+      "query": "could I look through Newport Beach condos",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_452",
+      "query": "show Corona homes near parks",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_453",
+      "query": "I would like to explore Chino Hills houses with patios",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_454",
+      "query": "what Palm Springs homes have mountain views",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_455",
+      "query": "can I browse Torrance properties with fireplaces",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_456",
+      "query": "let me see Santa Monica homes near the beach",
+      "label": "browsing",
+      "split": "test",
+      "template_family": "final_constraint_browsing",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_457",
+      "query": "how should I compare Irvine and Pasadena for a purchase",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_458",
+      "query": "what is different about Long Beach and Anaheim home values",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_459",
+      "query": "which Riverside neighborhoods are easier to commute from",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_460",
+      "query": "how do San Diego condo costs compare with houses",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_461",
+      "query": "what should I research about buying near Newport Beach",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_462",
+      "query": "which Corona areas have lower monthly costs",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_463",
+      "query": "how can I compare Chino Hills schools and amenities",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_464",
+      "query": "what should I know about Palm Springs seasonal demand",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_465",
+      "query": "which Torrance neighborhoods are more walkable",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_466",
+      "query": "how do Santa Monica prices compare with nearby cities",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_467",
+      "query": "what is a good way to compare Irvine townhomes",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_468",
+      "query": "which Pasadena features matter most for resale",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_market_comparisons",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_469",
+      "query": "what should I inspect before buying an Irvine condo",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_470",
+      "query": "how can I estimate Pasadena closing costs",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_471",
+      "query": "what questions matter when comparing Long Beach listings",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_472",
+      "query": "how do I evaluate an Anaheim HOA",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_473",
+      "query": "what should I learn about Riverside property taxes",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_474",
+      "query": "how can I judge San Diego renovation quality",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_475",
+      "query": "what should I ask about a Newport Beach rental property",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_476",
+      "query": "how do I compare Corona mortgage payments",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_477",
+      "query": "what should I consider before buying in Chino Hills",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_478",
+      "query": "how can I estimate Palm Springs maintenance",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_479",
+      "query": "what should I know about Torrance flood insurance",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_480",
+      "query": "how do I evaluate Santa Monica condo fees",
+      "label": "researching",
+      "split": "test",
+      "template_family": "final_buyer_education",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_481",
+      "query": "please schedule an Irvine home tour",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_482",
+      "query": "can I book a Pasadena condo showing tomorrow",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_483",
+      "query": "I need to see Long Beach houses this weekend",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_484",
+      "query": "arrange a viewing of Anaheim listings",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_485",
+      "query": "can an agent take me through Riverside homes",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_486",
+      "query": "I want to tour San Diego condos today",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_487",
+      "query": "please set up a Newport Beach property visit",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_488",
+      "query": "can I see Corona townhomes in person",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_489",
+      "query": "I need a Chino Hills showing after work",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_490",
+      "query": "book me a Palm Springs home viewing",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_491",
+      "query": "please arrange a Torrance realtor appointment",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_492",
+      "query": "can I tour Santa Monica homes this week",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_scheduling_requests",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_493",
+      "query": "find an Irvine home I can close on quickly",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_494",
+      "query": "I need a Pasadena condo before my lease ends",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_495",
+      "query": "send Long Beach listings that just became available",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_496",
+      "query": "show Anaheim homes open this Sunday",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_497",
+      "query": "I need a Riverside house for a move next month",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_498",
+      "query": "find San Diego properties I can offer on now",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_499",
+      "query": "alert me to Newport Beach homes listed today",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_500",
+      "query": "I need a Corona home before the school year",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_501",
+      "query": "show Chino Hills houses available immediately",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "hard"
+    },
+    {
+      "id": "intent_502",
+      "query": "find a Palm Springs place for an urgent move",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "simple"
+    },
+    {
+      "id": "intent_503",
+      "query": "I need a Torrance condo with a fast closing",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "medium"
+    },
+    {
+      "id": "intent_504",
+      "query": "contact me about Santa Monica homes I can buy this month",
+      "label": "high_intent_inquiry",
+      "split": "test",
+      "template_family": "final_time_sensitive_purchase",
+      "difficulty": "hard"
+    }
+  ]
+}
