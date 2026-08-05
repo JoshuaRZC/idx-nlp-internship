@@ -775,7 +775,7 @@ class QueryParser:
         text = "" if query is None else str(query)
         text = text.replace("’", "'").replace("“", '"').replace("”", '"')
         text = text.replace("&", " and ")
-        text = re.sub(r"[/,]", " ", text)
+        text = re.sub(r"/|(?<!\d),(?!\d)", " ", text)
         text = re.sub(r"\s+", " ", text)
         return text.strip().lower()
 

@@ -23,6 +23,20 @@ def test_parse_city_and_price_cap():
     )
 
 
+def test_parse_comma_formatted_price_cap():
+    assert_filter(
+        "homes in Irvine under $900,000",
+        {"city": "Irvine", "price_max": 900_000},
+    )
+
+
+def test_parse_comma_formatted_price_range():
+    assert_filter(
+        "homes between $750,000 and $1,250,000",
+        {"price_min": 750_000, "price_max": 1_250_000},
+    )
+
+
 def test_parse_city_from_generated_city_list():
     assert_filter(
         "homes in San Jose under 1.2 million",
