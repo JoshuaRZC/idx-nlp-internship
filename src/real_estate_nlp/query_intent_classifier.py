@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Iterable
 
 import joblib
+import numpy as np
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -42,7 +43,7 @@ class QueryIntentClassifier:
 
     def fit(self, queries: Iterable[str], labels: Iterable[str]):
         queries = list(queries)
-        labels = list(labels)
+        labels = np.asarray(list(labels))
         unknown = set(labels) - set(self.LABELS)
         if unknown:
             raise ValueError(f"Unsupported intent labels: {sorted(unknown)}")
