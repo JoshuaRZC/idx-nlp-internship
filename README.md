@@ -66,7 +66,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Listing signal extraction | Complete |
 | Intent classification | Complete |
 | Listing summarization | Complete |
-| Fair Housing compliance checker | In progress |
+| Fair Housing compliance checker | Complete |
 | FastAPI service | In progress |
 | Demo interface | In progress |
 
@@ -139,6 +139,11 @@ python scripts/build_listing_summary_eval_labels.py
 python scripts/evaluate_listing_summaries.py --split dev --output data/processed/listing_summary_dev_results.json
 python scripts/evaluate_listing_summaries.py
 python scripts/prepare_listing_summary_self_review.py
+python scripts/build_compliance_eval_labels.py
+# After manually reviewing the local MLS-neutral candidates:
+python scripts/build_compliance_eval_labels.py --mark-mls-reviewed
+python scripts/evaluate_compliance_checker.py
+python scripts/check_listing_compliance.py --input-csv data/processed/listing_semantic_sample_10k.csv
 ```
 
 The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, extracts listing-level signals, evaluates the Week 3 entity extractor and Week 4 query parser, trains a language-based search-intent classifier, and generates and evaluates listing summaries.
@@ -162,9 +167,10 @@ pytest tests/test_week5.py
 pytest tests/test_week6.py
 pytest tests/test_week7.py
 pytest tests/test_week8.py
+pytest tests/test_week9.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, and answerability checks.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, and Fair Housing compliance rules.
 
 ## Current Artifacts
 
@@ -236,6 +242,21 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `src/real_estate_nlp/answerability_checker.py`
   - Explains whether a request can be handled by the current listing-search workflow before and after query execution.
+
+- `src/real_estate_nlp/compliance_checker.py`
+  - Screens listing remarks against the versioned Federal Fair Housing rule set and returns publication status with precise evidence spans.
+
+- `src/real_estate_nlp/compliance_rules.py`
+  - Defines the auditable `federal-1.1` policy rules, protected classes, risk types, and severity levels.
+
+- `scripts/build_compliance_eval_labels.py`
+  - Builds a local 264-item evaluation set with synthetic policy examples and manually reviewed neutral MLS remarks.
+
+- `scripts/evaluate_compliance_checker.py`
+  - Reports known-violation recall, actionable-alert precision, status accuracy, false-positive rate, and protected-class recall.
+
+- `scripts/check_listing_compliance.py`
+  - Applies the checker to a local CSV and writes per-listing JSONL review results.
 
 - `scripts/generate_listing_summaries.py`
   - Generates a local JSONL summary artifact for the full `rets_property` table.
@@ -318,6 +339,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/08_listing_summarization.ipynb`
   - Week 8 evaluation-sample profile, summary quality checks, automatic metrics, examples, self-review sheet preview, and AnswerabilityChecker cases.
 
+- `notebooks/09_fair_housing_compliance.ipynb`
+  - Week 9 label profile, compliance metrics, protected-class recall, and local error review.
+
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
 
@@ -341,6 +365,12 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week8_report.md`
   - Week 8 listing summarization summary, evaluation results, and answerability-layer notes.
+
+- `docs/week9_report.md`
+  - Week 9 Fair Housing compliance summary, local evaluation results, and validation notes.
+
+- `docs/fair_housing_rules.md`
+  - Federal Fair Housing screening scope, review outcomes, integration example, and policy-maintenance guidance.
 
 ## Evaluation
 
@@ -412,6 +442,18 @@ Current listing summarization results on the independent Week 8 final-test set:
 | Fact coverage | 0.733 |
 
 These results use source-based labels with independently written reference summaries and `feature_gold` terms aligned to the original listing remark.
+
+Current Fair Housing compliance results on the local Week 9 evaluation set:
+
+| Metric | Value |
+| --- | ---: |
+| Evaluation items | 264 |
+| Known-violation recall | 1.000 |
+| Actionable-alert precision | 1.000 |
+| Status accuracy | 1.000 |
+| Clean-listing false-positive rate | 0.000 |
+
+The local evaluation set contains 204 synthetic policy examples and 60 manually reviewed neutral MLS remarks. The synthetic examples cover explicit violations, review-sensitive wording, paraphrases, longer contexts, multiple signals, and neutral counterexamples. The `federal-1.1` rules close the identified coverage and boundary gaps on this frozen local set. It remains ignored because it includes local MLS text.
 
 ## Final Deliverables
 
