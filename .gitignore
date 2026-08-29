@@ -223,6 +223,7 @@ instructions/
 .vscode/
 *_CN.*
 AGENTS.md
+backups/
 
 # Local MLS data and generated artifacts
 data/raw/*
