@@ -37,12 +37,12 @@ class AnswerabilityChecker:
         self.parser = parser
         self.validator = schema_validator
 
-    def check_pre_query(self, query):
+    def check_pre_query(self, query, parsed=None):
         text = str(query or "").strip()
         if not text:
             return False, "Please enter a listing search request."
 
-        parsed = self.parser.parse(text)
+        parsed = parsed if parsed is not None else self.parser.parse(text)
         filters = parsed.get("filters", parsed) if isinstance(parsed, dict) else parsed
         has_listing_signal = bool(filters) or self._contains_any(text, self.SEARCH_TERMS)
 
