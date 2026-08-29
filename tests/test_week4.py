@@ -137,11 +137,17 @@ def test_parse_room_and_view():
         "anything in San Diego with ocean views and enough space for a home office",
         {
             "city": "San Diego",
-            "has_view": True,
             "location_features": ["ocean view"],
             "room": ["home office"],
         },
     )
+
+
+def test_parse_generic_view_as_a_soft_signal():
+    result = parser().parse("find a home with a view")
+
+    assert result["hard_filters"] == {}
+    assert result["soft_signals"] == {"location_features": ["view"]}
 
 
 def test_parse_county_and_negated_condition():
@@ -150,7 +156,6 @@ def test_parse_county_and_negated_condition():
         {
             "county": "Orange",
             "beds_min": 3,
-            "private_pool": True,
             "amenities": ["pool"],
             "condition_exclude": ["fixer upper"],
         },
@@ -244,7 +249,7 @@ def test_parse_busy_street_exclusion():
 
 
 def test_parse_pool_and_spa():
-    assert_filter("homes with pool and spa", {"private_pool": True, "amenities": ["pool", "spa"]})
+    assert_filter("homes with pool and spa", {"amenities": ["pool", "spa"]})
 
 
 def test_parse_condo_amenities():
@@ -264,7 +269,7 @@ def test_parse_rv_parking():
 def test_parse_fireplace_and_central_air():
     assert_filter(
         "houses with a fireplace and central air",
-        {"fireplace": True, "amenities": ["fireplace", "central air"]},
+        {"interior_features": ["fireplace"], "amenities": ["central air"]},
     )
 
 
@@ -272,7 +277,6 @@ def test_parse_private_pool_exclusion():
     assert_filter(
         "find listings with a private pool, not just community pool",
         {
-            "private_pool": True,
             "amenities": ["private pool"],
             "amenities_exclude": ["community pool"],
         },
@@ -452,7 +456,6 @@ def test_parse_returns_search_result():
         "city": "Irvine",
         "price_max": 900_000,
         "beds_min": 3,
-        "private_pool": True,
     }
     assert result["soft_signals"] == {"amenities": ["pool"]}
 
@@ -463,7 +466,6 @@ def test_to_sql_uses_parameters_for_structured_filters():
             "city": "Irvine",
             "price_max": 900_000,
             "beds_min": 3,
-            "private_pool": True,
             "amenities": ["pool"],
         }
     )
@@ -471,9 +473,8 @@ def test_to_sql_uses_parameters_for_structured_filters():
     assert "L_City = %s" in sql
     assert "L_SystemPrice <= %s" in sql
     assert "L_Keyword2 >= %s" in sql
-    assert "PoolPrivateYN = %s" in sql
     assert "L_Remarks LIKE %s" not in sql
-    assert params == ["Irvine", 900_000, 3, True]
+    assert params == ["Irvine", 900_000, 3]
 
 
 def test_to_sql_can_include_soft_signals_when_requested():
@@ -482,33 +483,26 @@ def test_to_sql_can_include_soft_signals_when_requested():
             "city": "Irvine",
             "price_max": 900_000,
             "beds_min": 3,
-            "private_pool": True,
             "amenities": ["pool"],
         },
         include_soft_signals=True,
     )
 
     assert "L_Remarks LIKE %s" in sql
-    assert params == ["Irvine", 900_000, 3, True, "%pool%"]
+    assert params == ["Irvine", 900_000, 3, "%pool%"]
 
 
-def test_to_sql_uses_structured_sqft_and_flags():
+def test_to_sql_uses_structured_sqft_filters_only():
     sql, params = parser().to_sql(
         {
             "sqft_min": 1800,
             "sqft_max": 2600,
-            "private_pool": True,
-            "fireplace": True,
-            "has_view": True,
         }
     )
 
     assert "LM_Int2_3 >= %s" in sql
     assert "LM_Int2_3 <= %s" in sql
-    assert "PoolPrivateYN = %s" in sql
-    assert "FireplaceYN = %s" in sql
-    assert "ViewYN = %s" in sql
-    assert params == [1800, 2600, True, True, True]
+    assert params == [1800, 2600]
 
 
 def test_to_sql_accepts_parse_query_result():
@@ -543,7 +537,6 @@ def test_parse_splits_hard_filters_and_soft_signals():
         "price_max": 900_000,
         "beds_min": 3,
         "city": "Irvine",
-        "private_pool": True,
     }
     assert result["soft_signals"] == {"amenities": ["pool"]}
 
@@ -553,7 +546,7 @@ def test_to_sql_accepts_parse_result_without_soft_where_clauses():
     sql, params = parser().to_sql(parsed)
 
     assert "L_Remarks LIKE %s" not in sql
-    assert params == ["Irvine", 900_000, 3, True]
+    assert params == ["Irvine", 900_000, 3]
 
 
 def test_validator_accepts_valid_parser_output():
@@ -614,11 +607,11 @@ def test_validator_rejects_invalid_sqft():
     assert "sqft_min=60 is outside the supported range" in errors
 
 
-def test_validator_rejects_non_boolean_structured_flag():
+def test_validator_rejects_removed_boolean_filter():
     valid, errors = SchemaValidator().validate_query({"private_pool": "yes"})
 
     assert not valid
-    assert "private_pool must be boolean" in errors
+    assert "Unsupported filter: private_pool" in errors
 
 
 def test_validator_rejects_inverted_price_range():

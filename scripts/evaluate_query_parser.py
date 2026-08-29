@@ -47,7 +47,23 @@ def normalize_expected(entities):
     for key, value in entities.items():
         key = KEY_MAP.get(key, key)
         normalized[key] = normalize_value(value)
+    _move_fireplace_to_interior_features(normalized)
     return normalized
+
+
+def _move_fireplace_to_interior_features(filters):
+    amenities = filters.get("amenities")
+    if not isinstance(amenities, list) or "fireplace" not in amenities:
+        return
+
+    filters["amenities"] = [value for value in amenities if value != "fireplace"]
+    if not filters["amenities"]:
+        del filters["amenities"]
+
+    interior_features = filters.setdefault("interior_features", [])
+    if not isinstance(interior_features, list):
+        interior_features = [interior_features]
+    filters["interior_features"] = sorted(set(interior_features + ["fireplace"]))
 
 
 def normalize_filters(filters):
@@ -59,32 +75,8 @@ def normalize_filters(filters):
 
 def split_expected(entities, parser):
     expected = normalize_expected(entities)
-    expected_for_hard = dict(expected)
-    expected_for_hard.update(derived_hard_filters(expected))
-    hard, soft = parser.split_filters(expected_for_hard)
+    hard, soft = parser.split_filters(expected)
     return normalize_filters(hard), normalize_filters(soft)
-
-
-def derived_hard_filters(expected):
-    hard = {}
-
-    amenities = expected.get("amenities", [])
-    if not isinstance(amenities, list):
-        amenities = [amenities]
-    amenities = {normalize_scalar(value) for value in amenities}
-
-    if "pool" in amenities or "private pool" in amenities:
-        hard["private_pool"] = True
-    if "fireplace" in amenities:
-        hard["fireplace"] = True
-
-    location_features = expected.get("location_features", [])
-    if not isinstance(location_features, list):
-        location_features = [location_features]
-    if any("view" in normalize_scalar(value) for value in location_features):
-        hard["has_view"] = True
-
-    return hard
 
 
 def normalize_value(value):

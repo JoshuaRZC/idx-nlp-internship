@@ -127,7 +127,7 @@ class QueryParser:
         ("multiple cars", "amenities", "multiple parking spaces"),
         ("multiple parking spaces", "amenities", "multiple parking spaces"),
         ("rv parking", "amenities", "rv parking"),
-        ("fireplace", "amenities", "fireplace"),
+        ("fireplace", "interior_features", "fireplace"),
         ("central air", "amenities", "central air"),
         ("solar panels", "amenities", "solar panels"),
         ("ev charger", "amenities", "ev charger"),
@@ -175,6 +175,8 @@ class QueryParser:
         ("city lights view", "location_features", "city lights view"),
         ("canyon view", "location_features", "canyon view"),
         ("canyon or ocean views", "location_features", ["canyon view", "ocean view"]),
+        ("views", "location_features", "view"),
+        ("view", "location_features", "view"),
         ("near the beach", "location_features", "near beach"),
         ("near beach", "location_features", "near beach"),
         ("near the coast", "location_features", "near coast"),
@@ -247,9 +249,6 @@ class QueryParser:
         "sqft": ("LM_Int2_3", "="),
         "sqft_min": ("LM_Int2_3", ">="),
         "sqft_max": ("LM_Int2_3", "<="),
-        "private_pool": ("PoolPrivateYN", "="),
-        "fireplace": ("FireplaceYN", "="),
-        "has_view": ("ViewYN", "="),
     }
 
     HARD_FILTER_FIELDS = set(SQL_FIELDS)
@@ -314,7 +313,6 @@ class QueryParser:
         self._merge(filters, self._parse_sort(text))
         self._merge(filters, self._parse_summary_focus(text))
         self._merge(filters, self._parse_phrases(text))
-        self._merge(filters, self._parse_structured_feature_flags(text))
 
         return self._deduplicate_filters(filters)
 
@@ -477,18 +475,6 @@ class QueryParser:
         if not filters and (match := re.search(plus_pattern, text)):
             key = "sqft_min" if "+" in match.group(0) else "sqft"
             filters[key] = self._parse_int(match.group(1))
-
-        return filters
-
-    def _parse_structured_feature_flags(self, text):
-        filters = {}
-
-        if self._has_private_pool_filter(text):
-            filters["private_pool"] = True
-        if self._contains_phrase(text, "fireplace"):
-            filters["fireplace"] = True
-        if re.search(r"\b(?:ocean|mountain|city lights?|canyon|water|lake|golf course)?\s*views?\b", text):
-            filters["has_view"] = True
 
         return filters
 
@@ -697,8 +683,6 @@ class QueryParser:
             return True
         if field == "exterior_features" and value_key == "yard":
             return "maintenance" in after
-        if field == "interior_features" and value_key == "fireplace":
-            return True
         if field == "condition" and value_key in {
             "remodeled kitchen",
             "updated kitchen",
@@ -761,15 +745,6 @@ class QueryParser:
 
     def _parse_int(self, value):
         return int(str(value).replace(",", ""))
-
-    def _has_private_pool_filter(self, text):
-        if self._contains_phrase(text, "private pool"):
-            return True
-        if re.search(r"\b(?:with|has|have|having)\s+(?:a\s+)?pool\b", text):
-            return not re.search(r"\bcommunity\s+(?:with\s+)?pool\b|\bcommunity pool\b", text)
-        if self._contains_phrase(text, "pool and spa"):
-            return not self._contains_phrase(text, "community pool")
-        return False
 
     def _normalize_query(self, query):
         text = "" if query is None else str(query)

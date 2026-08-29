@@ -21,9 +21,6 @@ class SchemaValidator:
         "sqft",
         "sqft_min",
         "sqft_max",
-        "private_pool",
-        "fireplace",
-        "has_view",
         "property_type",
         "property_type_exclude",
         "amenities",
@@ -100,7 +97,6 @@ class SchemaValidator:
         self._validate_price(filters, errors)
         self._validate_counts(filters, errors)
         self._validate_sqft(filters, errors)
-        self._validate_booleans(filters, errors)
         self._validate_list_fields(filters, errors)
         self._validate_ranges(filters, errors)
 
@@ -140,11 +136,6 @@ class SchemaValidator:
                 errors.append(f"{key} must be an integer")
             elif value < self.SQFT_MIN or value > self.SQFT_MAX:
                 errors.append(f"{key}={value} is outside the supported range")
-
-    def _validate_booleans(self, filters, errors):
-        for key in ["private_pool", "fireplace", "has_view"]:
-            if key in filters and not isinstance(filters[key], bool):
-                errors.append(f"{key} must be boolean")
 
     def _validate_list_fields(self, filters, errors):
         for key in self.LIST_FILTERS:
