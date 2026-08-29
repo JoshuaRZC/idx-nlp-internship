@@ -185,6 +185,10 @@ def normalize_text_signals(signals):
         normalized["location_features"] = [
             value for value in normalized["location_features"] if value != "view"
         ]
+    if any(value in normalized["amenities"] for value in ("private pool", "community pool")):
+        normalized["amenities"] = [
+            value for value in normalized["amenities"] if value != "pool"
+        ]
     return {bucket: sorted(values, key=str) for bucket, values in normalized.items()}
 
 

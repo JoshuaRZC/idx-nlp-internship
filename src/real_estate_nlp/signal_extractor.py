@@ -58,6 +58,8 @@ class SignalExtractor:
 
     EXTRA_SIGNAL_PATTERNS = {
         "amenities": {
+            "private pool": [r"\bprivate\s+pool\b"],
+            "community pool": [r"\bcommunity\s+pool\b"],
             "pool": [r"\b(?:private\s+|community\s+|sparkling\s+)?pool\b"],
             "spa": [r"\bspa\b", r"\bhot\s+tub\b", r"\bjacuzzi\b"],
             "ev charger": [r"\bev\s+charg(?:er|ing)\b"],
