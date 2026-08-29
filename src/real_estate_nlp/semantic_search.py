@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date, datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Iterable
 
@@ -22,6 +24,10 @@ def json_safe(value):
         return value.item()
     if isinstance(value, float) and np.isnan(value):
         return None
+    if isinstance(value, Decimal):
+        return float(value)
+    if isinstance(value, (date, datetime)):
+        return value.isoformat()
     return value
 
 
@@ -46,6 +52,7 @@ class SemanticSearcher:
         self.index = None
         self.metadata = []
         self.embeddings = None
+        self.positions_by_listing_id = {}
 
     def build_index(self, records: Iterable[dict], text_field: str = "remarks_cleaned"):
         self.metadata = []
@@ -60,6 +67,9 @@ class SemanticSearcher:
             self.metadata.append(item)
             texts.append(text)
 
+        if not texts:
+            raise ValueError("Build an index from at least one non-empty listing text.")
+
         embeddings = normalize_l2(self._encode(texts))
 
         import faiss
@@ -67,6 +77,7 @@ class SemanticSearcher:
         self.index = faiss.IndexFlatIP(embeddings.shape[1])
         self.index.add(embeddings)
         self.embeddings = embeddings
+        self._build_position_map()
 
         return self
 
@@ -83,16 +94,19 @@ class SemanticSearcher:
         query_embedding = normalize_l2(self._encode([query]))
 
         positions = [
-            i
-            for i, item in enumerate(self.metadata)
-            if str(item.get("listing_id") or item.get("L_ListingID")) in candidate_ids
+            position
+            for listing_id in candidate_ids
+            for position in self.positions_by_listing_id.get(listing_id, [])
         ]
         if not positions:
             return []
 
         candidate_embeddings = self.embeddings[positions]
         scores = candidate_embeddings @ query_embedding[0]
-        order = np.argsort(-scores)[:top_k]
+        order = sorted(
+            range(len(scores)),
+            key=lambda index: (-float(scores[index]), self._listing_id(self.metadata[positions[index]])),
+        )[:top_k]
 
         results = []
         for rank, pos in enumerate(order, start=1):
@@ -134,13 +148,12 @@ class SemanticSearcher:
 
         self.model_name = payload["model_name"]
         self.metadata = payload["metadata"]
-        if self.model is None:
-            self._load_model()
 
         import faiss
 
         self.index = faiss.read_index(str(input_dir / f"{name}.faiss"))
         self.embeddings = np.load(input_dir / f"{name}_embeddings.npy")
+        self._build_position_map()
         return self
 
     def artifact_dir(self, base_dir: str | Path = "data/models/semantic"):
@@ -175,6 +188,17 @@ class SemanticSearcher:
             item["score"] = float(score)
             results.append(item)
         return results
+
+    def _build_position_map(self):
+        positions = {}
+        for position, item in enumerate(self.metadata):
+            listing_id = self._listing_id(item)
+            positions.setdefault(listing_id, []).append(position)
+        self.positions_by_listing_id = positions
+
+    @staticmethod
+    def _listing_id(item):
+        return str(item.get("listing_id") or item.get("L_ListingID") or "")
 
     def _require_index(self):
         if self.index is None or self.embeddings is None:
