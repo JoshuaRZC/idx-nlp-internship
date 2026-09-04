@@ -201,6 +201,8 @@ class SignalExtractor:
             if label in self.ENTITY_BUCKETS:
                 if label == "location" and self._location_needs_context(value):
                     continue
+                if label == "amenity" and self._is_unavailable_pool(text, entity):
+                    continue
                 if self._is_potential_feature(entity, label, text):
                     continue
                 self._add_signal(signals, self.ENTITY_BUCKETS[label], value)
@@ -231,7 +233,12 @@ class SignalExtractor:
         for bucket, term_patterns in self.EXTRA_SIGNAL_PATTERNS.items():
             for value, patterns in term_patterns.items():
                 for pattern in patterns:
-                    for _ in re.finditer(pattern, text, flags=re.I):
+                    for match in re.finditer(pattern, text, flags=re.I):
+                        if value in {"pool", "private pool", "community pool"} and self._is_unavailable_pool(
+                            text,
+                            match,
+                        ):
+                            continue
                         self._add_signal(signals, bucket, value)
 
     def _add_location_list_signals(self, signals, text):
@@ -314,6 +321,26 @@ class SignalExtractor:
     def _is_negated(self, text, start):
         context = text[max(0, start - 18):start].lower()
         return bool(re.search(r"\b(?:no|not|without)\b[^.!?]{0,18}$", context))
+
+    def _is_unavailable_pool(self, text, match):
+        value = self._normalize_text(match.get("value", "")) if isinstance(match, dict) else "pool"
+        if "pool" not in value and isinstance(match, dict):
+            return False
+
+        start = match.get("start", 0) if isinstance(match, dict) else match.start()
+        end = match.get("end", start) if isinstance(match, dict) else match.end()
+        context = text[max(0, start - 50):start].lower()
+        tail = text[end:end + 25].lower()
+        if self._is_negated(text, start):
+            return True
+        if re.search(
+            r"\b(?:potential|possible)\s+(?:for\s+)?(?:an?\s+)?$"
+            r"|\b(?:space|room)\s+for\s+(?:an?\s+)?$"
+            r"|\b(?:can|could|may)\s+(?:add|build|install)\s+(?:an?\s+)?$",
+            context,
+        ):
+            return True
+        return bool(re.match(r"\s+(?:possible|potential)\b", tail))
 
     def _location_needs_context(self, value):
         return self._normalize_text(value) in {

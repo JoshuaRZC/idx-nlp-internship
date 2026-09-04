@@ -251,6 +251,22 @@ def test_potential_uses_are_not_emitted_as_existing_features():
     assert values(result, "amenities") == []
 
 
+def test_pool_rules_ignore_absent_or_potential_pools():
+    extractor = SignalExtractor(entity_extractor=FakeEntityExtractor([]))
+
+    for remark in (
+        "No pool on the property.",
+        "A private yard without a pool.",
+        "Potential pool site with room for a pool.",
+        "The backyard could add a pool.",
+    ):
+        result = extractor.extract_signals({"listing_id": "POOL", "remarks": remark})
+        assert values(result, "amenities") == []
+
+    result = extractor.extract_signals({"listing_id": "POOL", "remarks": "Private pool and spa beside the patio."})
+    assert "private pool" in values(result, "amenities")
+
+
 def test_schema_keeps_laundry_hookups_distinct_from_appliances():
     result = SignalExtractor(
         entity_extractor=FakeEntityExtractor(

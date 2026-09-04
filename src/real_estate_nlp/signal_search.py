@@ -53,6 +53,12 @@ class SignalSearcher:
         return self
 
     def search(self, soft_signals: dict, candidate_ids: Iterable, top_k: int = 100):
+        results = self.match(soft_signals, candidate_ids)
+        for rank, item in enumerate(results[:top_k], start=1):
+            item["rank"] = rank
+        return results[:top_k]
+
+    def match(self, soft_signals: dict, candidate_ids: Iterable):
         candidate_ids = {str(value) for value in candidate_ids}
         if not candidate_ids:
             return []
@@ -77,9 +83,10 @@ class SignalSearcher:
                 }
             )
         results.sort(key=lambda item: (-item["score"], item["listing_id"]))
-        for rank, item in enumerate(results[:top_k], start=1):
-            item["rank"] = rank
-        return results[:top_k]
+        return results
+
+    def positive_signal_count(self, soft_signals: dict):
+        return len(self._signal_pairs(soft_signals, excluded=False))
 
     def exclusion_matches(self, soft_signals: dict, listing_ids: Iterable):
         listing_ids = {str(value) for value in listing_ids}

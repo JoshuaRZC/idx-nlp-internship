@@ -83,15 +83,23 @@ class SemanticSearcher:
 
     def search(self, query: str, top_k: int = 10):
         self._require_index()
-        query_embedding = normalize_l2(self._encode([query]))
+        query_embedding = self.encode_query(query)
 
         scores, indices = self.index.search(query_embedding, top_k)
         return self._format_results(scores[0], indices[0])
 
     def search_candidates(self, query: str, candidate_ids: Iterable, top_k: int = 10):
         self._require_index()
+        return self.search_candidates_by_embedding(
+            self.encode_query(query),
+            candidate_ids,
+            top_k,
+        )
+
+    def search_candidates_by_embedding(self, query_embedding, candidate_ids: Iterable, top_k: int = 10):
+        self._require_index()
         candidate_ids = {str(value) for value in candidate_ids}
-        query_embedding = normalize_l2(self._encode([query]))
+        query_embedding = np.asarray(query_embedding, dtype="float32").reshape(1, -1)
 
         positions = [
             position
@@ -116,8 +124,15 @@ class SemanticSearcher:
             results.append(item)
         return results
 
+    def encode_query(self, query: str):
+        return normalize_l2(self._encode([query]))
+
     def encode_queries(self, queries: Iterable[str]):
         return normalize_l2(self._encode(list(queries)))
+
+    def warm_up(self):
+        self.encode_query("listing search warmup")
+        return self
 
     def save(self, output_dir: str | Path, name: str):
         self._require_index()

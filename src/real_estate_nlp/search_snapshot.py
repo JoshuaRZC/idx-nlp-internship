@@ -34,6 +34,10 @@ class SearchSnapshot:
         self.catalog_by_id = {str(item["listing_id"]): item for item in catalog}
         self.summaries_by_id = {str(item["listing_id"]): item["summary"] for item in summaries}
         self.pass_listing_ids = set(self.catalog_by_id)
+        self.retrievable_listing_ids = {
+            str(item.get("listing_id") or item.get("L_ListingID"))
+            for item in semantic.metadata
+        }
         self.semantic = semantic
         self.bm25 = bm25
         self.signals = signals
