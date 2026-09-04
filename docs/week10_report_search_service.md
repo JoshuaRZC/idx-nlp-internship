@@ -1,8 +1,8 @@
-# Search Service Integration Report
+# Week 10 Search Service and REST API Report
 
 ## Overview
 
-This milestone assembled the earlier NLP components into a pass-only listing search service and finalized its retrieval, reranking, and offline evaluation configuration before the API layer.
+This week assembled the earlier NLP components into a pass-only listing search service, finalized its retrieval configuration, and exposed the system through a FastAPI application.
 
 ## Search Service Integration
 
@@ -14,16 +14,30 @@ This milestone assembled the earlier NLP components into a pass-only listing sea
 - Separated price sorting into two contracts. Pure price requests use only structured eligibility and a stable price/listing-ID order. Price requests with positive preferences use complete signal matches, partial matches, semantic/lexical fallback, then remaining eligible listings.
 - Selected `cross-encoder/ms-marco-MiniLM-L6-v2` as the default reranker after development evaluation. It reranks only the top 50 Hybrid candidates and records pre/post ranks, source evidence, and model scores for review. A reranker failure degrades to the RRF order rather than failing the request.
 - Enabled two-worker parallel retrieval for the independent dense, BM25, and signal work after hard filtering. The configuration preserved ranking results while reducing local end-to-end latency relative to the serial path.
+- Added stable public search profiles. `quality` remains the default Hybrid RRF plus Cross Encoder path; `fast` uses the same dense, BM25, and signal fusion without reranking. Price sorting reports a separate structured-sort profile because it does not use relevance reranking.
+
+## REST API Layer
+
+- Added a FastAPI application with eight endpoints: `/search`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, `/classify-intent`, `/health`, and `/ready`.
+- Kept the API layer thin: it loads the active snapshot and shared NLP components once at startup, then calls the existing service and component interfaces without duplicating retrieval logic.
+- Defined Pydantic request and response models. Search responses expose product-facing listing fields, summaries, signal evidence, parsed query output, and limited operational metadata; raw remarks, internal scores, and experiment variants remain private.
+- Added Redis-backed response caching and a rolling 10 requests/second per-IP limit for public POST endpoints. Search cache keys include the active snapshot and the requested search profile.
+- Added request IDs and structured request logs for route, status, latency, cache state, snapshot ID, and search degradation state.
+- Added `/health` for process liveness and `/ready` for dependency readiness. Readiness requires Redis, the active snapshot, the intent model, dense model, and Cross Encoder to initialize successfully.
+- Added Docker deployment artifacts for MySQL, Redis, and the API. Search snapshots and MLS-derived artifacts remain runtime mounts rather than image contents.
 
 ## Current Artifacts
 
 - `src/real_estate_nlp/search_snapshot.py`: builds, validates, and activates coherent pass-only snapshots.
 - `src/real_estate_nlp/listing_repository.py`: executes parameterized structured eligibility queries.
 - `src/real_estate_nlp/search_service.py`: coordinates parsing, filtering, retrieval, fusion, price sorting, fallback, default bounded reranking, and degradation handling.
+- `src/real_estate_nlp/api/`: application factory, Pydantic schemas, component lifecycle container, Redis cache, and rate-limiting adapter.
 - `src/real_estate_nlp/signal_search.py`: provides inverted-index retrieval over normalized text signals.
 - `scripts/build_search_snapshot.py`: builds an active snapshot from MySQL.
 - `scripts/evaluate_search_relevance.py`: evaluates frozen development or test splits with Precision@5, NDCG@5, MRR@5, component timings, and degradation rate.
 - `notebooks/10_search_service_evaluation.ipynb`: profiles the snapshot, compares retrieval variants and rerank windows, reviews errors, compares serial and parallel retrieval, and records the frozen final test result.
+- `Dockerfile` and `docker-compose.yml`: package the API and add local Redis alongside MySQL.
+- `tests/test_api.py`: covers endpoint contracts, validation, caching, rate limiting, readiness, dependency failure, public-field filtering, and profile cache separation.
 
 ## Evaluation and Final Configuration
 
@@ -32,15 +46,17 @@ This milestone assembled the earlier NLP components into a pass-only listing sea
 - Controlled serial development comparison: Hybrid RRF reached Precision@5 `0.843`, NDCG@5 `0.808`, and MRR@5 `0.976`; adding the selected Cross Encoder reached `0.907`, `0.877`, and `0.964` respectively. The reranker improved graded top-five quality, while the RRF order retained a slightly earlier first relevant result on this small dev set.
 - The final test used the default parallel configuration on 12 held-out queries. The frozen 849-label qrels file produced Precision@5 `0.867`, NDCG@5 `0.901`, and MRR@5 `0.917`, with local P50/P95 total latency of `279.58 ms` / `535.72 ms`.
 - Returned but previously unjudged test candidates were labeled in a blinded delta pool before the final scored run. No retrieval or reranking setting was changed after the test manifest was frozen.
+- The API was built and started through Docker Compose after the active snapshot was made portable to the container mount path. `/health`, `/ready`, OpenAPI docs, Redis cache behavior, rate limiting, and both search profiles were checked against the running stack.
 
 ## Validation
 
 - Snapshot validation checks checksums, artifact presence, pass-only publication, ID alignment, and record counts before activation.
 - The notebook completed against the active local snapshot and covers relevance, pure-price, soft-preference price, component, rerank-window, serial/parallel, development, and final-test views.
-- `tests/test_search_service.py` covers pass-only publication, parameterized SQL, candidate restriction, signal hierarchy, RRF behavior, price tiers, degradation, fallback, Cross Encoder traces, and warm-up behavior.
-- Full test suite passed: `328 passed, 1 skipped`.
+- `tests/test_search_service.py` covers pass-only publication, parameterized SQL, candidate restriction, signal hierarchy, RRF behavior, price tiers, degradation, fallback, Cross Encoder traces, warm-up behavior, and profile selection.
+- `tests/test_api.py` covers the public API contract without requiring a live MySQL, Redis, snapshot, or model download.
+- Full test suite passed: `339 passed, 1 skipped`.
 
 ## Notes
 
 - Search snapshots, indexes, and MLS-derived artifacts remain local under `data/models/`.
-- The reported latency is a local, warmed-snapshot measurement rather than a production SLA. API contracts, pagination, caching, and production observability remain subsequent work.
+- The reported latency is a local, warmed-snapshot measurement rather than a production SLA. Pagination, authentication, persistent analytics, and production latency SLOs remain later product work.

@@ -1,3 +1,4 @@
+import json
 import threading
 from types import SimpleNamespace
 
@@ -240,6 +241,34 @@ def test_snapshot_builder_publishes_only_pass_listings(tmp_path):
     assert SearchSnapshot.load_active(tmp_path / "search").snapshot_id == "snapshot-a"
 
 
+def test_active_snapshot_falls_back_to_snapshot_id_when_path_is_relocated(tmp_path):
+    builder = SearchSnapshotBuilder(
+        model_name="fake-model",
+        compliance_checker=FakeComplianceChecker(),
+        signal_extractor=FakeSignalExtractor(),
+        summarizer=FakeSummarizer(),
+        semantic_searcher=SemanticSearcher(model_name="fake-model", model=FakeEmbeddingModel()),
+    )
+    builder.build(
+        [
+            {
+                "listing_id": "1",
+                "city": "Galt",
+                "remarks": "Bright home with a private pool.",
+            }
+        ],
+        tmp_path / "search_snapshots",
+        snapshot_id="snapshot-a",
+    )
+
+    pointer_path = tmp_path / "search" / "active.json"
+    pointer = json.loads(pointer_path.read_text())
+    pointer["snapshot_path"] = "/unavailable-host-path/snapshot-a"
+    pointer_path.write_text(json.dumps(pointer))
+
+    assert SearchSnapshot.load_active(tmp_path / "search").snapshot_id == "snapshot-a"
+
+
 def test_service_fuses_sources_and_reports_signal_matches():
     result = service().search("Find 3 bedroom homes in Galt with a pool")
 
@@ -373,12 +402,42 @@ def test_default_search_uses_cross_encoder_with_a_50_listing_window():
     assert searcher.enable_cross_encoder is True
     assert searcher.rerank_k == 50
     assert result["meta"]["variant"] == "hybrid_cross_encoder"
+    assert result["meta"]["requested_profile"] == "quality"
+    assert result["meta"]["effective_profile"] == "quality"
+    assert result["meta"]["reranker_used"] is True
     assert "cross_encoder_rerank" in result["meta"]["timings_ms"]
     assert result["results"][0]["listing_id"] == "2"
     assert result["results"][0]["pre_rerank_rank"]
     assert result["results"][0]["post_rerank_rank"] == 1
     assert result["results"][0]["cross_encoder_score"] == 10.0
     assert "retrieval_evidence" in result["results"][0]
+
+
+def test_fast_profile_uses_hybrid_rrf_without_cross_encoder():
+    result = service().search("Find homes in Galt with a pool", search_profile="fast")
+
+    assert result["meta"]["variant"] == "dense_bm25_signal_rrf"
+    assert result["meta"]["requested_profile"] == "fast"
+    assert result["meta"]["effective_profile"] == "fast"
+    assert result["meta"]["reranker_used"] is False
+    assert "cross_encoder_rerank" not in result["meta"]["timings_ms"]
+
+
+def test_price_sort_does_not_apply_a_relevance_profile():
+    result = service().search(
+        "Find homes in Galt with a pool",
+        sort_by="price_asc",
+        search_profile="quality",
+    )
+
+    assert result["meta"]["requested_profile"] == "quality"
+    assert result["meta"]["effective_profile"] == "structured_price_sort"
+    assert result["meta"]["reranker_used"] is False
+
+
+def test_search_rejects_unknown_profile():
+    with pytest.raises(ValueError, match="Unsupported search profile"):
+        service().search("Find homes in Galt", search_profile="experimental")
 
 
 def test_parallel_retrieval_matches_serial_results():

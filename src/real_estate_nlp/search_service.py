@@ -21,6 +21,10 @@ VALID_VARIANTS = {
     "dense_bm25_signal_rrf",
     "hybrid_cross_encoder",
 }
+SEARCH_PROFILES = {
+    "fast": "dense_bm25_signal_rrf",
+    "quality": "hybrid_cross_encoder",
+}
 
 
 class SearchUnavailableError(RuntimeError):
@@ -132,13 +136,35 @@ class SearchService:
             raise SearchUnavailableError(str(error)) from error
         return cls(snapshot, repository or ListingRepository.from_env(), **kwargs)
 
-    def search(self, query, top_k=10, sort_by=None):
-        return self._search(query, top_k, sort_by, "hybrid_cross_encoder")
+    def search(self, query, top_k=10, sort_by=None, search_profile="quality"):
+        if search_profile not in SEARCH_PROFILES:
+            raise ValueError(f"Unsupported search profile: {search_profile}")
+
+        result = self._search(query, top_k, sort_by, SEARCH_PROFILES[search_profile])
+        self._add_profile_metadata(result["meta"], search_profile)
+        return result
 
     def search_experiment(self, query, variant, top_k=10, sort_by=None):
         if variant not in VALID_VARIANTS:
             raise ValueError(f"Unsupported search variant: {variant}")
         return self._search(query, top_k, sort_by, variant)
+
+    def _add_profile_metadata(self, meta, requested_profile):
+        effective_sort = meta.get("effective_sort")
+        if effective_sort is None:
+            effective_profile = "not_run"
+        elif effective_sort != "relevance":
+            effective_profile = "structured_price_sort"
+        else:
+            effective_profile = requested_profile
+
+        meta["requested_profile"] = requested_profile
+        meta["effective_profile"] = effective_profile
+        meta["reranker_used"] = (
+            effective_profile == "quality"
+            and "cross_encoder_rerank" in meta.get("timings_ms", {})
+            and "cross_encoder" not in meta.get("degraded_components", [])
+        )
 
     def warm_up(self, include_cross_encoder=False):
         started_at = time.perf_counter()

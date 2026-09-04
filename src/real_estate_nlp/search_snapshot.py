@@ -54,8 +54,17 @@ class SearchSnapshot:
             raise SnapshotValidationError("No active public search snapshot is available.")
         with pointer_path.open(encoding="utf-8") as handle:
             pointer = json.load(handle)
-        snapshot_dir = Path(pointer.get("snapshot_path") or search_root.parent / "search_snapshots" / pointer["snapshot_id"])
-        return cls.load(snapshot_dir)
+        snapshot_id = pointer.get("snapshot_id")
+        candidates = []
+        if pointer.get("snapshot_path"):
+            candidates.append(Path(pointer["snapshot_path"]))
+        if snapshot_id:
+            candidates.append(search_root.parent / "search_snapshots" / snapshot_id)
+
+        for snapshot_dir in candidates:
+            if snapshot_dir.exists():
+                return cls.load(snapshot_dir)
+        raise SnapshotValidationError("The active search snapshot is not available at its configured path.")
 
     @classmethod
     def load(cls, snapshot_dir):

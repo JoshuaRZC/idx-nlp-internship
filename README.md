@@ -45,7 +45,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 │   └── real_estate_nlp/  # Reusable project package for pipeline and API code
 │       └── api/          # FastAPI application code
 ├── tests/                # Pytest test suite
-├── docker-compose.yml    # Local MySQL service definition
+├── docker-compose.yml    # Local MySQL, Redis, and API services
 ├── requirements.txt      # Python dependencies
 └── README.md
 ```
@@ -67,7 +67,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Intent classification | Complete |
 | Listing summarization | Complete |
 | Fair Housing compliance checker | Complete |
-| FastAPI service | In progress |
+| FastAPI service | Complete |
 | Demo interface | In progress |
 
 ## Environment Setup
@@ -94,11 +94,11 @@ data/raw/
 Start the local MySQL container and check container status:
 
 ```bash
-docker compose up -d
+docker compose up -d mysql redis
 docker compose ps
 ```
 
-The MySQL container initializes the `real_estate` database and runs SQL files from `data/raw/` on first startup.
+The MySQL container initializes the `real_estate` database and runs SQL files from `data/raw/` on first startup. Redis provides API caching and shared rate limiting.
 
 Local database connection:
 
@@ -148,6 +148,25 @@ python scripts/check_listing_compliance.py --input-csv data/processed/listing_se
 
 The workflow currently extracts listing samples, builds taxonomy seed terms, converts the curated taxonomy to JSON, generates cleaned listing remarks, generates a reusable city list, builds local semantic-search indexes, extracts listing-level signals, evaluates the Week 3 entity extractor and Week 4 query parser, trains a language-based search-intent classifier, and generates and evaluates listing summaries.
 
+## API
+
+Build an active pass-only search snapshot before starting the API. The snapshot and trained intent model remain local under `data/models/` and are mounted read-only in the container.
+
+Run the complete local stack:
+
+```bash
+docker compose up --build
+```
+
+For code iteration, start MySQL and Redis in Docker, then run the API from the Conda environment:
+
+```bash
+docker compose up -d mysql redis
+uvicorn src.real_estate_nlp.api.app:app --reload
+```
+
+Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The public endpoints are `/search`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `/search` defaults to `search_profile: "quality"` for Hybrid RRF plus Cross Encoder reranking; use `"fast"` for Hybrid RRF only.
+
 ## Testing
 
 Run the full test suite with:
@@ -168,9 +187,10 @@ pytest tests/test_week6.py
 pytest tests/test_week7.py
 pytest tests/test_week8.py
 pytest tests/test_week9.py
+pytest tests/test_api.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, and Fair Housing compliance rules.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, and API contracts, caching, rate limiting, and readiness behavior.
 
 ## Current Artifacts
 
