@@ -22,7 +22,8 @@ VALID_VARIANTS = {
     "hybrid_cross_encoder",
 }
 SEARCH_PROFILES = {
-    "fast": "dense_bm25_signal_rrf",
+    "fast": "bm25_only",
+    "balanced": "dense_bm25_signal_rrf",
     "quality": "hybrid_cross_encoder",
 }
 
