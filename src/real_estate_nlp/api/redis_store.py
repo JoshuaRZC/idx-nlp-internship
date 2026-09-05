@@ -75,3 +75,16 @@ return {1, 0}
             f"{now_ms}:{uuid.uuid4().hex}",
         )
         return bool(allowed), max(0, int(retry_after_ms))
+
+    def record_demo_event(self, event, max_events, ttl_seconds):
+        key = f"{self.namespace}:demo:events"
+        payload = json.dumps(event, separators=(",", ":"), sort_keys=True)
+        pipeline = self.client.pipeline()
+        pipeline.lpush(key, payload)
+        pipeline.ltrim(key, 0, max_events - 1)
+        pipeline.expire(key, ttl_seconds)
+        pipeline.execute()
+
+    def get_demo_events(self):
+        key = f"{self.namespace}:demo:events"
+        return [json.loads(value) for value in self.client.lrange(key, 0, -1)]

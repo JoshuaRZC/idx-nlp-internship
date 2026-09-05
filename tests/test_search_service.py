@@ -413,12 +413,22 @@ def test_default_search_uses_cross_encoder_with_a_50_listing_window():
     assert "retrieval_evidence" in result["results"][0]
 
 
-def test_fast_profile_uses_hybrid_rrf_without_cross_encoder():
+def test_fast_profile_uses_bm25_without_cross_encoder():
     result = service().search("Find homes in Galt with a pool", search_profile="fast")
 
-    assert result["meta"]["variant"] == "dense_bm25_signal_rrf"
+    assert result["meta"]["variant"] == "bm25_only"
     assert result["meta"]["requested_profile"] == "fast"
     assert result["meta"]["effective_profile"] == "fast"
+    assert result["meta"]["reranker_used"] is False
+    assert "cross_encoder_rerank" not in result["meta"]["timings_ms"]
+
+
+def test_balanced_profile_uses_hybrid_rrf_without_cross_encoder():
+    result = service().search("Find homes in Galt with a pool", search_profile="balanced")
+
+    assert result["meta"]["variant"] == "dense_bm25_signal_rrf"
+    assert result["meta"]["requested_profile"] == "balanced"
+    assert result["meta"]["effective_profile"] == "balanced"
     assert result["meta"]["reranker_used"] is False
     assert "cross_encoder_rerank" not in result["meta"]["timings_ms"]
 

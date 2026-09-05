@@ -35,6 +35,12 @@ class FakeStore:
     def allow_request(self, _client_ip, _limit, _window_seconds):
         return self.allowed, 500
 
+    def record_demo_event(self, event, _max_events, _ttl_seconds):
+        self.values.setdefault("demo-events", []).append(event)
+
+    def get_demo_events(self):
+        return self.values.get("demo-events", [])
+
 
 class FakeParser:
     def parse(self, text):
@@ -157,6 +163,8 @@ def test_api_exposes_all_nlp_capabilities_and_readiness():
             "/summarize",
             "/check-compliance",
             "/classify-intent",
+            "/demo/events",
+            "/demo/metrics",
             "/health",
             "/ready",
         } <= set(paths)
@@ -185,14 +193,18 @@ def test_search_uses_public_result_fields_and_caches_successful_response():
             "/search",
             json={"query": "homes in Irvine", "top_k": 1, "search_profile": "fast"},
         )
+        balanced = client.post(
+            "/search",
+            json={"query": "homes in Irvine", "top_k": 1, "search_profile": "balanced"},
+        )
 
     result = first.json()["results"][0]
     assert first.headers["X-Cache"] == "MISS"
     assert second.headers["X-Cache"] == "HIT"
     assert third.headers["X-Cache"] == "MISS"
     assert fast.headers["X-Cache"] == "MISS"
-    assert container.search_service.calls == 3
-    assert container.search_service.profiles == ["quality", "quality", "fast"]
+    assert container.search_service.calls == 4
+    assert container.search_service.profiles == ["quality", "quality", "fast", "balanced"]
     assert "remarks_cleaned" not in result
     assert "cross_encoder_score" not in result
     assert result["summary"] == "A pool home."
@@ -201,6 +213,8 @@ def test_search_uses_public_result_fields_and_caches_successful_response():
     assert first.json()["meta"]["reranker_used"] is True
     assert fast.json()["meta"]["effective_profile"] == "fast"
     assert fast.json()["meta"]["reranker_used"] is False
+    assert balanced.json()["meta"]["effective_profile"] == "balanced"
+    assert balanced.json()["meta"]["reranker_used"] is False
     assert first.headers["X-Request-ID"]
 
 
@@ -249,3 +263,62 @@ def test_search_dependency_failure_returns_503():
 
     assert response.status_code == 503
     assert response.json()["error"]["code"] == "search_unavailable"
+
+
+def test_demo_metrics_records_anonymous_events_and_returns_aggregates():
+    client, _ = make_client()
+    with client:
+        search = client.post(
+            "/demo/events",
+            json={
+                "event_type": "search",
+                "session_id": "session-1234",
+                "search_profile": "quality",
+                "client_latency_ms": 92.5,
+                "api_latency_ms": 70.0,
+                "result_count": 5,
+            },
+        )
+        feedback = client.post(
+            "/demo/events",
+            json={
+                "event_type": "feedback",
+                "session_id": "session-1234",
+                "feedback": "helpful",
+            },
+        )
+        metrics = client.get("/demo/metrics")
+
+    assert search.json() == {"accepted": True}
+    assert feedback.json() == {"accepted": True}
+    body = metrics.json()
+    assert body["query_volume"] == 1
+    assert body["unique_sessions"] == 1
+    assert body["profile_usage"] == {"fast": 0, "balanced": 0, "quality": 1}
+    assert body["latency_ms"]["client"] == {"count": 1, "p50": 92.5, "p95": 92.5}
+    assert body["satisfaction"] == {"responses": 1, "helpful": 1, "helpful_rate": 1.0}
+
+
+def test_demo_event_validation_and_metrics_token_are_enforced():
+    settings = ApiSettings(redis_url="redis://test", demo_metrics_token="demo-token")
+    container = ApiContainer(
+        settings=settings,
+        search_service=FakeSearchService(),
+        entity_extractor=FakeExtractor(),
+        summarizer=FakeSummarizer(),
+        compliance_checker=FakeComplianceChecker(),
+        intent_classifier=FakeIntentClassifier(),
+        store=FakeStore(),
+    )
+    client = TestClient(create_app(settings=settings, container=container))
+    with client:
+        invalid = client.post(
+            "/demo/events",
+            json={"event_type": "feedback", "session_id": "session-1234"},
+        )
+        blocked = client.get("/demo/metrics")
+        allowed = client.get("/demo/metrics", headers={"X-Demo-Metrics-Token": "demo-token"})
+
+    assert invalid.status_code == 422
+    assert blocked.status_code == 403
+    assert allowed.status_code == 200

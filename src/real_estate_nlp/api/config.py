@@ -16,6 +16,9 @@ class ApiSettings:
     default_cache_ttl_seconds: int = 300
     rate_limit_requests: int = 10
     rate_limit_window_seconds: int = 1
+    demo_metrics_token: str = ""
+    demo_metrics_max_events: int = 10_000
+    demo_metrics_ttl_seconds: int = 604_800
 
     @classmethod
     def from_env(cls):
@@ -35,5 +38,12 @@ class ApiSettings:
             ),
             rate_limit_window_seconds=int(
                 os.getenv("API_RATE_LIMIT_WINDOW_SECONDS", cls.rate_limit_window_seconds)
+            ),
+            demo_metrics_token=os.getenv("API_DEMO_METRICS_TOKEN", cls.demo_metrics_token),
+            demo_metrics_max_events=int(
+                os.getenv("API_DEMO_METRICS_MAX_EVENTS", cls.demo_metrics_max_events)
+            ),
+            demo_metrics_ttl_seconds=int(
+                os.getenv("API_DEMO_METRICS_TTL_SECONDS", cls.demo_metrics_ttl_seconds)
             ),
         )

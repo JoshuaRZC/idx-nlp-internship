@@ -37,6 +37,7 @@ services:
       REDIS_URL: redis://redis:6379/0
       SEARCH_ROOT: data/models/search
       INTENT_MODEL_DIR: data/models/query_intent
+      API_DEMO_METRICS_TOKEN: ${API_DEMO_METRICS_TOKEN:-}
     ports:
       - "8000:8000"
     volumes:
@@ -51,5 +52,18 @@ services:
       interval: 15s
       timeout: 5s
       retries: 8
+
+  demo:
+    build:
+      context: .
+      dockerfile: Dockerfile.demo
+    environment:
+      API_BASE_URL: http://api:8000
+      DEMO_METRICS_TOKEN: ${API_DEMO_METRICS_TOKEN:-}
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
 volumes:
   mysql_data:

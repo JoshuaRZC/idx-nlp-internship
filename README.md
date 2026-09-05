@@ -68,7 +68,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Listing summarization | Complete |
 | Fair Housing compliance checker | Complete |
 | FastAPI service | Complete |
-| Demo interface | In progress |
+| Demo interface | Implemented |
 
 ## Environment Setup
 
@@ -165,7 +165,34 @@ docker compose up -d mysql redis
 uvicorn src.real_estate_nlp.api.app:app --reload
 ```
 
-Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The public endpoints are `/search`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `/search` defaults to `search_profile: "quality"` for Hybrid RRF plus Cross Encoder reranking; use `"fast"` for Hybrid RRF only.
+Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The public endpoints are `/search`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`.
+
+`/search` supports three retrieval profiles while preserving the same compliance boundary and parsed hard filters:
+
+- `fast`: BM25-only lexical retrieval.
+- `balanced`: dense, BM25, and listing-signal retrieval fused with RRF.
+- `quality` (default): `balanced` retrieval plus Cross Encoder reranking.
+
+## Product Demo
+
+The Streamlit demo is a product-facing search workspace built on the public API. It shows applied filters and preferences, listing summaries and details, an optional same-query profile comparison, and a separate metrics view.
+
+Run the complete local stack, then open `http://127.0.0.1:8501`:
+
+```bash
+docker compose up --build
+```
+
+For local UI iteration, install the demo dependencies and point Streamlit at a running API:
+
+```bash
+pip install -r requirements-demo.txt
+docker compose up -d mysql redis
+uvicorn src.real_estate_nlp.api.app:app --reload
+streamlit run demo/app.py
+```
+
+The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
 
 ## Testing
 
@@ -188,9 +215,10 @@ pytest tests/test_week7.py
 pytest tests/test_week8.py
 pytest tests/test_week9.py
 pytest tests/test_api.py
+pytest tests/test_demo_metrics.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, and API contracts, caching, rate limiting, and readiness behavior.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, readiness behavior, and demo-metrics aggregation.
 
 ## Current Artifacts
 

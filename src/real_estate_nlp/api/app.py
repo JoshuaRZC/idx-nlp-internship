@@ -8,14 +8,18 @@ import uuid
 from contextlib import asynccontextmanager
 from typing import Any, Callable
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 from starlette.concurrency import run_in_threadpool
 
 from src.real_estate_nlp.api.config import ApiSettings
 from src.real_estate_nlp.api.container import ApiContainer
+from src.real_estate_nlp.api.demo_metrics import summarize_demo_events
 from src.real_estate_nlp.api.schemas import (
     ComplianceResponse,
+    DemoEventRequest,
+    DemoEventResponse,
+    DemoMetricsResponse,
     EntityResponse,
     HealthResponse,
     IntentResponse,
@@ -38,6 +42,7 @@ RATE_LIMITED_PATHS = {
     "/summarize",
     "/check-compliance",
     "/classify-intent",
+    "/demo/events",
 }
 
 
@@ -207,6 +212,27 @@ def create_app(settings: ApiSettings | None = None, container: ApiContainer | No
             "intent-v1",
             lambda: container.intent_classifier.predict(body.text),
         )
+
+    @app.post("/demo/events", response_model=DemoEventResponse, tags=["demo"])
+    async def record_demo_event(body: DemoEventRequest):
+        _require_ready(container)
+        event = body.dict(exclude_none=True)
+        event["recorded_at"] = int(time.time() * 1000)
+        await run_in_threadpool(
+            container.store.record_demo_event,
+            event,
+            settings.demo_metrics_max_events,
+            settings.demo_metrics_ttl_seconds,
+        )
+        return {"accepted": True}
+
+    @app.get("/demo/metrics", response_model=DemoMetricsResponse, tags=["demo"])
+    async def demo_metrics(x_demo_metrics_token: str | None = Header(default=None)):
+        _require_ready(container)
+        if settings.demo_metrics_token and x_demo_metrics_token != settings.demo_metrics_token:
+            raise HTTPException(status_code=403, detail="Demo metrics access is not authorized.")
+        events = await run_in_threadpool(container.store.get_demo_events)
+        return summarize_demo_events(events)
 
     return app
 
