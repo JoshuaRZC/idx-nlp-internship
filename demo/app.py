@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import time
 import uuid
 
@@ -28,10 +29,11 @@ SORT_OPTIONS = {
     "Price: Low to high": "price_asc",
     "Price: High to low": "price_desc",
 }
+PAGE_SIZE = 10
 
 
 def main():
-    st.set_page_config(page_title="IDX Realty Search", page_icon="I", layout="wide")
+    st.set_page_config(page_title="IDX Exchange Search", page_icon="I", layout="wide")
     _apply_theme()
     settings = DemoSettings.from_env()
     client = ApiClient(
@@ -42,7 +44,7 @@ def main():
     _initialize_state()
 
     with st.sidebar:
-        st.markdown("### IDX Realty")
+        st.markdown('<div class="brand-name">IDX Exchange</div>', unsafe_allow_html=True)
         view = st.radio("Workspace", ["Search", "Metrics"], label_visibility="collapsed")
         st.divider()
         if view == "Search":
@@ -52,13 +54,14 @@ def main():
                 format_func=PROFILE_LABELS.get,
             )
             sort_label = st.selectbox("Sort", options=list(SORT_OPTIONS))
-            top_k = st.select_slider("Results", options=[5, 10, 15, 20], value=10)
+            top_k = st.slider("Results", min_value=1, max_value=100, value=10, step=1)
             relevance_sort = SORT_OPTIONS[sort_label] == "relevance"
             compare_profiles = st.toggle(
                 "Compare profiles",
                 value=False,
                 disabled=not relevance_sort,
-                help="Profile comparison is available for relevance ranking.",
+                help="Compare the same query across profiles",
+                key="compare_profiles",
             )
             if not relevance_sort:
                 compare_profiles = False
@@ -76,19 +79,20 @@ def main():
 
 
 def _render_search(client, profile, sort_by, top_k, compare_profiles):
-    st.markdown("# Find the right home")
+    st.markdown("# Intelligent Home Search")
     st.caption("Search active, compliance-screened listings.")
 
     with st.form("search-form", clear_on_submit=False):
+        st.markdown("#### Describe your ideal home")
         query = st.text_input(
-            "What are you looking for?",
-            value=st.session_state.query,
+            "Describe your ideal home",
             placeholder="3 bed home in Irvine under $900k with a backyard",
+            label_visibility="collapsed",
+            key="query_input",
         )
         submitted = st.form_submit_button("Search", type="primary", use_container_width=True)
 
     if submitted:
-        st.session_state.query = query
         _run_search(client, query, profile, sort_by, top_k, compare_profiles)
 
     state = st.session_state.search_state
@@ -102,7 +106,7 @@ def _render_search(client, profile, sort_by, top_k, compare_profiles):
     if state["comparison_enabled"]:
         _render_profile_comparison(state)
     elif selected_result:
-        _render_results(selected_result)
+        _render_results(selected_result, client)
 
     for selected_profile, error in state["errors"].items():
         st.error(f"{PROFILE_LABELS[selected_profile]} search: {error}")
@@ -139,6 +143,8 @@ def _run_search(client, query, profile, sort_by, top_k, compare_profiles):
         "client_latency_ms": client_latency_ms,
     }
     st.session_state.feedback_submitted = False
+    st.session_state.results_page = 1
+    st.session_state.listing_details = {}
 
     if selected_result:
         _record_event(
@@ -160,28 +166,74 @@ def _render_query_understanding(parsed_query):
     if not hard_filters and not preferences:
         return
 
-    st.markdown("#### Applied search criteria")
+    details = []
     if hard_filters:
-        st.caption("Filters")
-        st.write("  ".join(f"`{value}`" for value in hard_filters))
+        details.append("Filters: " + " · ".join(hard_filters))
     if preferences:
-        st.caption("Preferences")
-        st.write("  ".join(f"`{value}`" for value in preferences))
-    st.divider()
+        details.append("Preferences: " + " · ".join(preferences))
+    st.caption("  |  ".join(details))
 
 
-def _render_results(result):
+def _render_results(result, client):
     results = result.get("results", [])
     if not results:
         st.info(result.get("message", "No listings match your criteria."))
         return
 
     st.markdown(f"#### {len(results)} listings")
-    for listing in results:
-        _render_listing(listing)
+    page_count = max(1, (len(results) + PAGE_SIZE - 1) // PAGE_SIZE)
+    page = min(st.session_state.results_page, page_count)
+    st.session_state.results_page = page
+
+    start = (page - 1) * PAGE_SIZE
+    visible_results = results[start : start + PAGE_SIZE]
+    details_by_listing_id = _load_listing_details(
+        client,
+        [listing["listing_id"] for listing in visible_results],
+    )
+    for listing in visible_results:
+        _render_listing(
+            listing,
+            details_by_listing_id.get(listing["listing_id"]),
+            st.session_state.search_state["search_id"],
+        )
+
+    _render_pagination(page, page_count)
 
 
-def _render_listing(listing):
+def _render_pagination(page, page_count):
+    if page_count == 1:
+        return
+    _, previous, label, next_page, _ = st.columns([3, 1.15, 1.4, 1.15, 3])
+    with previous:
+        if st.button("Previous", disabled=page == 1, key="previous-page", use_container_width=True):
+            st.session_state.results_page = page - 1
+            st.rerun()
+    with label:
+        st.markdown(f'<div class="pagination-label">Page {page} of {page_count}</div>', unsafe_allow_html=True)
+    with next_page:
+        if st.button("Next", disabled=page == page_count, key="next-page", use_container_width=True):
+            st.session_state.results_page = page + 1
+            st.rerun()
+
+
+def _load_listing_details(client, listing_ids):
+    details = st.session_state.listing_details
+    missing_ids = [listing_id for listing_id in listing_ids if listing_id not in details]
+    if not missing_ids:
+        return details
+
+    try:
+        response = client.get_listing_details(missing_ids)
+    except ApiClientError:
+        return details
+
+    for detail in response.get("listings", []):
+        details[detail["listing_id"]] = detail
+    return details
+
+
+def _render_listing(listing, detail, search_id):
     with st.container(border=True):
         title_column, price_column = st.columns([4, 1])
         with title_column:
@@ -193,11 +245,46 @@ def _render_listing(listing):
         features = feature_labels(listing)
         if features:
             st.caption("Matched preferences: " + " · ".join(features))
-        with st.expander("Listing details"):
-            st.write(f"Result #{listing.get('rank')}")
+        with st.expander(_detail_label(search_id, listing["listing_id"]), expanded=False):
+            st.caption(f"Listing ID: {listing.get('listing_id', 'Unavailable')}")
+            left, right = st.columns(2)
+            with left:
+                st.caption("City")
+                st.write(listing.get("city") or "Unavailable")
+                st.caption("Bedrooms / bathrooms")
+                st.write(
+                    f"{listing.get('beds', 'Unavailable')} bd / "
+                    f"{listing.get('baths', 'Unavailable')} ba"
+                )
+            with right:
+                st.caption("List price")
+                st.write(format_price(listing.get("price")))
+                st.caption("Square feet")
+                st.write(f"{listing['sqft']:,.0f} sqft" if listing.get("sqft") is not None else "Unavailable")
             excluded = feature_labels({"matched_signals": listing.get("excluded_signals", [])})
             if excluded:
-                st.caption("Not matched: " + " · ".join(excluded))
+                st.caption("Preferences not matched: " + " · ".join(excluded))
+            _render_listing_description(detail)
+
+
+def _render_listing_description(detail):
+    if detail:
+        st.caption("Full listing description")
+        st.write(detail.get("listing_description") or "Description unavailable.")
+
+
+def _detail_label(search_id, listing_id):
+    """Return a visible label with an invisible, search-scoped element identity."""
+    digest = hashlib.blake2s(
+        f"{search_id}:{listing_id}".encode(),
+        digest_size=8,
+    ).digest()
+    token = "".join(
+        "\u200b" if bit == "0" else "\u200c"
+        for byte in digest
+        for bit in f"{byte:08b}"
+    )
+    return "Listing details" + token
 
 
 def _render_profile_comparison(state):
@@ -254,21 +341,24 @@ def _render_metrics(client):
     first, second, third, fourth = st.columns(4)
     first.metric("Searches", metrics["query_volume"])
     second.metric("Sessions", metrics["unique_sessions"])
-    third.metric("P95 API latency", _latency_label(metrics["latency_ms"]["api"]["p95"]))
+    third.metric("Zero-result rate", _percentage(metrics["zero_result_rate"]))
     fourth.metric("Helpful rate", _percentage(metrics["satisfaction"]["helpful_rate"]))
 
     st.markdown("#### Search profiles")
     st.bar_chart(metrics["profile_usage"], horizontal=True)
 
+    st.markdown("#### Latency by profile")
+    api_tab, client_tab = st.tabs(["API latency", "End-to-end latency"])
+    with api_tab:
+        st.dataframe(_latency_rows(metrics, "api"), use_container_width=True, hide_index=True)
+    with client_tab:
+        st.dataframe(_latency_rows(metrics, "client"), use_container_width=True, hide_index=True)
+
     left, right = st.columns(2)
     with left:
-        st.markdown("#### Reliability")
-        st.metric("Zero-result rate", _percentage(metrics["zero_result_rate"]))
         st.metric("Profile comparisons", metrics["comparison_searches"])
     with right:
-        st.markdown("#### Feedback")
-        st.metric("Responses", metrics["satisfaction"]["responses"])
-        st.metric("Helpful", metrics["satisfaction"]["helpful"])
+        st.metric("Feedback responses", metrics["satisfaction"]["responses"])
 
 
 def _record_event(client, event):
@@ -280,9 +370,11 @@ def _record_event(client, event):
 
 def _initialize_state():
     st.session_state.setdefault("session_id", uuid.uuid4().hex)
-    st.session_state.setdefault("query", "")
+    st.session_state.setdefault("query_input", "")
     st.session_state.setdefault("search_state", None)
     st.session_state.setdefault("feedback_submitted", False)
+    st.session_state.setdefault("results_page", 1)
+    st.session_state.setdefault("listing_details", {})
 
 
 def _latency_label(value):
@@ -293,20 +385,105 @@ def _percentage(value):
     return f"{value * 100:.1f}%" if value is not None else "No data"
 
 
+def _latency_rows(metrics, source):
+    rows = []
+    for profile in ("fast", "balanced", "quality"):
+        latency = metrics["profile_latency_ms"][profile][source]
+        rows.append(
+            {
+                "Profile": PROFILE_LABELS[profile],
+                "Searches": metrics["profile_usage"][profile],
+                "P50": _latency_label(latency["p50"]),
+                "P90": _latency_label(latency["p90"]),
+                "P95": _latency_label(latency["p95"]),
+            }
+        )
+    return rows
+
+
 def _apply_theme():
     st.markdown(
         """
         <style>
-        .stApp { background: #f7f8f7; color: #1e2a25; }
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+          background: #f4f6f8;
+          color: #1f2937;
+        }
         .block-container { max-width: 1180px; padding-top: 2.5rem; padding-bottom: 3rem; }
-        [data-testid="stSidebar"] { background: #123c36; }
-        [data-testid="stSidebar"] * { color: #f5fbf7; }
-        [data-testid="stSidebar"] [data-baseweb="select"] * { color: #1e2a25; }
-        [data-testid="stSidebar"] [data-baseweb="radio"] label { color: #f5fbf7; }
-        [data-testid="stMetric"] { background: #ffffff; border: 1px solid #dce4df; border-radius: 6px; padding: 0.9rem; }
-        [data-testid="stVerticalBlockBorderWrapper"] { border-color: #dce4df; border-radius: 6px; background: #ffffff; }
-        .stButton > button { border-radius: 5px; background: #0d6b5f; color: #ffffff; border: 1px solid #0d6b5f; }
-        .stButton > button:hover { background: #09574e; border-color: #09574e; color: #ffffff; }
+        [data-testid="stSidebar"] { background: #262b33; }
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
+        [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p,
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3,
+        [data-testid="stSidebar"] label span {
+          color: #edf1f5 !important;
+        }
+        [data-testid="stSidebar"] .brand-name {
+          color: #ffffff;
+          font-size: 1.45rem;
+          font-weight: 700;
+          line-height: 1.2;
+          margin: 0.35rem 0 1.5rem;
+        }
+        [data-testid="stSidebar"] [data-baseweb="select"] > div {
+          background: #ffffff;
+          border-color: #aeb8c4;
+        }
+        [data-testid="stSidebar"] [data-baseweb="select"] span {
+          color: #202933 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stSidebarUserContent"] hr {
+          border-color: #4a5260;
+        }
+        [data-testid="stSidebar"] [data-testid="stTooltipIcon"] {
+          position: relative;
+          width: 18px;
+          height: 18px;
+          border: 1px solid #9aa4b2;
+          border-radius: 50%;
+          background: #394250;
+        }
+        [data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
+          opacity: 0;
+        }
+        [data-testid="stSidebar"] [data-testid="stTooltipIcon"]::after {
+          position: absolute;
+          inset: 0;
+          color: #f8fafc;
+          content: "?";
+          font-size: 0.75rem;
+          font-weight: 700;
+          line-height: 16px;
+          pointer-events: none;
+          text-align: center;
+        }
+        [data-testid="stMain"] [data-testid="stMetric"] {
+          background: #ffffff;
+          border: 1px solid #d9dee6;
+          border-radius: 6px;
+          padding: 0.9rem;
+        }
+        [data-testid="stMain"] [data-testid="stVerticalBlockBorderWrapper"] {
+          border-color: #d9dee6;
+          border-radius: 6px;
+          background: #ffffff;
+        }
+        .stFormSubmitButton > button, .stButton > button {
+          border-radius: 5px;
+          background: #2563eb !important;
+          color: #ffffff !important;
+          border: 1px solid #2563eb !important;
+        }
+        .stFormSubmitButton > button:hover, .stButton > button:hover {
+          background: #1d4ed8 !important;
+          border-color: #1d4ed8 !important;
+        }
+        .pagination-label {
+          color: #687386;
+          padding-top: 0.55rem;
+          text-align: center;
+        }
         </style>
         """,
         unsafe_allow_html=True,

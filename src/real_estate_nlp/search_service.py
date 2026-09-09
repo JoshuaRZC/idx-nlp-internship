@@ -140,10 +140,39 @@ class SearchService:
     def search(self, query, top_k=10, sort_by=None, search_profile="quality"):
         if search_profile not in SEARCH_PROFILES:
             raise ValueError(f"Unsupported search profile: {search_profile}")
+        if top_k > 100:
+            raise ValueError("top_k must not exceed 100")
 
         result = self._search(query, top_k, sort_by, SEARCH_PROFILES[search_profile])
         self._add_profile_metadata(result["meta"], search_profile)
         return result
+
+    def get_listing_detail(self, listing_id):
+        """Return the public detail view for one pass-only listing."""
+        listing_id = str(listing_id)
+        if listing_id not in self.snapshot.pass_listing_ids:
+            return None
+
+        record = self.snapshot.catalog_by_id[listing_id]
+        return {
+            "listing_id": listing_id,
+            "address": record.get("address"),
+            "city": record.get("city"),
+            "price": record.get("price"),
+            "beds": record.get("beds"),
+            "baths": record.get("baths"),
+            "sqft": record.get("sqft"),
+            "summary": self.snapshot.summaries_by_id.get(listing_id, ""),
+            "listing_description": record.get("remarks_original") or record.get("remarks_cleaned", ""),
+        }
+
+    def get_listing_details(self, listing_ids):
+        """Return public detail records in the requested order."""
+        return [
+            detail
+            for listing_id in listing_ids
+            if (detail := self.get_listing_detail(listing_id)) is not None
+        ]
 
     def search_experiment(self, query, variant, top_k=10, sort_by=None):
         if variant not in VALID_VARIANTS:

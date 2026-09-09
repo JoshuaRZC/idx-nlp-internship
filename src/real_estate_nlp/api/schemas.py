@@ -29,7 +29,7 @@ class TextRequest(ApiModel):
 
 class SearchRequest(ApiModel):
     query: str = Field(..., min_length=1, max_length=500)
-    top_k: int = Field(10, ge=1, le=50)
+    top_k: int = Field(10, ge=1, le=100)
     sort_by: Literal["relevance", "price_asc", "price_desc"] | None = None
     search_profile: Literal["fast", "balanced", "quality"] = "quality"
 
@@ -124,6 +124,34 @@ class SearchResponse(ApiModel):
     meta: SearchMeta
 
 
+class ListingDetailResponse(ApiModel):
+    listing_id: str
+    address: str | None = None
+    city: str | None = None
+    price: NonNegativeNumber | None = None
+    beds: CountNumber | None = None
+    baths: CountNumber | None = None
+    sqft: NonNegativeNumber | None = None
+    summary: str = ""
+    listing_description: str = ""
+
+
+class ListingDetailsRequest(ApiModel):
+    listing_ids: list[str] = Field(..., min_items=1, max_items=10)
+
+    @validator("listing_ids")
+    def listing_ids_are_unique(cls, values):
+        if len(values) != len(set(values)):
+            raise ValueError("listing_ids must not contain duplicates")
+        if any(not value.strip() for value in values):
+            raise ValueError("listing_ids must not contain blank values")
+        return values
+
+
+class ListingDetailsResponse(ApiModel):
+    listings: list[ListingDetailResponse]
+
+
 class HealthResponse(ApiModel):
     status: str
 
@@ -140,7 +168,7 @@ class DemoEventRequest(ApiModel):
     comparison_enabled: bool = False
     client_latency_ms: confloat(ge=0, le=120_000) | None = None
     api_latency_ms: confloat(ge=0, le=120_000) | None = None
-    result_count: conint(ge=0, le=50) | None = None
+    result_count: conint(ge=0, le=100) | None = None
     feedback: Literal["helpful", "not_helpful"] | None = None
 
     @validator("feedback", always=True)
@@ -159,6 +187,7 @@ class DemoEventResponse(ApiModel):
 class LatencySummary(ApiModel):
     count: int
     p50: float | None = None
+    p90: float | None = None
     p95: float | None = None
 
 
@@ -168,5 +197,6 @@ class DemoMetricsResponse(ApiModel):
     comparison_searches: int
     profile_usage: dict[str, int]
     latency_ms: dict[str, LatencySummary]
+    profile_latency_ms: dict[str, dict[str, LatencySummary]]
     zero_result_rate: float | None = None
     satisfaction: dict[str, int | float | None]

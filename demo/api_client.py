@@ -46,12 +46,12 @@ class ApiClient:
     def record_event(self, event):
         return self._post("/demo/events", event)
 
+    def get_listing_details(self, listing_ids):
+        return self._post("/listings/details", {"listing_ids": listing_ids})
+
     def get_metrics(self):
         headers = {"X-Demo-Metrics-Token": self.metrics_token} if self.metrics_token else {}
         return self._get("/demo/metrics", headers=headers)
-
-    def ready(self):
-        return self._get("/ready")
 
     def _post(self, path, payload):
         return self._request("post", path, json=payload)

@@ -150,7 +150,11 @@ The workflow currently extracts listing samples, builds taxonomy seed terms, con
 
 ## API
 
-Build an active pass-only search snapshot before starting the API. The snapshot and trained intent model remain local under `data/models/` and are mounted read-only in the container.
+Build an active pass-only search snapshot before starting the API. The snapshot and trained intent model remain local under `data/models/` and are mounted read-only in the container. Rebuild the snapshot after updating the project to include the compliance-screened original listing descriptions used by the product demo:
+
+```bash
+python scripts/build_search_snapshot.py
+```
 
 Run the complete local stack:
 
@@ -165,7 +169,7 @@ docker compose up -d mysql redis
 uvicorn src.real_estate_nlp.api.app:app --reload
 ```
 
-Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The public endpoints are `/search`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`.
+Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The core application endpoints are `/search`, `/listings/{listing_id}`, `/listings/details`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The demo also uses `/demo/events` and `/demo/metrics` for anonymous telemetry and its metrics view.
 
 `/search` supports three retrieval profiles while preserving the same compliance boundary and parsed hard filters:
 
@@ -192,7 +196,7 @@ uvicorn src.real_estate_nlp.api.app:app --reload
 streamlit run demo/app.py
 ```
 
-The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
+The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. The Metrics view reports overall and profile-level P50, P90, and P95 latency. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
 
 ## Testing
 

@@ -108,6 +108,28 @@ class FakeSearchService:
             },
         }
 
+    def get_listing_detail(self, listing_id):
+        if listing_id != "A1":
+            return None
+        return {
+            "listing_id": "A1",
+            "address": "1 Main St",
+            "city": "Irvine",
+            "price": 950000,
+            "beds": 3,
+            "baths": 2.5,
+            "sqft": 1800,
+            "summary": "A pool home.",
+            "listing_description": "Cleaned public listing description.",
+        }
+
+    def get_listing_details(self, listing_ids):
+        return [
+            detail
+            for listing_id in listing_ids
+            if (detail := self.get_listing_detail(listing_id)) is not None
+        ]
+
 
 class FakeExtractor:
     def extract_all(self, text):
@@ -158,6 +180,8 @@ def test_api_exposes_all_nlp_capabilities_and_readiness():
         paths = client.get("/openapi.json").json()["paths"]
         assert {
             "/search",
+            "/listings/{listing_id}",
+            "/listings/details",
             "/parse-query",
             "/extract-entities",
             "/summarize",
@@ -222,7 +246,7 @@ def test_api_rejects_blank_or_invalid_requests():
     client, _ = make_client()
     with client:
         assert client.post("/search", json={"query": "   "}).status_code == 422
-        assert client.post("/search", json={"query": "homes", "top_k": 51}).status_code == 422
+        assert client.post("/search", json={"query": "homes", "top_k": 101}).status_code == 422
         assert client.post("/extract-entities", json={"text": ""}).status_code == 422
         assert client.post("/summarize", json={"listing": {"city": "Irvine", "unknown": "value"}}).status_code == 422
 
@@ -265,6 +289,32 @@ def test_search_dependency_failure_returns_503():
     assert response.json()["error"]["code"] == "search_unavailable"
 
 
+def test_listing_detail_is_pass_only_and_cached():
+    client, _ = make_client()
+    with client:
+        first = client.get("/listings/A1")
+        second = client.get("/listings/A1")
+        missing = client.get("/listings/missing")
+
+    assert first.headers["X-Cache"] == "MISS"
+    assert second.headers["X-Cache"] == "HIT"
+    assert first.json()["listing_description"] == "Cleaned public listing description."
+    assert missing.status_code == 404
+
+
+def test_listing_detail_batch_uses_a_snapshot_scoped_cache():
+    client, _ = make_client()
+    with client:
+        first = client.post("/listings/details", json={"listing_ids": ["A1", "missing"]})
+        second = client.post("/listings/details", json={"listing_ids": ["A1", "missing"]})
+        invalid = client.post("/listings/details", json={"listing_ids": ["A1", "A1"]})
+
+    assert first.headers["X-Cache"] == "MISS"
+    assert second.headers["X-Cache"] == "HIT"
+    assert [item["listing_id"] for item in first.json()["listings"]] == ["A1"]
+    assert invalid.status_code == 422
+
+
 def test_demo_metrics_records_anonymous_events_and_returns_aggregates():
     client, _ = make_client()
     with client:
@@ -295,7 +345,13 @@ def test_demo_metrics_records_anonymous_events_and_returns_aggregates():
     assert body["query_volume"] == 1
     assert body["unique_sessions"] == 1
     assert body["profile_usage"] == {"fast": 0, "balanced": 0, "quality": 1}
-    assert body["latency_ms"]["client"] == {"count": 1, "p50": 92.5, "p95": 92.5}
+    assert body["latency_ms"]["client"] == {"count": 1, "p50": 92.5, "p90": 92.5, "p95": 92.5}
+    assert body["profile_latency_ms"]["quality"]["api"] == {
+        "count": 1,
+        "p50": 70.0,
+        "p90": 70.0,
+        "p95": 70.0,
+    }
     assert body["satisfaction"] == {"responses": 1, "helpful": 1, "helpful_rate": 1.0}
 
 

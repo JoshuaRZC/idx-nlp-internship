@@ -93,6 +93,7 @@ def records():
             "beds": 3,
             "baths": 2,
             "sqft": 1500,
+            "remarks_original": "Bright Home with a Private Pool and Patio.",
             "remarks_cleaned": "Bright home with a private pool and patio.",
         },
         {
@@ -103,6 +104,7 @@ def records():
             "beds": 3,
             "baths": 2,
             "sqft": 1400,
+            "remarks_original": "Cozy Home with a Fireplace.",
             "remarks_cleaned": "Cozy home with a fireplace.",
         },
     ]
@@ -227,6 +229,7 @@ def test_snapshot_builder_publishes_only_pass_listings(tmp_path):
     snapshot_dir = builder.build(source, tmp_path / "search_snapshots", snapshot_id="snapshot-a")
 
     assert [row["listing_id"] for row in read_jsonl(snapshot_dir / "catalog.jsonl")] == ["1"]
+    assert read_jsonl(snapshot_dir / "catalog.jsonl")[0]["remarks_original"] == "Home with a pool."
     assert SearchSnapshot.load_active(tmp_path / "search").pass_listing_ids == {"1"}
 
     failed_builder = SearchSnapshotBuilder(
@@ -448,6 +451,22 @@ def test_price_sort_does_not_apply_a_relevance_profile():
 def test_search_rejects_unknown_profile():
     with pytest.raises(ValueError, match="Unsupported search profile"):
         service().search("Find homes in Galt", search_profile="experimental")
+
+
+def test_listing_detail_returns_only_pass_snapshot_records():
+    searcher = service()
+
+    detail = searcher.get_listing_detail("1")
+
+    assert detail["listing_id"] == "1"
+    assert detail["listing_description"] == "Bright Home with a Private Pool and Patio."
+    assert searcher.get_listing_detail("missing") is None
+
+
+def test_listing_detail_batch_preserves_requested_order_and_excludes_unknown_records():
+    details = service().get_listing_details(["2", "missing", "1"])
+
+    assert [detail["listing_id"] for detail in details] == ["2", "1"]
 
 
 def test_parallel_retrieval_matches_serial_results():

@@ -23,6 +23,9 @@ from src.real_estate_nlp.api.schemas import (
     EntityResponse,
     HealthResponse,
     IntentResponse,
+    ListingDetailResponse,
+    ListingDetailsRequest,
+    ListingDetailsResponse,
     ParseQueryResponse,
     ReadyResponse,
     SearchRequest,
@@ -42,6 +45,7 @@ RATE_LIMITED_PATHS = {
     "/summarize",
     "/check-compliance",
     "/classify-intent",
+    "/listings/details",
     "/demo/events",
 }
 
@@ -139,6 +143,56 @@ def create_app(settings: ApiSettings | None = None, container: ApiContainer | No
             cache_version,
             lambda: _search_response(container.search_service.search(**payload), body.query),
         )
+
+    @app.get("/listings/{listing_id}", response_model=ListingDetailResponse, tags=["search"])
+    async def listing_detail(listing_id: str, response: Response):
+        _require_ready(container)
+        key = container.store.cache_key(
+            "listing-detail",
+            {"listing_id": listing_id},
+            version=container.snapshot_id or "unknown-snapshot",
+        )
+        cached = await run_in_threadpool(container.store.get_json, key)
+        if cached is not None:
+            response.headers["X-Cache"] = "HIT"
+            return cached
+
+        detail = await run_in_threadpool(container.search_service.get_listing_detail, listing_id)
+        if detail is None:
+            raise HTTPException(status_code=404, detail="Listing not found.")
+        await run_in_threadpool(
+            container.store.set_json,
+            key,
+            detail,
+            settings.default_cache_ttl_seconds,
+        )
+        response.headers["X-Cache"] = "MISS"
+        return detail
+
+    @app.post("/listings/details", response_model=ListingDetailsResponse, tags=["search"])
+    async def listing_details(body: ListingDetailsRequest, response: Response):
+        _require_ready(container)
+        listing_ids = [str(listing_id) for listing_id in body.listing_ids]
+        key = container.store.cache_key(
+            "listing-details",
+            {"listing_ids": listing_ids},
+            version=container.snapshot_id or "unknown-snapshot",
+        )
+        cached = await run_in_threadpool(container.store.get_json, key)
+        if cached is not None:
+            response.headers["X-Cache"] = "HIT"
+            return cached
+
+        details = await run_in_threadpool(container.search_service.get_listing_details, listing_ids)
+        value = {"listings": details}
+        await run_in_threadpool(
+            container.store.set_json,
+            key,
+            value,
+            settings.default_cache_ttl_seconds,
+        )
+        response.headers["X-Cache"] = "MISS"
+        return value
 
     @app.post("/parse-query", response_model=ParseQueryResponse, tags=["nlp"])
     async def parse_query(body: TextRequest, response: Response):

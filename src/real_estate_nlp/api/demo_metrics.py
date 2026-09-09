@@ -31,6 +31,21 @@ def summarize_demo_events(events):
             "client": _latency_summary(event.get("client_latency_ms") for event in searches),
             "api": _latency_summary(event.get("api_latency_ms") for event in searches),
         },
+        "profile_latency_ms": {
+            profile: {
+                "client": _latency_summary(
+                    event.get("client_latency_ms")
+                    for event in searches
+                    if event.get("search_profile") == profile
+                ),
+                "api": _latency_summary(
+                    event.get("api_latency_ms")
+                    for event in searches
+                    if event.get("search_profile") == profile
+                ),
+            }
+            for profile in PROFILE_NAMES
+        },
         "zero_result_rate": _ratio(sum(count == 0 for count in result_counts), len(result_counts)),
         "satisfaction": {
             "responses": len(feedback),
@@ -45,6 +60,7 @@ def _latency_summary(values):
     return {
         "count": len(values),
         "p50": _percentile(values, 0.5),
+        "p90": _percentile(values, 0.9),
         "p95": _percentile(values, 0.95),
     }
 

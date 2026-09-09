@@ -18,7 +18,17 @@ from src.real_estate_nlp.signal_search import SignalSearcher
 from src.real_estate_nlp.text_cleaner import TextCleaner
 
 
-CATALOG_FIELDS = ("listing_id", "address", "city", "price", "beds", "baths", "sqft", "remarks_cleaned")
+CATALOG_FIELDS = (
+    "listing_id",
+    "address",
+    "city",
+    "price",
+    "beds",
+    "baths",
+    "sqft",
+    "remarks_original",
+    "remarks_cleaned",
+)
 
 
 class SnapshotValidationError(ValueError):
@@ -169,9 +179,8 @@ class SearchSnapshotBuilder:
             "sqft": self._first(source, "sqft", "LM_Int2_3"),
         }
         values["listing_id"] = str(values["listing_id"])
-        values["remarks_cleaned"] = self.text_cleaner.clean_text(
-            self._first(source, "remarks", "L_Remarks")
-        )
+        values["remarks_original"] = str(self._first(source, "remarks", "L_Remarks") or "").strip()
+        values["remarks_cleaned"] = self.text_cleaner.clean_text(values["remarks_original"])
         return {key: json_safe(value) for key, value in values.items()}
 
     def _manifest(self, snapshot_dir, snapshot_id, source_count, public_count):
