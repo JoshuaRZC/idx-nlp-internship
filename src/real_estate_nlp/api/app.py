@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import re
 import time
 import uuid
 from contextlib import asynccontextmanager
@@ -34,7 +35,7 @@ from src.real_estate_nlp.api.schemas import (
     SummarizeRequest,
     TextRequest,
 )
-from src.real_estate_nlp.search_service import SearchUnavailableError
+from src.real_estate_nlp.search_service import RerankerBusyError, SearchUnavailableError
 
 
 LOGGER = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ RATE_LIMITED_PATHS = {
     "/listings/details",
     "/demo/events",
 }
+SEARCH_SESSION_ID_PATTERN = re.compile(r"[a-f0-9]{32}")
 
 
 def create_app(settings: ApiSettings | None = None, container: ApiContainer | None = None):
@@ -76,11 +78,11 @@ def create_app(settings: ApiSettings | None = None, container: ApiContainer | No
         started_at = time.perf_counter()
 
         if request.method == "POST" and request.url.path in RATE_LIMITED_PATHS and container.ready:
-            client_ip = request.client.host if request.client else "unknown"
+            client_id = _rate_limit_client_id(request)
             try:
                 allowed, retry_after_ms = await run_in_threadpool(
                     container.store.allow_request,
-                    client_ip,
+                    client_id,
                     settings.rate_limit_requests,
                     settings.rate_limit_window_seconds,
                 )
@@ -113,6 +115,12 @@ def create_app(settings: ApiSettings | None = None, container: ApiContainer | No
     @app.exception_handler(SearchUnavailableError)
     async def search_unavailable_handler(request, _error):
         return _error_response(503, "search_unavailable", "Search is temporarily unavailable.")
+
+    @app.exception_handler(RerankerBusyError)
+    async def reranker_busy_handler(request, _error):
+        response = _error_response(503, "quality_search_busy", "Quality search is temporarily busy. Please retry shortly.")
+        response.headers["Retry-After"] = "5"
+        return response
 
     @app.exception_handler(Exception)
     async def unexpected_error_handler(request, _error):
@@ -356,6 +364,14 @@ def _search_response(result, query):
 def _require_ready(container):
     if not container.ready:
         raise HTTPException(status_code=503, detail="API dependencies are not ready.")
+
+
+def _rate_limit_client_id(request):
+    session_id = request.headers.get("X-Search-Session-ID", "").lower()
+    if SEARCH_SESSION_ID_PATTERN.fullmatch(session_id):
+        return f"session:{session_id}"
+    client_ip = request.client.host if request.client else "unknown"
+    return f"ip:{client_ip}"
 
 
 def _set_search_headers(response, endpoint, value):

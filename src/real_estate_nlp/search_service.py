@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 import math
+import threading
 import time
 
 from src.real_estate_nlp.answerability_checker import AnswerabilityChecker
@@ -32,6 +33,10 @@ class SearchUnavailableError(RuntimeError):
     """Raised when the service cannot safely produce a search result."""
 
 
+class RerankerBusyError(SearchUnavailableError):
+    """Raised when the quality reranker cannot obtain its bounded execution slot."""
+
+
 class CrossEncoderReranker:
     """Lazy wrapper around a Cross Encoder for the final candidate window."""
 
@@ -39,20 +44,39 @@ class CrossEncoderReranker:
     MAX_SUMMARY_CHARS = 350
     MAX_DOCUMENT_CHARS = 2_400
 
-    def __init__(self, model_name="cross-encoder/ms-marco-MiniLM-L6-v2", model=None):
+    DEFAULT_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L6-v2"
+    DEFAULT_MODEL_REVISION = "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+
+    def __init__(
+        self,
+        model_name=DEFAULT_MODEL_NAME,
+        model_revision=DEFAULT_MODEL_REVISION,
+        model=None,
+        semaphore=None,
+        queue_timeout_seconds=20.0,
+    ):
         self.model_name = model_name
+        self.model_revision = model_revision
         self.model = model
+        self.semaphore = semaphore or threading.BoundedSemaphore(1)
+        self.queue_timeout_seconds = queue_timeout_seconds
 
     def rerank(self, query, records):
         if not records:
             return {}
-        if self.model is None:
-            from sentence_transformers import CrossEncoder
+        acquired = self.semaphore.acquire(timeout=self.queue_timeout_seconds)
+        if not acquired:
+            raise RerankerBusyError("Quality search is temporarily busy. Please retry shortly.")
+        try:
+            if self.model is None:
+                from sentence_transformers import CrossEncoder
 
-            self.model = CrossEncoder(self.model_name)
+                self.model = CrossEncoder(self.model_name, revision=self.model_revision)
 
-        pairs = [(query, self._document(record)) for record in records]
-        scores = self.model.predict(pairs)
+            pairs = [(query, self._document(record)) for record in records]
+            scores = self.model.predict(pairs)
+        finally:
+            self.semaphore.release()
         return {record["listing_id"]: float(score) for record, score in zip(records, scores)}
 
     @staticmethod
@@ -319,6 +343,8 @@ class SearchService:
         signal_started_at = time.perf_counter()
         try:
             matches = self.snapshot.signals.match(soft_signals, eligible_ids)
+        except RerankerBusyError:
+            raise
         except Exception:
             self._mark_degraded(meta, "signals")
             matches = []

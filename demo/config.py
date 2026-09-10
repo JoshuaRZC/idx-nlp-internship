@@ -11,6 +11,7 @@ class DemoSettings:
     api_base_url: str = "http://127.0.0.1:8000"
     request_timeout_seconds: float = 30.0
     metrics_token: str = ""
+    admin_mode: bool = False
 
     @classmethod
     def from_env(cls):
@@ -20,4 +21,5 @@ class DemoSettings:
                 os.getenv("DEMO_REQUEST_TIMEOUT_SECONDS", cls.request_timeout_seconds)
             ),
             metrics_token=os.getenv("DEMO_METRICS_TOKEN", cls.metrics_token),
+            admin_mode=os.getenv("DEMO_ADMIN_MODE", "false").lower() in {"1", "true", "yes"},
         )

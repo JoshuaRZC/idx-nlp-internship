@@ -35,17 +35,19 @@ PAGE_SIZE = 10
 def main():
     st.set_page_config(page_title="IDX Exchange Search", page_icon="I", layout="wide")
     _apply_theme()
+    _initialize_state()
     settings = DemoSettings.from_env()
     client = ApiClient(
         settings.api_base_url,
         timeout_seconds=settings.request_timeout_seconds,
         metrics_token=settings.metrics_token,
+        session_id=st.session_state.session_id,
     )
-    _initialize_state()
 
     with st.sidebar:
         st.markdown('<div class="brand-name">IDX Exchange</div>', unsafe_allow_html=True)
-        view = st.radio("Workspace", ["Search", "Metrics"], label_visibility="collapsed")
+        views = ["Search", "Metrics"] if settings.admin_mode else ["Search"]
+        view = st.radio("Workspace", views, label_visibility="collapsed")
         st.divider()
         if view == "Search":
             profile = st.selectbox(
@@ -56,13 +58,15 @@ def main():
             sort_label = st.selectbox("Sort", options=list(SORT_OPTIONS))
             top_k = st.slider("Results", min_value=1, max_value=100, value=10, step=1)
             relevance_sort = SORT_OPTIONS[sort_label] == "relevance"
-            compare_profiles = st.toggle(
-                "Compare profiles",
-                value=False,
-                disabled=not relevance_sort,
-                help="Compare the same query across profiles",
-                key="compare_profiles",
-            )
+            compare_profiles = False
+            if settings.admin_mode:
+                compare_profiles = st.toggle(
+                    "Compare profiles",
+                    value=False,
+                    disabled=not relevance_sort,
+                    help="Compare the same query across profiles",
+                    key="compare_profiles",
+                )
             if not relevance_sort:
                 compare_profiles = False
         else:

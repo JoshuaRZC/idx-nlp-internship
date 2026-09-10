@@ -12,10 +12,11 @@ class ApiClientError(RuntimeError):
 
 
 class ApiClient:
-    def __init__(self, base_url, timeout_seconds=30.0, metrics_token=""):
+    def __init__(self, base_url, timeout_seconds=30.0, metrics_token="", session_id=""):
         self.base_url = base_url.rstrip("/")
         self.timeout_seconds = timeout_seconds
         self.metrics_token = metrics_token
+        self.session_id = session_id
         self.session = requests.Session()
 
     def search(self, query, top_k, sort_by, search_profile):
@@ -60,10 +61,13 @@ class ApiClient:
         return self._request("get", path, headers=headers)
 
     def _request(self, method, path, **kwargs):
+        headers = {"X-Search-Session-ID": self.session_id} if self.session_id else {}
+        headers.update(kwargs.pop("headers", {}))
         try:
             response = getattr(self.session, method)(
                 f"{self.base_url}{path}",
                 timeout=self.timeout_seconds,
+                headers=headers,
                 **kwargs,
             )
         except requests.RequestException as error:

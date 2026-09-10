@@ -13,6 +13,7 @@ import numpy as np
 
 
 DEFAULT_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+DEFAULT_MODEL_REVISION = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
 
 
 def safe_model_name(model_name: str) -> str:
@@ -41,11 +42,13 @@ class SemanticSearcher:
     def __init__(
         self,
         model_name: str = DEFAULT_MODEL_NAME,
+        model_revision: str = DEFAULT_MODEL_REVISION,
         model=None,
         local_files_only: bool = False,
         batch_size: int = 16,
     ):
         self.model_name = model_name
+        self.model_revision = model_revision
         self.model = model
         self.local_files_only = local_files_only
         self.batch_size = batch_size
@@ -190,6 +193,7 @@ class SemanticSearcher:
 
         self.model = SentenceTransformer(
             self.model_name,
+            revision=self.model_revision,
             local_files_only=self.local_files_only,
         )
 

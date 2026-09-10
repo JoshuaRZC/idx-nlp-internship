@@ -11,7 +11,7 @@ from src.real_estate_nlp.entity_extractor import EntityExtractor
 from src.real_estate_nlp.listing_summarizer import ListingSummarizer
 from src.real_estate_nlp.query_intent_classifier import QueryIntentClassifier
 from src.real_estate_nlp.query_parser import QueryParser
-from src.real_estate_nlp.search_service import SearchService
+from src.real_estate_nlp.search_service import CrossEncoderReranker, SearchService
 
 
 LOGGER = logging.getLogger(__name__)
@@ -56,6 +56,9 @@ class ApiContainer:
             parser = QueryParser(intent_classifier=self.intent_classifier)
             self.search_service = self.search_service or SearchService.from_active_snapshot(
                 parser=parser,
+                reranker=CrossEncoderReranker(
+                    queue_timeout_seconds=self.settings.rerank_queue_timeout_seconds,
+                ),
                 search_root=self.settings.search_root,
             )
             self.entity_extractor = self.entity_extractor or EntityExtractor()

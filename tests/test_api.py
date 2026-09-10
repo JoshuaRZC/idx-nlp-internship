@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from src.real_estate_nlp.api.app import create_app
 from src.real_estate_nlp.api.config import ApiSettings
 from src.real_estate_nlp.api.container import ApiContainer
-from src.real_estate_nlp.search_service import SearchUnavailableError
+from src.real_estate_nlp.search_service import RerankerBusyError, SearchUnavailableError
 
 
 class FakeStore:
@@ -14,6 +14,7 @@ class FakeStore:
         self.fail_ping = fail_ping
         self.values = {}
         self.closed = False
+        self.rate_limit_clients = []
 
     def ping(self):
         if self.fail_ping:
@@ -32,7 +33,8 @@ class FakeStore:
     def set_json(self, key, value, _ttl_seconds):
         self.values[key] = value
 
-    def allow_request(self, _client_ip, _limit, _window_seconds):
+    def allow_request(self, client_id, _limit, _window_seconds):
+        self.rate_limit_clients.append(client_id)
         return self.allowed, 500
 
     def record_demo_event(self, event, _max_events, _ttl_seconds):
@@ -261,6 +263,25 @@ def test_rate_limit_returns_retry_after_header():
     assert response.headers["Retry-After"] == "1"
 
 
+def test_rate_limit_uses_a_valid_streamlit_session_id_and_falls_back_to_ip():
+    store = FakeStore()
+    client, _ = make_client(store=store)
+    with client:
+        client.post(
+            "/parse-query",
+            json={"text": "homes in Irvine"},
+            headers={"X-Search-Session-ID": "a" * 32},
+        )
+        client.post(
+            "/parse-query",
+            json={"text": "homes in Irvine"},
+            headers={"X-Search-Session-ID": "not-a-session"},
+        )
+
+    assert store.rate_limit_clients[0] == f"session:{'a' * 32}"
+    assert store.rate_limit_clients[1].startswith("ip:")
+
+
 def test_unready_process_keeps_liveness_but_blocks_nlp_endpoints():
     client, _ = make_client(store=FakeStore(fail_ping=True))
     with client:
@@ -287,6 +308,20 @@ def test_search_dependency_failure_returns_503():
 
     assert response.status_code == 503
     assert response.json()["error"]["code"] == "search_unavailable"
+
+
+def test_quality_queue_timeout_returns_a_retryable_response():
+    class BusySearch(FakeSearchService):
+        def search(self, *args, **kwargs):
+            raise RerankerBusyError("busy")
+
+    client, _ = make_client(search_service=BusySearch())
+    with client:
+        response = client.post("/search", json={"query": "homes in Irvine"})
+
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "quality_search_busy"
+    assert response.headers["Retry-After"] == "5"
 
 
 def test_listing_detail_is_pass_only_and_cached():

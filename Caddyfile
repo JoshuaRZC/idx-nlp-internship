@@ -1,0 +1,16 @@
+{
+    email {$CADDY_EMAIL}
+}
+
+{$PUBLIC_APP_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy demo:8501
+}
+
+{$ADMIN_APP_DOMAIN} {
+    basic_auth {
+        {$ADMIN_USERNAME} {$ADMIN_PASSWORD_HASH}
+    }
+    encode zstd gzip
+    reverse_proxy demo_admin:8501
+}

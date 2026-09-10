@@ -9,7 +9,12 @@ from src.real_estate_nlp.keyword_search import BM25Searcher
 from src.real_estate_nlp.listing_repository import ListingRepository
 from src.real_estate_nlp.query_parser import QueryParser
 from src.real_estate_nlp.schema_validator import SchemaValidator
-from src.real_estate_nlp.search_service import CrossEncoderReranker, SearchService, SearchUnavailableError
+from src.real_estate_nlp.search_service import (
+    CrossEncoderReranker,
+    RerankerBusyError,
+    SearchService,
+    SearchUnavailableError,
+)
 from src.real_estate_nlp.search_snapshot import SearchSnapshot, SearchSnapshotBuilder, read_jsonl
 from src.real_estate_nlp.semantic_search import SemanticSearcher
 from src.real_estate_nlp.signal_search import SignalSearcher
@@ -81,6 +86,24 @@ class BrokenSearcher:
 class FakeReranker:
     def rerank(self, _query, records):
         return {record["listing_id"]: 10.0 if record["listing_id"] == "2" else 1.0 for record in records}
+
+
+class FakeCrossEncoder:
+    def predict(self, pairs):
+        return [float(index) for index, _pair in enumerate(pairs, start=1)]
+
+
+def test_cross_encoder_reranker_rejects_requests_after_queue_timeout():
+    semaphore = threading.BoundedSemaphore(1)
+    assert semaphore.acquire(blocking=False)
+    reranker = CrossEncoderReranker(
+        model=FakeCrossEncoder(),
+        semaphore=semaphore,
+        queue_timeout_seconds=0,
+    )
+
+    with pytest.raises(RerankerBusyError):
+        reranker.rerank("pool home", [{"listing_id": "1", "city": "Irvine"}])
 
 
 def records():
