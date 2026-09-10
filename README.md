@@ -68,7 +68,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Listing summarization | Complete |
 | Fair Housing compliance checker | Complete |
 | FastAPI service | Complete |
-| Demo interface | Implemented |
+| Demo interface | Complete |
 
 ## Environment Setup
 
@@ -179,7 +179,15 @@ Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The cor
 
 ## Product Demo
 
-The Streamlit demo is a product-facing search workspace built on the public API. It shows applied filters and preferences, listing summaries and details, an optional same-query profile comparison, and a separate metrics view.
+The Streamlit demo is a product-facing search workspace built on the API. It supports natural-language search, public listing facts, generated summaries, batch-loaded original descriptions, relevance or price sorting, and paginated result sets. A compact line separates parsed hard filters from soft preferences without exposing internal retrieval traces.
+
+The profile control provides:
+
+- `fast`: BM25-only lexical retrieval.
+- `balanced`: dense, BM25, and listing-signal retrieval fused with RRF.
+- `quality`: `balanced` retrieval plus Cross Encoder reranking; the default profile.
+
+For relevance sorting, the optional comparison mode runs the same query across all three profiles concurrently. The Metrics view shows aggregate and per-profile client/API P50, P90, and P95 latency, query volume, zero-result rate, profile usage, and helpful/not-helpful feedback.
 
 Run the complete local stack, then open `http://127.0.0.1:8501`:
 
@@ -196,7 +204,7 @@ uvicorn src.real_estate_nlp.api.app:app --reload
 streamlit run demo/app.py
 ```
 
-The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. The Metrics view reports overall and profile-level P50, P90, and P95 latency. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
+The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
 
 ## Testing
 
@@ -220,9 +228,10 @@ pytest tests/test_week8.py
 pytest tests/test_week9.py
 pytest tests/test_api.py
 pytest tests/test_demo_metrics.py
+pytest tests/test_demo_presentation.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, readiness behavior, and demo-metrics aggregation.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, readiness behavior, demo-metrics aggregation, and public-field presentation helpers.
 
 ## Current Artifacts
 
@@ -394,6 +403,21 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/09_fair_housing_compliance.ipynb`
   - Week 9 label profile, compliance metrics, protected-class recall, and local error review.
 
+- `notebooks/10_search_service_evaluation.ipynb`
+  - Week 10 snapshot profile, retrieval and reranking comparisons, error analysis, parallel-retrieval checks, and frozen test evaluation.
+
+- `notebooks/11_product_integration_evaluation.ipynb`
+  - Week 11 live API benchmark, held-out product relevance checks, cache-aware latency, batch-detail validation, and runtime-metrics review.
+
+- `demo/app.py`
+  - Streamlit product interface for search, profile comparison, listing details, feedback, and metrics.
+
+- `demo/api_client.py`
+  - API client used by the demo for search, concurrent profile comparison, batch details, telemetry, and metrics.
+
+- `src/real_estate_nlp/api/demo_metrics.py`
+  - Aggregates anonymous demo events into overall and profile-level latency and usage metrics.
+
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
 
@@ -420,6 +444,12 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week9_report.md`
   - Week 9 Fair Housing compliance summary, local evaluation results, and validation notes.
+
+- `docs/week10_report.md`
+  - Week 10 search-service integration, REST API, and frozen retrieval evaluation summary.
+
+- `docs/week11_report.md`
+  - Week 11 product demo, telemetry, API-level evaluation, and validation summary.
 
 - `docs/fair_housing_rules.md`
   - Federal Fair Housing screening scope, review outcomes, integration example, and policy-maintenance guidance.
@@ -506,6 +536,19 @@ Current Fair Housing compliance results on the local Week 9 evaluation set:
 | Clean-listing false-positive rate | 0.000 |
 
 The local evaluation set contains 204 synthetic policy examples and 60 manually reviewed neutral MLS remarks. The synthetic examples cover explicit violations, review-sensitive wording, paraphrases, longer contexts, multiple signals, and neutral counterexamples. The `federal-1.1` rules close the identified coverage and boundary gaps on this frozen local set. It remains ignored because it includes local MLS text.
+
+Current search-service results on the frozen Week 10 final-test set:
+
+| Metric | Value |
+| --- | ---: |
+| Held-out queries | 12 |
+| Precision@5 | 0.867 |
+| NDCG@5 | 0.901 |
+| MRR@5 | 0.917 |
+| Local P50 latency | 279.58 ms |
+| Local P95 latency | 535.72 ms |
+
+The Week 11 notebook evaluates the same service through the public API, including profile behavior, hard-filter integrity, cache-aware latency, and the batch listing-details flow. It does not store local benchmark output or demo telemetry in the repository.
 
 ## Final Deliverables
 
