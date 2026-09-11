@@ -58,7 +58,9 @@ class ApiContainer:
                 parser=parser,
                 reranker=CrossEncoderReranker(
                     queue_timeout_seconds=self.settings.rerank_queue_timeout_seconds,
+                    max_remark_chars=self.settings.rerank_max_remark_chars,
                 ),
+                rerank_k=self.settings.rerank_k,
                 search_root=self.settings.search_root,
             )
             self.entity_extractor = self.entity_extractor or EntityExtractor()

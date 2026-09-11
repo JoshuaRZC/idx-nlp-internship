@@ -88,6 +88,11 @@ class FakeReranker:
         return {record["listing_id"]: 10.0 if record["listing_id"] == "2" else 1.0 for record in records}
 
 
+class BusyReranker:
+    def rerank(self, _query, _records):
+        raise RerankerBusyError("busy")
+
+
 class FakeCrossEncoder:
     def predict(self, pairs):
         return [float(index) for index, _pair in enumerate(pairs, start=1)]
@@ -104,6 +109,19 @@ def test_cross_encoder_reranker_rejects_requests_after_queue_timeout():
 
     with pytest.raises(RerankerBusyError):
         reranker.rerank("pool home", [{"listing_id": "1", "city": "Irvine"}])
+
+
+def test_search_propagates_a_reranker_queue_timeout():
+    searcher = SearchService(
+        snapshot(),
+        FakeRepository({"1", "2"}),
+        parser=QueryParser(cities=["Galt"]),
+        validator=SchemaValidator(cities=["Galt"]),
+        reranker=BusyReranker(),
+    )
+
+    with pytest.raises(RerankerBusyError):
+        searcher.search("Find homes in Galt")
 
 
 def records():

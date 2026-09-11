@@ -17,6 +17,8 @@ class ApiSettings:
     rate_limit_requests: int = 10
     rate_limit_window_seconds: int = 1
     rerank_queue_timeout_seconds: float = 20.0
+    rerank_k: int = 50
+    rerank_max_remark_chars: int = 1_500
     demo_metrics_token: str = ""
     demo_metrics_max_events: int = 10_000
     demo_metrics_ttl_seconds: int = 604_800
@@ -42,6 +44,10 @@ class ApiSettings:
             ),
             rerank_queue_timeout_seconds=float(
                 os.getenv("API_RERANK_QUEUE_TIMEOUT_SECONDS", cls.rerank_queue_timeout_seconds)
+            ),
+            rerank_k=int(os.getenv("API_RERANK_K", cls.rerank_k)),
+            rerank_max_remark_chars=int(
+                os.getenv("API_RERANK_MAX_REMARK_CHARS", cls.rerank_max_remark_chars)
             ),
             demo_metrics_token=os.getenv("API_DEMO_METRICS_TOKEN", cls.demo_metrics_token),
             demo_metrics_max_events=int(

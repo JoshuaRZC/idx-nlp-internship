@@ -54,12 +54,14 @@ class CrossEncoderReranker:
         model=None,
         semaphore=None,
         queue_timeout_seconds=20.0,
+        max_remark_chars=MAX_REMARK_CHARS,
     ):
         self.model_name = model_name
         self.model_revision = model_revision
         self.model = model
         self.semaphore = semaphore or threading.BoundedSemaphore(1)
         self.queue_timeout_seconds = queue_timeout_seconds
+        self.max_remark_chars = max_remark_chars
 
     def rerank(self, query, records):
         if not records:
@@ -73,14 +75,17 @@ class CrossEncoderReranker:
 
                 self.model = CrossEncoder(self.model_name, revision=self.model_revision)
 
-            pairs = [(query, self._document(record)) for record in records]
+            pairs = [
+                (query, self._document(record, max_remark_chars=self.max_remark_chars))
+                for record in records
+            ]
             scores = self.model.predict(pairs)
         finally:
             self.semaphore.release()
         return {record["listing_id"]: float(score) for record, score in zip(records, scores)}
 
     @staticmethod
-    def _document(record):
+    def _document(record, max_remark_chars=MAX_REMARK_CHARS):
         facts = " | ".join(
             f"{name}: {record[name]}"
             for name in ("city", "price", "beds", "baths", "sqft")
@@ -97,7 +102,7 @@ class CrossEncoderReranker:
         if facts:
             parts.append(f"Listing facts: {facts}")
         if remarks:
-            parts.append(f"Remarks: {remarks[:CrossEncoderReranker.MAX_REMARK_CHARS]}")
+            parts.append(f"Remarks: {remarks[:max_remark_chars]}")
         if signal_text:
             parts.append(f"Features: {signal_text}")
         if summary:
@@ -704,6 +709,8 @@ class SearchService:
         started_at = time.perf_counter()
         try:
             scores = self.reranker.rerank(query, records)
+        except RerankerBusyError:
+            raise
         except Exception:
             if "cross_encoder" not in meta["degraded_components"]:
                 meta["degraded_components"].append("cross_encoder")
