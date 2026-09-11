@@ -33,9 +33,9 @@ PAGE_SIZE = 10
 
 def main():
     st.set_page_config(page_title="IDX Exchange Search", page_icon="I", layout="wide")
-    _apply_theme()
     _initialize_state()
     settings = WebSettings.from_env()
+    _apply_theme()
     client = ApiClient(
         settings.api_base_url,
         timeout_seconds=settings.request_timeout_seconds,
@@ -402,6 +402,24 @@ def _latency_rows(metrics, source):
 
 
 def _apply_theme():
+    sidebar_background_css = """
+        [data-testid="stSidebar"] {
+          background-color: #262b33;
+          background-image:
+            linear-gradient(
+              to bottom,
+              #262b33 0%,
+              #262b33 44%,
+              rgba(38, 43, 51, 0.94) 60%,
+              rgba(38, 43, 51, 0.45) 82%,
+              rgba(38, 43, 51, 0.16) 100%
+            ),
+            url("/app/static/california-sidebar-background.jpg");
+          background-position: top center, bottom center;
+          background-repeat: no-repeat;
+          background-size: 100% 100%, auto 520px;
+        }
+        """
     st.markdown(
         """
         <style>
@@ -486,8 +504,9 @@ def _apply_theme():
           text-align: center;
         }
         .public-results-spacer { height: 0.35rem; }
+        __SIDEBAR_BACKGROUND_CSS__
         </style>
-        """,
+        """.replace("__SIDEBAR_BACKGROUND_CSS__", sidebar_background_css),
         unsafe_allow_html=True,
     )
 
