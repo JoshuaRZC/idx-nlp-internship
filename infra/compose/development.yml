@@ -63,9 +63,22 @@ services:
       dockerfile: infra/containers/web_dockerfile
     environment:
       API_BASE_URL: http://api:8000
-      WEB_METRICS_TOKEN: ${API_WEB_METRICS_TOKEN:-}
     ports:
       - "127.0.0.1:8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  web_admin:
+    build:
+      context: ../..
+      dockerfile: infra/containers/web_dockerfile
+    environment:
+      API_BASE_URL: http://api:8000
+      WEB_ADMIN_MODE: "true"
+      WEB_METRICS_TOKEN: ${API_WEB_METRICS_TOKEN:-}
+    ports:
+      - "127.0.0.1:8502:8501"
     depends_on:
       api:
         condition: service_healthy

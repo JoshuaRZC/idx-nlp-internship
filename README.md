@@ -198,7 +198,7 @@ The profile control provides:
 
 The public UI exposes the three profiles. The administrator UI additionally provides same-query profile comparison and a Metrics view with aggregate and per-profile client/API P50, P90, and P95 latency, query volume, zero-result rate, profile usage, and helpful/not-helpful feedback.
 
-Run the complete local stack, then open `http://127.0.0.1:8501`:
+Run the complete local stack, then open the public workspace at `http://127.0.0.1:8501`. The local administrator workspace is available at `http://127.0.0.1:8502`; it exposes Metrics and profile comparison without adding Caddy Basic Auth to local development.
 
 ```bash
 docker compose -f infra/compose/development.yml up --build
