@@ -89,7 +89,7 @@ def main():
 
 def _render_search(client, profile, sort_by, top_k, compare_profiles):
     st.markdown("# Intelligent Home Search")
-    st.caption("Search active, compliance-screened listings.")
+    st.caption("Search active California listings that have passed compliance screening.")
 
     with st.form("search-form", clear_on_submit=False):
         st.markdown("#### Describe your ideal home")
