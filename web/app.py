@@ -84,22 +84,41 @@ def main():
         _render_metrics(client)
         return
 
-    _render_search(client, profile, SORT_OPTIONS[sort_label], top_k, compare_profiles)
+    _render_search(
+        client,
+        profile,
+        SORT_OPTIONS[sort_label],
+        top_k,
+        compare_profiles,
+        public_mode=not settings.admin_mode,
+    )
 
 
-def _render_search(client, profile, sort_by, top_k, compare_profiles):
-    st.markdown("# Intelligent Home Search")
+def _render_search(client, profile, sort_by, top_k, compare_profiles, public_mode):
+    st.markdown("## Intelligent Home Search" if public_mode else "# Intelligent Home Search")
     st.caption("Search active California listings that have passed compliance screening.")
 
     with st.form("search-form", clear_on_submit=False):
         st.markdown("#### Describe your ideal home")
-        query = st.text_input(
-            "Describe your ideal home",
-            placeholder="3 bed home in Irvine under $900k with a backyard",
-            label_visibility="collapsed",
-            key="query_input",
-        )
-        submitted = st.form_submit_button("Search", type="primary", use_container_width=True)
+        if public_mode:
+            query_column, button_column = st.columns([4, 1])
+            with query_column:
+                query = st.text_input(
+                    "Describe your ideal home",
+                    placeholder="3 bed home in Irvine under $900k with a backyard",
+                    label_visibility="collapsed",
+                    key="query_input",
+                )
+            with button_column:
+                submitted = st.form_submit_button("Search", type="primary", use_container_width=True)
+        else:
+            query = st.text_input(
+                "Describe your ideal home",
+                placeholder="3 bed home in Irvine under $900k with a backyard",
+                label_visibility="collapsed",
+                key="query_input",
+            )
+            submitted = st.form_submit_button("Search", type="primary", use_container_width=True)
 
     if submitted:
         _run_search(client, query, profile, sort_by, top_k, compare_profiles)
@@ -461,13 +480,13 @@ def _apply_theme():
           border-radius: 6px;
           background: #ffffff;
         }
-        .stFormSubmitButton > button, .stButton > button {
+        .stFormSubmitButton > button {
           border-radius: 5px;
           background: #2563eb !important;
           color: #ffffff !important;
           border: 1px solid #2563eb !important;
         }
-        .stFormSubmitButton > button:hover, .stButton > button:hover {
+        .stFormSubmitButton > button:hover {
           background: #1d4ed8 !important;
           border-color: #1d4ed8 !important;
         }
