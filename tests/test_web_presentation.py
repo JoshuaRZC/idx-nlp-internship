@@ -1,4 +1,4 @@
-from demo.presentation import applied_filter_chips, format_price, format_property_facts
+from web.presentation import applied_filter_chips, format_price, format_property_facts
 
 
 def test_applied_filter_chips_separate_hard_filters_and_preferences():

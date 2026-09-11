@@ -161,7 +161,7 @@ class ReadyResponse(ApiModel):
     snapshot_id: str | None = None
 
 
-class DemoEventRequest(ApiModel):
+class WebEventRequest(ApiModel):
     event_type: Literal["search", "feedback"]
     session_id: str = Field(..., min_length=8, max_length=100)
     search_profile: Literal["fast", "balanced", "quality"] | None = None
@@ -180,7 +180,7 @@ class DemoEventRequest(ApiModel):
         return value
 
 
-class DemoEventResponse(ApiModel):
+class WebEventResponse(ApiModel):
     accepted: bool
 
 
@@ -191,7 +191,7 @@ class LatencySummary(ApiModel):
     p95: float | None = None
 
 
-class DemoMetricsResponse(ApiModel):
+class WebMetricsResponse(ApiModel):
     query_volume: int
     unique_sessions: int
     comparison_searches: int

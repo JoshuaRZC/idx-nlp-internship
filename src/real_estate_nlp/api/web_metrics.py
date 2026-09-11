@@ -1,4 +1,4 @@
-"""Aggregation helpers for local product-demo analytics."""
+"""Aggregation helpers for local product-web analytics."""
 
 from __future__ import annotations
 
@@ -9,8 +9,8 @@ from collections import Counter
 PROFILE_NAMES = ("fast", "balanced", "quality")
 
 
-def summarize_demo_events(events):
-    """Return privacy-preserving search and feedback metrics from demo events."""
+def summarize_web_events(events):
+    """Return privacy-preserving search and feedback metrics from web events."""
     searches = [event for event in events if event.get("event_type") == "search"]
     feedback = [event for event in events if event.get("event_type") == "feedback"]
     helpful = [event for event in feedback if event.get("feedback") == "helpful"]

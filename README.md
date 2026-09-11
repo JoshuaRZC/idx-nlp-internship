@@ -14,7 +14,7 @@ The project works with MLS listing data and focuses on the language inside prope
 - Classify real estate search intent from query wording
 - Generate concise listing summaries for search results and alerts
 - Flag Fair Housing compliance risks in listing text
-- Expose the system through a FastAPI service and demo interface
+- Expose the system through a FastAPI service and web application
 
 ## Data Sources
 
@@ -39,16 +39,22 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 │   ├── processed/        # Derived samples, labels, taxonomy files, and cleaned outputs
 │   └── models/           # Local embeddings, FAISS indexes, and trained model artifacts
 ├── docs/                 # Technical notes, reports, schema references, and final writeups
+├── infra/                # Compose files, containers, proxy, database init, and local env template
+│   ├── compose/          # Development and production Compose definitions
+│   ├── containers/       # API and web container definitions
+│   ├── database/         # MySQL application-user initialization
+│   ├── env/              # Local production template; real configuration is ignored
+│   └── proxy/            # Caddy reverse-proxy configuration
 ├── notebooks/            # Exploratory analysis and evaluation notebooks
+├── requirements/         # Separate dependency sets for the API and web application
 ├── scripts/              # Command-line entry points for local data and artifact tasks
 ├── src/
 │   └── real_estate_nlp/  # Reusable project package for pipeline and API code
 │       └── api/          # FastAPI application code
 ├── tests/                # Pytest test suite
-├── docker-compose.yml    # Local MySQL, Redis, and API services
-├── docker-compose.production.yml  # Production application stack
-├── Caddyfile             # HTTPS routing and administrator access control
-├── requirements.txt      # Python dependencies
+├── web/                  # Streamlit product interface and Streamlit configuration
+├── .dockerignore         # Root build-context exclusions
+├── .gitignore            # Repository-wide local artifact exclusions
 └── README.md
 ```
 
@@ -70,7 +76,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Listing summarization | Complete |
 | Fair Housing compliance checker | Complete |
 | FastAPI service | Complete |
-| Demo interface | Complete |
+| Web application | Complete |
 | Production deployment | Complete |
 
 ## Environment Setup
@@ -80,7 +86,7 @@ Use Python 3.11 or newer.
 ```bash
 conda create -n idx-nlp python=3.11
 conda activate idx-nlp
-pip install -r requirements.txt
+pip install -r requirements/api.txt
 ```
 
 ## Data Setup
@@ -97,8 +103,8 @@ data/raw/
 Start the local MySQL container and check container status:
 
 ```bash
-docker compose up -d mysql redis
-docker compose ps
+docker compose -f infra/compose/development.yml up -d mysql redis
+docker compose -f infra/compose/development.yml ps
 ```
 
 The MySQL container initializes the `real_estate` database and runs SQL files from `data/raw/` on first startup. Redis provides API caching and shared rate limiting.
@@ -153,7 +159,7 @@ The workflow currently extracts listing samples, builds taxonomy seed terms, con
 
 ## API
 
-Build an active pass-only search snapshot before starting the API. The snapshot and trained intent model remain local under `data/models/` and are mounted read-only in the container. Rebuild the snapshot after updating the project to include the compliance-screened original listing descriptions used by the product demo:
+Build an active pass-only search snapshot before starting the API. The snapshot and trained intent model remain local under `data/models/` and are mounted read-only in the container. Rebuild the snapshot after updating the project to include the compliance-screened original listing descriptions used by the product web application:
 
 ```bash
 python scripts/build_search_snapshot.py
@@ -162,17 +168,17 @@ python scripts/build_search_snapshot.py
 Run the complete local stack:
 
 ```bash
-docker compose up --build
+docker compose -f infra/compose/development.yml up --build
 ```
 
 For code iteration, start MySQL and Redis in Docker, then run the API from the Conda environment:
 
 ```bash
-docker compose up -d mysql redis
+docker compose -f infra/compose/development.yml up -d mysql redis
 uvicorn src.real_estate_nlp.api.app:app --reload
 ```
 
-Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The core application endpoints are `/search`, `/listings/{listing_id}`, `/listings/details`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The demo also uses `/demo/events` and `/demo/metrics` for anonymous telemetry and its metrics view. In production, the API is internal-only and exposed to operators through an SSH tunnel rather than a public API route.
+Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The core application endpoints are `/search`, `/listings/{listing_id}`, `/listings/details`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The web application also uses `/web/events` and `/web/metrics` for anonymous telemetry and its metrics view. In production, the API is internal-only and exposed to operators through an SSH tunnel rather than a public API route.
 
 `/search` supports three retrieval profiles while preserving the same compliance boundary and parsed hard filters:
 
@@ -180,9 +186,9 @@ Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The cor
 - `balanced`: dense, BM25, and listing-signal retrieval fused with RRF.
 - `quality` (default): `balanced` retrieval plus Cross Encoder reranking.
 
-## Product Demo
+## Web Application
 
-The Streamlit demo is a product-facing search workspace built on the API. It supports natural-language search, public listing facts, generated summaries, batch-loaded original descriptions, relevance or price sorting, and paginated result sets. A compact line separates parsed hard filters from soft preferences without exposing internal retrieval traces.
+The Streamlit web application is a product-facing search workspace built on the API. It supports natural-language search, public listing facts, generated summaries, batch-loaded original descriptions, relevance or price sorting, and paginated result sets. A compact line separates parsed hard filters from soft preferences without exposing internal retrieval traces.
 
 The profile control provides:
 
@@ -195,34 +201,56 @@ The public UI exposes the three profiles. The administrator UI additionally prov
 Run the complete local stack, then open `http://127.0.0.1:8501`:
 
 ```bash
-docker compose up --build
+docker compose -f infra/compose/development.yml up --build
 ```
 
-For local UI iteration, install the demo dependencies and point Streamlit at a running API:
+For local UI iteration, install the web dependencies and point Streamlit at a running API:
 
 ```bash
-pip install -r requirements-demo.txt
-docker compose up -d mysql redis
+pip install -r requirements/web.txt
+docker compose -f infra/compose/development.yml up -d mysql redis
 uvicorn src.real_estate_nlp.api.app:app --reload
-streamlit run demo/app.py
+cd web && PYTHONPATH=.. streamlit run app.py
 ```
 
-The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
+The web application records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /web/metrics` can be protected by setting `API_WEB_METRICS_TOKEN`; set the matching `WEB_METRICS_TOKEN` for the Streamlit service.
 
 ## Production Deployment
 
 The complete product is deployed on Oracle Cloud with Caddy as the public HTTPS entry point. The current public validation deployment is available at [IDX Exchange Search](https://146-235-204-68.nip.io). The administrator workspace is separately protected with Caddy Basic Auth.
 
-The production stack runs public/admin Streamlit services, FastAPI, MySQL, Redis, and Caddy through `docker-compose.production.yml`. FastAPI is bound to the VM loopback interface; MySQL, Redis, and Streamlit remain on the Docker network. This preserves the same API, active pass-only snapshot, structured hard-filter path, and retrieval profiles used locally.
+The production stack runs public/admin Streamlit services, FastAPI, MySQL, Redis, and Caddy through `infra/compose/production.yml`. FastAPI is bound to the VM loopback interface; MySQL, Redis, and Streamlit remain on the Docker network. This preserves the same API, active pass-only snapshot, structured hard-filter path, and retrieval profiles used locally.
 
-Production settings are local-only. Use `.env.production.example` as a template, but do not commit `.env.production`, raw MLS SQL, snapshots, or model artifacts. The MySQL initialization script creates a dedicated application account with read-only access to `rets_property`.
+Production settings are local-only. Use `infra/env/production_template.env` as a template, but do not commit `infra/env/production.env`, raw MLS SQL, snapshots, or model artifacts. The MySQL initialization script creates a dedicated application account with read-only access to `rets_property`.
 
 ```bash
-docker compose \
-  --env-file .env.production \
-  -f docker-compose.production.yml \
-  up -d --build
+docker compose -p idx-nlp-internship \
+  --env-file infra/env/production.env \
+  -f infra/compose/production.yml \
+  up -d --build --remove-orphans
 ```
+
+### Existing VM Migration
+
+For a VM already running the previous layout, preserve the existing Compose project name and volumes. From the repository root on the VM:
+
+```bash
+git pull --ff-only
+mkdir -p infra/env
+cp .env.production infra/env/production.env
+perl -pi -e 's/^API_DEMO_METRICS_TOKEN=/API_WEB_METRICS_TOKEN=/' infra/env/production.env
+chmod 600 infra/env/production.env
+docker compose -p idx-nlp-internship \
+  --env-file infra/env/production.env \
+  -f infra/compose/production.yml \
+  config -q
+docker compose -p idx-nlp-internship \
+  --env-file infra/env/production.env \
+  -f infra/compose/production.yml \
+  up -d --build --remove-orphans
+```
+
+The renamed `web` and `web_admin` services replace the former UI containers; `--remove-orphans` stops those old containers after the new configuration is applied. The Redis telemetry key is intentionally new, so metrics begin fresh after this migration. Verify `/ready`, public search, and administrator Metrics before removing the retained root `.env.production` fallback file. Do not use `docker compose down -v`.
 
 The current deployment uses a `nip.io` hostname for validation. A stable owned domain and reserved public IP are recommended for longer-term use.
 
@@ -247,12 +275,12 @@ pytest tests/test_week7.py
 pytest tests/test_week8.py
 pytest tests/test_week9.py
 pytest tests/test_api.py
-pytest tests/test_demo_config.py
-pytest tests/test_demo_metrics.py
-pytest tests/test_demo_presentation.py
+pytest tests/test_web_config.py
+pytest tests/test_web_metrics.py
+pytest tests/test_web_presentation.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, quality-rerank queue behavior, readiness behavior, public/admin demo configuration, demo-metrics aggregation, and public-field presentation helpers.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, quality-rerank queue behavior, readiness behavior, public/admin web configuration, web-metrics aggregation, and public-field presentation helpers.
 
 ## Current Artifacts
 
@@ -433,14 +461,14 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/12_deployment_validation.ipynb`
   - Week 12 SSH-tunnel validation of the deployed API, including release parity, held-out search quality, cache-aware latency, batch details, runtime metrics, and quality-rerank queue behavior.
 
-- `demo/app.py`
+- `web/app.py`
   - Streamlit product interface for search, profile comparison, listing details, feedback, and metrics.
 
-- `demo/api_client.py`
-  - API client used by the demo for search, concurrent profile comparison, batch details, telemetry, and metrics.
+- `web/api_client.py`
+  - API client used by the web application for search, concurrent profile comparison, batch details, telemetry, and metrics.
 
-- `src/real_estate_nlp/api/demo_metrics.py`
-  - Aggregates anonymous demo events into overall and profile-level latency and usage metrics.
+- `src/real_estate_nlp/api/web_metrics.py`
+  - Aggregates anonymous web events into overall and profile-level latency and usage metrics.
 
 - `docs/week1_report.md`
   - Week 1 summary and validation notes.
@@ -473,12 +501,12 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
   - Week 10 search-service integration, REST API, and frozen retrieval evaluation summary.
 
 - `docs/week11_report.md`
-  - Week 11 product demo, telemetry, API-level evaluation, and validation summary.
+  - Week 11 web application, telemetry, API-level evaluation, and validation summary.
 
 - `docs/week12_report.md`
   - Week 12 production deployment, access boundaries, production artifacts, and validation summary.
 
-- `docker-compose.production.yml`, `Caddyfile`, and `.env.production.example`
+- `infra/compose/production.yml`, `infra/proxy/caddy_config`, and `infra/env/production_template.env`
   - Production service topology, HTTPS/admin access configuration, and non-sensitive environment template.
 
 - `docs/fair_housing_rules.md`
@@ -578,7 +606,7 @@ Current search-service results on the frozen Week 10 final-test set:
 | Local P50 latency | 279.58 ms |
 | Local P95 latency | 535.72 ms |
 
-The Week 11 notebook evaluates the local API, while the Week 12 notebook runs the same release-parity and latency checks against the deployed internal API through an SSH tunnel. Neither notebook stores benchmark output, credentials, or demo telemetry in the repository.
+The Week 11 notebook evaluates the local API, while the Week 12 notebook runs the same release-parity and latency checks against the deployed internal API through an SSH tunnel. Neither notebook stores benchmark output, credentials, or web telemetry in the repository.
 
 ## Final Deliverables
 
@@ -587,7 +615,7 @@ The Week 11 notebook evaluates the local API, while the Week 12 notebook runs th
 - API documentation
 - Data schema notes
 - Test coverage report
-- Demo interface
+- Web application
 - Production deployment configuration
 - Final technical report with metrics and analysis
 - Presentation materials

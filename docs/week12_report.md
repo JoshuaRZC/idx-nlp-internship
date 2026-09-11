@@ -17,16 +17,16 @@ This week deployed the complete IDX Exchange product to Oracle Cloud. The produc
 
 ## Current Artifacts
 
-- `docker-compose.production.yml`
+- `infra/compose/production.yml`
   - Production service topology, health checks, restart policy, local log rotation, and loopback-only API publishing.
 
-- `Caddyfile`
+- `infra/proxy/caddy_config`
   - HTTPS reverse proxy for public and administrator sites, including administrator Basic Auth.
 
-- `.env.production.example`
+- `infra/env/production_template.env`
   - Template for deployment-only domains, paths, secrets, and service limits.
 
-- `deployment/mysql-init/90-create-search-app.sh`
+- `infra/database/mysql_readonly_user_init.sh`
   - Creates the read-only MySQL account during first database initialization.
 
 - `notebooks/12_deployment_validation.ipynb`

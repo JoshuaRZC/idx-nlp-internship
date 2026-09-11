@@ -15,12 +15,12 @@ from starlette.concurrency import run_in_threadpool
 
 from src.real_estate_nlp.api.config import ApiSettings
 from src.real_estate_nlp.api.container import ApiContainer
-from src.real_estate_nlp.api.demo_metrics import summarize_demo_events
+from src.real_estate_nlp.api.web_metrics import summarize_web_events
 from src.real_estate_nlp.api.schemas import (
     ComplianceResponse,
-    DemoEventRequest,
-    DemoEventResponse,
-    DemoMetricsResponse,
+    WebEventRequest,
+    WebEventResponse,
+    WebMetricsResponse,
     EntityResponse,
     HealthResponse,
     IntentResponse,
@@ -47,7 +47,7 @@ RATE_LIMITED_PATHS = {
     "/check-compliance",
     "/classify-intent",
     "/listings/details",
-    "/demo/events",
+    "/web/events",
 }
 SEARCH_SESSION_ID_PATTERN = re.compile(r"[a-f0-9]{32}")
 
@@ -275,26 +275,26 @@ def create_app(settings: ApiSettings | None = None, container: ApiContainer | No
             lambda: container.intent_classifier.predict(body.text),
         )
 
-    @app.post("/demo/events", response_model=DemoEventResponse, tags=["demo"])
-    async def record_demo_event(body: DemoEventRequest):
+    @app.post("/web/events", response_model=WebEventResponse, tags=["web"])
+    async def record_web_event(body: WebEventRequest):
         _require_ready(container)
         event = body.dict(exclude_none=True)
         event["recorded_at"] = int(time.time() * 1000)
         await run_in_threadpool(
-            container.store.record_demo_event,
+            container.store.record_web_event,
             event,
-            settings.demo_metrics_max_events,
-            settings.demo_metrics_ttl_seconds,
+            settings.web_metrics_max_events,
+            settings.web_metrics_ttl_seconds,
         )
         return {"accepted": True}
 
-    @app.get("/demo/metrics", response_model=DemoMetricsResponse, tags=["demo"])
-    async def demo_metrics(x_demo_metrics_token: str | None = Header(default=None)):
+    @app.get("/web/metrics", response_model=WebMetricsResponse, tags=["web"])
+    async def web_metrics(x_web_metrics_token: str | None = Header(default=None)):
         _require_ready(container)
-        if settings.demo_metrics_token and x_demo_metrics_token != settings.demo_metrics_token:
-            raise HTTPException(status_code=403, detail="Demo metrics access is not authorized.")
-        events = await run_in_threadpool(container.store.get_demo_events)
-        return summarize_demo_events(events)
+        if settings.web_metrics_token and x_web_metrics_token != settings.web_metrics_token:
+            raise HTTPException(status_code=403, detail="Web metrics access is not authorized.")
+        events = await run_in_threadpool(container.store.get_web_events)
+        return summarize_web_events(events)
 
     return app
 

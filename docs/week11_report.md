@@ -1,10 +1,10 @@
-# Week 11 Product Integration Demo Report
+# Week 11 Product Integration Web Report
 
 ## Overview
 
-This week turned the REST API into a complete local product demo. The Streamlit interface exposes the three retrieval profiles, displays search results and original listing details, and records privacy-preserving usage metrics through the API.
+This week turned the REST API into a complete local product web application. The Streamlit interface exposes the three retrieval profiles, displays search results and original listing details, and records privacy-preserving usage metrics through the API.
 
-## Product Demo
+## Product Web Application
 
 - Built a Streamlit search workspace on top of the Week 10 API. A natural-language request returns compliance-screened listings with public facts, a generated summary, matched preferences, and batch-loaded original listing descriptions.
 - Added three product-facing search profiles: `fast` for BM25-only retrieval, `balanced` for Hybrid RRF retrieval, and `quality` for Hybrid RRF plus Cross Encoder reranking.
@@ -15,28 +15,28 @@ This week turned the REST API into a complete local product demo. The Streamlit 
 
 ## Metrics and Evaluation
 
-- Added anonymous demo event collection for searches and feedback. Events retain session IDs, selected profile, latency, result count, comparison usage, and feedback only; raw queries and listing text are not stored.
+- Added anonymous web event collection for searches and feedback. Events retain session IDs, selected profile, latency, result count, comparison usage, and feedback only; raw queries and listing text are not stored.
 - Added a Metrics view with query volume, unique sessions, zero-result rate, profile usage, satisfaction proxy, and client/API P50, P90, and P95 latency overall and by search profile.
 - Added `notebooks/11_product_integration_evaluation.ipynb` for live API validation. It checks active-snapshot compatibility, benchmarks all profiles, reports held-out relevance metrics, verifies hard-filter integrity, separates cache hits from misses, exercises batch details retrieval, and reads the runtime metrics endpoint without adding telemetry.
 
 ## Current Artifacts
 
-- `demo/app.py`
+- `web/app.py`
   - Streamlit search and metrics workspace.
 
-- `demo/api_client.py`
+- `web/api_client.py`
   - Small API client with concurrent same-query profile comparison and batch-detail retrieval.
 
-- `demo/presentation.py`
+- `web/presentation.py`
   - Presentation helpers for public listing fields and parsed-query labels.
 
-- `src/real_estate_nlp/api/demo_metrics.py`
-  - Privacy-preserving aggregation for demo usage and latency metrics.
+- `src/real_estate_nlp/api/web_metrics.py`
+  - Privacy-preserving aggregation for web usage and latency metrics.
 
 - `notebooks/11_product_integration_evaluation.ipynb`
   - API-level product evaluation and representative result review.
 
-- `tests/test_demo_metrics.py` and `tests/test_demo_presentation.py`
+- `tests/test_web_metrics.py` and `tests/test_web_presentation.py`
   - Focused checks for metrics aggregation and UI presentation helpers.
 
 ## Validation
@@ -49,6 +49,6 @@ This week turned the REST API into a complete local product demo. The Streamlit 
 
 ## Notes
 
-- The demo uses only API response fields intended for product display; retrieval traces, internal scores, and raw model artifacts remain private.
-- Demo analytics are local Redis data with a seven-day TTL and a 10,000-event cap. Metrics are operational context, not a production analytics system.
+- The web application uses only API response fields intended for product display; retrieval traces, internal scores, and raw model artifacts remain private.
+- Web analytics are local Redis data with a seven-day TTL and a 10,000-event cap. Metrics are operational context, not a production analytics system.
 - Search snapshots, models, raw MLS data, and original listing descriptions remain local artifacts under the repository's data-handling rules.

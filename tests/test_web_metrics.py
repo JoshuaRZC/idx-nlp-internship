@@ -1,8 +1,8 @@
-from src.real_estate_nlp.api.demo_metrics import summarize_demo_events
+from src.real_estate_nlp.api.web_metrics import summarize_web_events
 
 
-def test_demo_metrics_summarize_searches_feedback_and_latency():
-    metrics = summarize_demo_events(
+def test_web_metrics_summarize_searches_feedback_and_latency():
+    metrics = summarize_web_events(
         [
             {
                 "event_type": "search",
@@ -46,8 +46,8 @@ def test_demo_metrics_summarize_searches_feedback_and_latency():
     assert metrics["satisfaction"] == {"responses": 2, "helpful": 1, "helpful_rate": 0.5}
 
 
-def test_demo_metrics_handles_empty_event_history():
-    metrics = summarize_demo_events([])
+def test_web_metrics_handles_empty_event_history():
+    metrics = summarize_web_events([])
 
     assert metrics["query_volume"] == 0
     assert metrics["latency_ms"]["api"] == {

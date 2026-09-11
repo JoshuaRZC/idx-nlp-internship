@@ -4,7 +4,7 @@
 
 {$PUBLIC_APP_DOMAIN} {
     encode zstd gzip
-    reverse_proxy demo:8501
+    reverse_proxy web:8501
 }
 
 {$ADMIN_APP_DOMAIN} {
@@ -12,5 +12,5 @@
         {$ADMIN_USERNAME} {$ADMIN_PASSWORD_HASH}
     }
     encode zstd gzip
-    reverse_proxy demo_admin:8501
+    reverse_proxy web_admin:8501
 }

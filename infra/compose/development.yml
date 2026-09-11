@@ -1,3 +1,5 @@
+name: idx-nlp-internship
+
 services:
   mysql:
     image: mysql:8.0
@@ -7,7 +9,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./data/raw:/docker-entrypoint-initdb.d:ro
+      - ../../data/raw:/docker-entrypoint-initdb.d:ro
       - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -proot"]
@@ -27,7 +29,9 @@ services:
       retries: 5
 
   api:
-    build: .
+    build:
+      context: ../..
+      dockerfile: infra/containers/api_dockerfile
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -37,11 +41,11 @@ services:
       REDIS_URL: redis://redis:6379/0
       SEARCH_ROOT: data/models/search
       INTENT_MODEL_DIR: data/models/query_intent
-      API_DEMO_METRICS_TOKEN: ${API_DEMO_METRICS_TOKEN:-}
+      API_WEB_METRICS_TOKEN: ${API_WEB_METRICS_TOKEN:-}
     ports:
       - "8000:8000"
     volumes:
-      - ./data/models:/app/data/models:ro
+      - ../../data/models:/app/data/models:ro
     depends_on:
       mysql:
         condition: service_healthy
@@ -53,13 +57,13 @@ services:
       timeout: 5s
       retries: 8
 
-  demo:
+  web:
     build:
-      context: .
-      dockerfile: Dockerfile.demo
+      context: ../..
+      dockerfile: infra/containers/web_dockerfile
     environment:
       API_BASE_URL: http://api:8000
-      DEMO_METRICS_TOKEN: ${API_DEMO_METRICS_TOKEN:-}
+      WEB_METRICS_TOKEN: ${API_WEB_METRICS_TOKEN:-}
     ports:
       - "127.0.0.1:8501:8501"
     depends_on:

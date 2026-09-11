@@ -216,7 +216,7 @@ marimo/_lsp/
 __marimo__/
 
 # Streamlit
-.streamlit/secrets.toml
+web/.streamlit/secrets.toml
 
 # Customized
 .DS_Store
@@ -225,6 +225,8 @@ instructions/
 *_CN.*
 AGENTS.md
 backups/
+.env.production
+infra/env/production.env
 
 # Local MLS data and generated artifacts
 data/raw/*
@@ -242,3 +244,9 @@ data/models/*
 
 # Local experiment notes
 docs/entity_extraction_experiment_notes.md
+
+# Keep the deployment template while excluding the real local environment.
+!infra/
+!infra/env/
+!infra/env/production_template.env
+infra/env/production.env

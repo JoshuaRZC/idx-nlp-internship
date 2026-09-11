@@ -1,16 +1,15 @@
-"""Product demo for real estate NLP search."""
+"""Product web application for real estate NLP search."""
 
 from __future__ import annotations
 
-import hashlib
 import time
 import uuid
 
 import streamlit as st
 
-from demo.api_client import ApiClient, ApiClientError
-from demo.config import DemoSettings
-from demo.presentation import (
+from web.api_client import ApiClient, ApiClientError
+from web.config import WebSettings
+from web.presentation import (
     applied_filter_chips,
     compact_listing_label,
     feature_labels,
@@ -36,7 +35,7 @@ def main():
     st.set_page_config(page_title="IDX Exchange Search", page_icon="I", layout="wide")
     _apply_theme()
     _initialize_state()
-    settings = DemoSettings.from_env()
+    settings = WebSettings.from_env()
     client = ApiClient(
         settings.api_base_url,
         timeout_seconds=settings.request_timeout_seconds,
@@ -196,11 +195,7 @@ def _render_results(result, client):
         [listing["listing_id"] for listing in visible_results],
     )
     for listing in visible_results:
-        _render_listing(
-            listing,
-            details_by_listing_id.get(listing["listing_id"]),
-            st.session_state.search_state["search_id"],
-        )
+        _render_listing(listing, details_by_listing_id.get(listing["listing_id"]))
 
     _render_pagination(page, page_count)
 
@@ -237,7 +232,7 @@ def _load_listing_details(client, listing_ids):
     return details
 
 
-def _render_listing(listing, detail, search_id):
+def _render_listing(listing, detail):
     with st.container(border=True):
         title_column, price_column = st.columns([4, 1])
         with title_column:
@@ -249,7 +244,7 @@ def _render_listing(listing, detail, search_id):
         features = feature_labels(listing)
         if features:
             st.caption("Matched preferences: " + " · ".join(features))
-        with st.expander(_detail_label(search_id, listing["listing_id"]), expanded=False):
+        with st.expander("Listing details", expanded=False):
             st.caption(f"Listing ID: {listing.get('listing_id', 'Unavailable')}")
             left, right = st.columns(2)
             with left:
@@ -275,20 +270,6 @@ def _render_listing_description(detail):
     if detail:
         st.caption("Full listing description")
         st.write(detail.get("listing_description") or "Description unavailable.")
-
-
-def _detail_label(search_id, listing_id):
-    """Return a visible label with an invisible, search-scoped element identity."""
-    digest = hashlib.blake2s(
-        f"{search_id}:{listing_id}".encode(),
-        digest_size=8,
-    ).digest()
-    token = "".join(
-        "\u200b" if bit == "0" else "\u200c"
-        for byte in digest
-        for bit in f"{byte:08b}"
-    )
-    return "Listing details" + token
 
 
 def _render_profile_comparison(state):

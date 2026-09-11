@@ -36,7 +36,7 @@ This week assembled the earlier NLP components into a pass-only listing search s
 - `scripts/build_search_snapshot.py`: builds an active snapshot from MySQL.
 - `scripts/evaluate_search_relevance.py`: evaluates frozen development or test splits with Precision@5, NDCG@5, MRR@5, component timings, and degradation rate.
 - `notebooks/10_search_service_evaluation.ipynb`: profiles the snapshot, compares retrieval variants and rerank windows, reviews errors, compares serial and parallel retrieval, and records the frozen final test result.
-- `Dockerfile` and `docker-compose.yml`: package the API and add local Redis alongside MySQL.
+- `infra/containers/api_dockerfile` and `infra/compose/development.yml`: package the API and add local Redis alongside MySQL.
 - `tests/test_api.py`: covers endpoint contracts, validation, caching, rate limiting, readiness, dependency failure, public-field filtering, and profile cache separation.
 
 ## Evaluation and Final Configuration

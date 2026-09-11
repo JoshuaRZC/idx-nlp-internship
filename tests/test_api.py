@@ -37,11 +37,11 @@ class FakeStore:
         self.rate_limit_clients.append(client_id)
         return self.allowed, 500
 
-    def record_demo_event(self, event, _max_events, _ttl_seconds):
-        self.values.setdefault("demo-events", []).append(event)
+    def record_web_event(self, event, _max_events, _ttl_seconds):
+        self.values.setdefault("web-events", []).append(event)
 
-    def get_demo_events(self):
-        return self.values.get("demo-events", [])
+    def get_web_events(self):
+        return self.values.get("web-events", [])
 
 
 class FakeParser:
@@ -189,8 +189,8 @@ def test_api_exposes_all_nlp_capabilities_and_readiness():
             "/summarize",
             "/check-compliance",
             "/classify-intent",
-            "/demo/events",
-            "/demo/metrics",
+            "/web/events",
+            "/web/metrics",
             "/health",
             "/ready",
         } <= set(paths)
@@ -350,11 +350,11 @@ def test_listing_detail_batch_uses_a_snapshot_scoped_cache():
     assert invalid.status_code == 422
 
 
-def test_demo_metrics_records_anonymous_events_and_returns_aggregates():
+def test_web_metrics_records_anonymous_events_and_returns_aggregates():
     client, _ = make_client()
     with client:
         search = client.post(
-            "/demo/events",
+            "/web/events",
             json={
                 "event_type": "search",
                 "session_id": "session-1234",
@@ -365,14 +365,14 @@ def test_demo_metrics_records_anonymous_events_and_returns_aggregates():
             },
         )
         feedback = client.post(
-            "/demo/events",
+            "/web/events",
             json={
                 "event_type": "feedback",
                 "session_id": "session-1234",
                 "feedback": "helpful",
             },
         )
-        metrics = client.get("/demo/metrics")
+        metrics = client.get("/web/metrics")
 
     assert search.json() == {"accepted": True}
     assert feedback.json() == {"accepted": True}
@@ -390,8 +390,8 @@ def test_demo_metrics_records_anonymous_events_and_returns_aggregates():
     assert body["satisfaction"] == {"responses": 1, "helpful": 1, "helpful_rate": 1.0}
 
 
-def test_demo_event_validation_and_metrics_token_are_enforced():
-    settings = ApiSettings(redis_url="redis://test", demo_metrics_token="demo-token")
+def test_web_event_validation_and_metrics_token_are_enforced():
+    settings = ApiSettings(redis_url="redis://test", web_metrics_token="web-token")
     container = ApiContainer(
         settings=settings,
         search_service=FakeSearchService(),
@@ -404,11 +404,11 @@ def test_demo_event_validation_and_metrics_token_are_enforced():
     client = TestClient(create_app(settings=settings, container=container))
     with client:
         invalid = client.post(
-            "/demo/events",
+            "/web/events",
             json={"event_type": "feedback", "session_id": "session-1234"},
         )
-        blocked = client.get("/demo/metrics")
-        allowed = client.get("/demo/metrics", headers={"X-Demo-Metrics-Token": "demo-token"})
+        blocked = client.get("/web/metrics")
+        allowed = client.get("/web/metrics", headers={"X-Web-Metrics-Token": "web-token"})
 
     assert invalid.status_code == 422
     assert blocked.status_code == 403

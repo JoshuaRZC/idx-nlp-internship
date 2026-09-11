@@ -1,3 +1,5 @@
+name: idx-nlp-internship
+
 services:
   mysql:
     image: mysql:8.0
@@ -9,7 +11,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ${MYSQL_SOURCE_SQL_PATH}:/docker-entrypoint-initdb.d/10-rets_property.sql:ro
-      - ./deployment/mysql-init/90-create-search-app.sh:/docker-entrypoint-initdb.d/90-create-search-app.sh:ro
+      - ../database/mysql_readonly_user_init.sh:/docker-entrypoint-initdb.d/90-create-search-app.sh:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
@@ -34,7 +36,9 @@ services:
     logging: *service_logging
 
   api:
-    build: .
+    build:
+      context: ../..
+      dockerfile: infra/containers/api_dockerfile
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -44,7 +48,7 @@ services:
       REDIS_URL: redis://redis:6379/0
       SEARCH_ROOT: data/models/search
       INTENT_MODEL_DIR: data/models/query_intent
-      API_DEMO_METRICS_TOKEN: ${API_DEMO_METRICS_TOKEN}
+      API_WEB_METRICS_TOKEN: ${API_WEB_METRICS_TOKEN}
       API_RATE_LIMIT_REQUESTS: ${API_RATE_LIMIT_REQUESTS:-12}
       API_RATE_LIMIT_WINDOW_SECONDS: ${API_RATE_LIMIT_WINDOW_SECONDS:-10}
       API_RERANK_QUEUE_TIMEOUT_SECONDS: ${API_RERANK_QUEUE_TIMEOUT_SECONDS:-20}
@@ -67,27 +71,27 @@ services:
     restart: unless-stopped
     logging: *service_logging
 
-  demo:
+  web:
     build:
-      context: .
-      dockerfile: Dockerfile.demo
+      context: ../..
+      dockerfile: infra/containers/web_dockerfile
     environment:
       API_BASE_URL: http://api:8000
-      DEMO_ADMIN_MODE: "false"
+      WEB_ADMIN_MODE: "false"
     depends_on:
       api:
         condition: service_healthy
     restart: unless-stopped
     logging: *service_logging
 
-  demo_admin:
+  web_admin:
     build:
-      context: .
-      dockerfile: Dockerfile.demo
+      context: ../..
+      dockerfile: infra/containers/web_dockerfile
     environment:
       API_BASE_URL: http://api:8000
-      DEMO_ADMIN_MODE: "true"
-      DEMO_METRICS_TOKEN: ${API_DEMO_METRICS_TOKEN}
+      WEB_ADMIN_MODE: "true"
+      WEB_METRICS_TOKEN: ${API_WEB_METRICS_TOKEN}
     depends_on:
       api:
         condition: service_healthy
@@ -106,13 +110,13 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../proxy/caddy_config:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      demo:
+      web:
         condition: service_started
-      demo_admin:
+      web_admin:
         condition: service_started
     restart: unless-stopped
     logging: *service_logging

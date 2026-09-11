@@ -19,9 +19,9 @@ class ApiSettings:
     rerank_queue_timeout_seconds: float = 20.0
     rerank_k: int = 50
     rerank_max_remark_chars: int = 1_500
-    demo_metrics_token: str = ""
-    demo_metrics_max_events: int = 10_000
-    demo_metrics_ttl_seconds: int = 604_800
+    web_metrics_token: str = ""
+    web_metrics_max_events: int = 10_000
+    web_metrics_ttl_seconds: int = 604_800
 
     @classmethod
     def from_env(cls):
@@ -49,11 +49,11 @@ class ApiSettings:
             rerank_max_remark_chars=int(
                 os.getenv("API_RERANK_MAX_REMARK_CHARS", cls.rerank_max_remark_chars)
             ),
-            demo_metrics_token=os.getenv("API_DEMO_METRICS_TOKEN", cls.demo_metrics_token),
-            demo_metrics_max_events=int(
-                os.getenv("API_DEMO_METRICS_MAX_EVENTS", cls.demo_metrics_max_events)
+            web_metrics_token=os.getenv("API_WEB_METRICS_TOKEN", cls.web_metrics_token),
+            web_metrics_max_events=int(
+                os.getenv("API_WEB_METRICS_MAX_EVENTS", cls.web_metrics_max_events)
             ),
-            demo_metrics_ttl_seconds=int(
-                os.getenv("API_DEMO_METRICS_TTL_SECONDS", cls.demo_metrics_ttl_seconds)
+            web_metrics_ttl_seconds=int(
+                os.getenv("API_WEB_METRICS_TTL_SECONDS", cls.web_metrics_ttl_seconds)
             ),
         )

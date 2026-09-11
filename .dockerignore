@@ -3,6 +3,8 @@
 __pycache__/
 *.py[cod]
 .env
+.env.production
+infra/env/production.env
 .venv/
 data/raw/
 data/models/
