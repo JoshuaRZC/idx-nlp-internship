@@ -90,34 +90,24 @@ def main():
         SORT_OPTIONS[sort_label],
         top_k,
         compare_profiles,
-        public_mode=not settings.admin_mode,
     )
 
 
-def _render_search(client, profile, sort_by, top_k, compare_profiles, public_mode):
-    st.markdown("## Intelligent Home Search" if public_mode else "# Intelligent Home Search")
+def _render_search(client, profile, sort_by, top_k, compare_profiles):
+    st.markdown("## Intelligent Home Search")
     st.caption("Search active California listings that have passed compliance screening.")
 
     with st.form("search-form", clear_on_submit=False):
         st.markdown("#### Describe your ideal home")
-        if public_mode:
-            query_column, button_column = st.columns([4, 1])
-            with query_column:
-                query = st.text_input(
-                    "Describe your ideal home",
-                    placeholder="3 bed home in Irvine under $900k with a backyard",
-                    label_visibility="collapsed",
-                    key="query_input",
-                )
-            with button_column:
-                submitted = st.form_submit_button("Search", type="primary", use_container_width=True)
-        else:
+        query_column, button_column = st.columns([4, 1])
+        with query_column:
             query = st.text_input(
                 "Describe your ideal home",
                 placeholder="3 bed home in Irvine under $900k with a backyard",
                 label_visibility="collapsed",
                 key="query_input",
             )
+        with button_column:
             submitted = st.form_submit_button("Search", type="primary", use_container_width=True)
 
     if submitted:
