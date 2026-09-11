@@ -46,6 +46,8 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 │       └── api/          # FastAPI application code
 ├── tests/                # Pytest test suite
 ├── docker-compose.yml    # Local MySQL, Redis, and API services
+├── docker-compose.production.yml  # Production application stack
+├── Caddyfile             # HTTPS routing and administrator access control
 ├── requirements.txt      # Python dependencies
 └── README.md
 ```
@@ -69,6 +71,7 @@ Raw MLS data is not committed to this repository. Local SQL or CSV files should 
 | Fair Housing compliance checker | Complete |
 | FastAPI service | Complete |
 | Demo interface | Complete |
+| Production deployment | Complete |
 
 ## Environment Setup
 
@@ -169,7 +172,7 @@ docker compose up -d mysql redis
 uvicorn src.real_estate_nlp.api.app:app --reload
 ```
 
-Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The core application endpoints are `/search`, `/listings/{listing_id}`, `/listings/details`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The demo also uses `/demo/events` and `/demo/metrics` for anonymous telemetry and its metrics view.
+Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation. The core application endpoints are `/search`, `/listings/{listing_id}`, `/listings/details`, `/parse-query`, `/extract-entities`, `/summarize`, `/check-compliance`, and `/classify-intent`. `GET /health` reports process liveness; `GET /ready` succeeds only after the active snapshot, intent model, dense model, and Cross Encoder have been loaded. The demo also uses `/demo/events` and `/demo/metrics` for anonymous telemetry and its metrics view. In production, the API is internal-only and exposed to operators through an SSH tunnel rather than a public API route.
 
 `/search` supports three retrieval profiles while preserving the same compliance boundary and parsed hard filters:
 
@@ -187,7 +190,7 @@ The profile control provides:
 - `balanced`: dense, BM25, and listing-signal retrieval fused with RRF.
 - `quality`: `balanced` retrieval plus Cross Encoder reranking; the default profile.
 
-For relevance sorting, the optional comparison mode runs the same query across all three profiles concurrently. The Metrics view shows aggregate and per-profile client/API P50, P90, and P95 latency, query volume, zero-result rate, profile usage, and helpful/not-helpful feedback.
+The public UI exposes the three profiles. The administrator UI additionally provides same-query profile comparison and a Metrics view with aggregate and per-profile client/API P50, P90, and P95 latency, query volume, zero-result rate, profile usage, and helpful/not-helpful feedback.
 
 Run the complete local stack, then open `http://127.0.0.1:8501`:
 
@@ -205,6 +208,23 @@ streamlit run demo/app.py
 ```
 
 The demo records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /demo/metrics` can be protected by setting `API_DEMO_METRICS_TOKEN`; set the matching `DEMO_METRICS_TOKEN` for the Streamlit service.
+
+## Production Deployment
+
+The complete product is deployed on Oracle Cloud with Caddy as the public HTTPS entry point. The current public validation deployment is available at [IDX Exchange Search](https://146-235-204-68.nip.io). The administrator workspace is separately protected with Caddy Basic Auth.
+
+The production stack runs public/admin Streamlit services, FastAPI, MySQL, Redis, and Caddy through `docker-compose.production.yml`. FastAPI is bound to the VM loopback interface; MySQL, Redis, and Streamlit remain on the Docker network. This preserves the same API, active pass-only snapshot, structured hard-filter path, and retrieval profiles used locally.
+
+Production settings are local-only. Use `.env.production.example` as a template, but do not commit `.env.production`, raw MLS SQL, snapshots, or model artifacts. The MySQL initialization script creates a dedicated application account with read-only access to `rets_property`.
+
+```bash
+docker compose \
+  --env-file .env.production \
+  -f docker-compose.production.yml \
+  up -d --build
+```
+
+The current deployment uses a `nip.io` hostname for validation. A stable owned domain and reserved public IP are recommended for longer-term use.
 
 ## Testing
 
@@ -227,11 +247,12 @@ pytest tests/test_week7.py
 pytest tests/test_week8.py
 pytest tests/test_week9.py
 pytest tests/test_api.py
+pytest tests/test_demo_config.py
 pytest tests/test_demo_metrics.py
 pytest tests/test_demo_presentation.py
 ```
 
-Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, readiness behavior, demo-metrics aggregation, and public-field presentation helpers.
+Current tests cover setup, taxonomy assets, sample queries, listing sample quality, text cleaning edge cases, entity extraction behavior, query parsing, schema validation, SQL generation, SQL injection protection, semantic-search components, listing-level signal extraction, query-intent classification, listing summarization, answerability checks, Fair Housing compliance rules, API contracts, search profiles, caching, rate limiting, quality-rerank queue behavior, readiness behavior, public/admin demo configuration, demo-metrics aggregation, and public-field presentation helpers.
 
 ## Current Artifacts
 
@@ -409,6 +430,9 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 - `notebooks/11_product_integration_evaluation.ipynb`
   - Week 11 live API benchmark, held-out product relevance checks, cache-aware latency, batch-detail validation, and runtime-metrics review.
 
+- `notebooks/12_deployment_validation.ipynb`
+  - Week 12 SSH-tunnel validation of the deployed API, including release parity, held-out search quality, cache-aware latency, batch details, runtime metrics, and quality-rerank queue behavior.
+
 - `demo/app.py`
   - Streamlit product interface for search, profile comparison, listing details, feedback, and metrics.
 
@@ -450,6 +474,12 @@ Current tests cover setup, taxonomy assets, sample queries, listing sample quali
 
 - `docs/week11_report.md`
   - Week 11 product demo, telemetry, API-level evaluation, and validation summary.
+
+- `docs/week12_report.md`
+  - Week 12 production deployment, access boundaries, production artifacts, and validation summary.
+
+- `docker-compose.production.yml`, `Caddyfile`, and `.env.production.example`
+  - Production service topology, HTTPS/admin access configuration, and non-sensitive environment template.
 
 - `docs/fair_housing_rules.md`
   - Federal Fair Housing screening scope, review outcomes, integration example, and policy-maintenance guidance.
@@ -548,7 +578,7 @@ Current search-service results on the frozen Week 10 final-test set:
 | Local P50 latency | 279.58 ms |
 | Local P95 latency | 535.72 ms |
 
-The Week 11 notebook evaluates the same service through the public API, including profile behavior, hard-filter integrity, cache-aware latency, and the batch listing-details flow. It does not store local benchmark output or demo telemetry in the repository.
+The Week 11 notebook evaluates the local API, while the Week 12 notebook runs the same release-parity and latency checks against the deployed internal API through an SSH tunnel. Neither notebook stores benchmark output, credentials, or demo telemetry in the repository.
 
 ## Final Deliverables
 
@@ -558,5 +588,6 @@ The Week 11 notebook evaluates the same service through the public API, includin
 - Data schema notes
 - Test coverage report
 - Demo interface
+- Production deployment configuration
 - Final technical report with metrics and analysis
 - Presentation materials
