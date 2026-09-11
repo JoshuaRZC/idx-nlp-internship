@@ -1,0 +1,17 @@
+# Runtime dependencies installed in the API image.
+# Development tools remain in api_development.txt for the local Conda environment.
+torch==2.13.0
+mysql-connector-python==8.0.33
+numpy==1.24.4
+pandas==2.0.3
+nltk==3.8.1
+rouge-score==0.1.2
+spacy==3.6.0
+sentence-transformers==5.6.1
+faiss-cpu==1.8.0
+rank-bm25==0.2.2
+scikit-learn==1.3.2
+joblib==1.5.2
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+redis==5.2.1

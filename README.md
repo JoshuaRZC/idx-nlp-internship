@@ -86,7 +86,7 @@ Use Python 3.11 or newer.
 ```bash
 conda create -n idx-nlp python=3.11
 conda activate idx-nlp
-pip install -r requirements/api.txt
+pip install -r requirements/api_development.txt
 ```
 
 ## Data Setup
@@ -214,6 +214,8 @@ cd web && PYTHONPATH=.. streamlit run app.py
 ```
 
 The web application records anonymous search and feedback events in Redis for up to seven days, with a maximum of 10,000 events. It does not persist raw search queries or listing remarks. `GET /web/metrics` can be protected by setting `API_WEB_METRICS_TOKEN`; set the matching `WEB_METRICS_TOKEN` for the Streamlit service.
+
+The API image installs `requirements/api_runtime.txt`, which excludes local test and notebook tools. It pins a CPU-only PyTorch wheel and uses BuildKit caches for pip packages and model downloads; local development continues to use `requirements/api_development.txt`.
 
 ## Production Deployment
 

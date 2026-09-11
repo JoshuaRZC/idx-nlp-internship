@@ -1,17 +1,31 @@
+# syntax=docker/dockerfile:1.7
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
-    HF_HOME=/app/.cache/huggingface
+    HF_HOME=/app/.cache/huggingface \
+    PIP_DEFAULT_TIMEOUT=180 \
+    PIP_RETRIES=5 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
 WORKDIR /app
 
-COPY requirements/api.txt requirements/api.txt
-RUN pip install --no-cache-dir -r requirements/api.txt
+COPY requirements/api_runtime.txt requirements/api_runtime.txt
+
+# The service runs on CPU. Install a fixed CPU wheel before resolving the
+# sentence-transformers dependency so pip does not select CUDA packages.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --index-url https://download.pytorch.org/whl/cpu torch==2.13.0
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r requirements/api_runtime.txt
 
 # Keep pinned model weights in the image while MLS-derived indexes remain runtime mounts.
-RUN python -c "from sentence_transformers import CrossEncoder, SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', revision='1110a243fdf4706b3f48f1d95db1a4f5529b4d41'); CrossEncoder('cross-encoder/ms-marco-MiniLM-L6-v2', revision='233902d25c440f23af6f7d6e94d2946bac0bee0a')"
+RUN --mount=type=cache,target=/root/.cache/huggingface \
+    HF_HOME=/root/.cache/huggingface python -c "from sentence_transformers import CrossEncoder, SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', revision='1110a243fdf4706b3f48f1d95db1a4f5529b4d41'); CrossEncoder('cross-encoder/ms-marco-MiniLM-L6-v2', revision='233902d25c440f23af6f7d6e94d2946bac0bee0a')" \
+    && mkdir -p /app/.cache \
+    && cp -a /root/.cache/huggingface /app/.cache/
 
 COPY src ./src
 COPY data/processed/taxonomy.json data/processed/taxonomy.json

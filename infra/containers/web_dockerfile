@@ -1,13 +1,18 @@
+# syntax=docker/dockerfile:1.7
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH=/app
+    PYTHONPATH=/app \
+    PIP_DEFAULT_TIMEOUT=180 \
+    PIP_RETRIES=5 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
 WORKDIR /app/web
 
 COPY requirements/web.txt /app/requirements/web.txt
-RUN pip install --no-cache-dir -r /app/requirements/web.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r /app/requirements/web.txt
 
 COPY web /app/web
 
