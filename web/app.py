@@ -45,9 +45,11 @@ def main():
 
     with st.sidebar:
         st.markdown('<div class="brand-name">IDX Exchange</div>', unsafe_allow_html=True)
-        views = ["Search", "Metrics"] if settings.admin_mode else ["Search"]
-        view = st.radio("Workspace", views, label_visibility="collapsed")
-        st.divider()
+        if settings.admin_mode:
+            view = st.radio("Workspace", ["Search", "Metrics"], label_visibility="collapsed")
+            st.divider()
+        else:
+            view = "Search"
         if view == "Search":
             profile = st.selectbox(
                 "Search profile",
