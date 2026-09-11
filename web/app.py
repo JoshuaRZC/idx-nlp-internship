@@ -44,12 +44,14 @@ def main():
     )
 
     with st.sidebar:
-        st.markdown('<div class="brand-name">IDX Exchange</div>', unsafe_allow_html=True)
+        brand_class = "brand-name" if settings.admin_mode else "brand-name public-brand"
+        st.markdown(f'<div class="{brand_class}">IDX Exchange</div>', unsafe_allow_html=True)
         if settings.admin_mode:
             view = st.radio("Workspace", ["Search", "Metrics"], label_visibility="collapsed")
             st.divider()
         else:
             view = "Search"
+            st.divider()
         if view == "Search":
             profile = st.selectbox(
                 "Search profile",
@@ -57,6 +59,8 @@ def main():
                 format_func=PROFILE_LABELS.get,
             )
             sort_label = st.selectbox("Sort", options=list(SORT_OPTIONS))
+            if not settings.admin_mode:
+                st.markdown('<div class="public-results-spacer"></div>', unsafe_allow_html=True)
             top_k = st.slider("Results", min_value=1, max_value=100, value=10, step=1)
             relevance_sort = SORT_OPTIONS[sort_label] == "relevance"
             compare_profiles = False
@@ -413,6 +417,7 @@ def _apply_theme():
           line-height: 1.2;
           margin: 0.35rem 0 1.5rem;
         }
+        [data-testid="stSidebar"] .public-brand { margin-bottom: 0.8rem; }
         [data-testid="stSidebar"] [data-baseweb="select"] > div {
           background: #ffffff;
           border-color: #aeb8c4;
@@ -471,6 +476,7 @@ def _apply_theme():
           padding-top: 0.55rem;
           text-align: center;
         }
+        .public-results-spacer { height: 0.35rem; }
         </style>
         """,
         unsafe_allow_html=True,
