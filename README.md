@@ -33,17 +33,56 @@ The snapshot builder reads `rets_property`, applies the compliance policy, norma
 
 ## Evaluation
 
-The reported results below use frozen local evaluation assets. They are useful regression baselines, not production SLAs.
+The results below use frozen evaluation assets and a loaded active snapshot. They are regression baselines, not production SLAs.
+
+### Final Search Quality
+
+The final comparison uses 12 held-out queries. Precision@5 treats grades 2-3 as relevant; NDCG@5 preserves the four-level judgment scale.
+
+| Profile | Precision@5 | NDCG@5 | MRR@5 |
+| --- | ---: | ---: | ---: |
+| `fast` | 0.667 | 0.566 | 0.794 |
+| `balanced` | 0.800 | 0.744 | 0.917 |
+| `quality` | 0.867 | 0.901 | 0.917 |
+
+### Latency
+
+Latency is client-observed HTTP time over 40 requests per profile. An initial request is a cache miss; the immediate repeat is a cache hit. The local benchmark is from [Notebook 11](notebooks/11_product_integration_evaluation.ipynb); the VM benchmark is from [Notebook 12](notebooks/12_deployment_validation.ipynb) through an SSH tunnel.
+
+**Local Mac: 16 CPU, 128 GB memory**
+
+| Profile | Cache | P50 (ms) | P90 (ms) | P95 (ms) |
+| --- | --- | ---: | ---: | ---: |
+| `fast` | Miss | 99.58 | 251.75 | 261.71 |
+| `balanced` | Miss | 114.22 | 416.81 | 455.68 |
+| `quality` | Miss | 1,047.56 | 1,299.88 | 1,338.35 |
+| `fast` | Hit | 9.20 | 11.79 | 12.08 |
+| `balanced` | Hit | 10.27 | 12.51 | 12.87 |
+| `quality` | Hit | 10.70 | 12.90 | 13.06 |
+
+**Remote VM: 2 CPU, 8 GB memory**
+
+| Profile | Cache | P50 (ms) | P90 (ms) | P95 (ms) |
+| --- | --- | ---: | ---: | ---: |
+| `fast` | Miss | 162.20 | 547.76 | 552.90 |
+| `balanced` | Miss | 172.68 | 679.52 | 728.80 |
+| `quality` | Miss | 4,133.26 | 4,578.21 | 4,652.66 |
+| `fast` | Hit | 67.04 | 73.86 | 76.63 |
+| `balanced` | Hit | 69.75 | 76.51 | 78.25 |
+| `quality` | Hit | 69.52 | 75.07 | 76.73 |
+
+The `quality` cache-miss path is dominated by serialized Cross Encoder reranking on the CPU-only VM. Cache hits return the stored search response and therefore converge across profiles.
+
+### Component Evaluation
 
 | Area | Evaluation set | Result |
 | --- | --- | --- |
-| End-to-end search | 12 held-out queries | Quality: Precision@5 `0.867`, NDCG@5 `0.901`, MRR@5 `0.917` |
 | Query parsing | 120 labeled queries | Hard-filter exact match `1.000`; soft-signal exact match `1.000`; full match `0.917` |
 | Listing signals | 200 reviewed listings | Structured-field accuracy `1.000`; free-text F1 `0.799`; keyword integrity `1.000` |
 | Intent classification | 72 held-out queries | Accuracy `0.958` |
 | Compliance screening | 264 local evaluation items | Known-violation recall `1.000`; actionable-alert precision `1.000` |
 
-On the deployed VM, warmed cache hits measured roughly 67-78 ms P50 across profiles. A quality-profile cache miss measured about 4.1 s P50 because Cross Encoder reranking is serialized on the current CPU deployment. The [search-service report](docs/week10_report.md), [product evaluation](notebooks/11_product_integration_evaluation.ipynb), and [deployment validation](docs/week12_report.md) document the methodology and trade-offs.
+The [search-service report](docs/week10_report.md) and [deployment validation](docs/week12_report.md) document the evaluation design, judgments, and deployment trade-offs.
 
 ## Repository Map
 
@@ -54,7 +93,12 @@ On the deployed VM, warmed cache hits measured roughly 67-78 ms P50 across profi
 │   ├── processed/        # Versioned taxonomy, city vocabulary, and query labels
 │   └── models/           # Local snapshots, indexes, and trained artifacts
 ├── docs/                 # Design notes, evaluation reports, and runbooks
-├── infra/                # Compose, containers, proxy, database, and environment templates
+├── infra/
+│   ├── compose/          # Local and production Docker Compose definitions
+│   ├── containers/       # API and Streamlit container build definitions
+│   ├── database/         # MySQL application-user initialization
+│   ├── env/              # Environment templates; production values stay local
+│   └── proxy/            # Caddy HTTPS and administrator access configuration
 ├── notebooks/            # Exploratory work and reproducible evaluation runs
 ├── requirements/         # API and web dependency definitions
 ├── scripts/              # Artifact building, evaluation, and operational entry points
