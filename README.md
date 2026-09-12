@@ -1,10 +1,12 @@
 # Intelligent Home Search System
 
-[Live search](https://146-235-204-68.nip.io) | [Reproducibility](#reproducibility-instructions) | [Architecture](#architecture-overview) | [API](#api)
+[Live search](https://146-235-204-68.nip.io) | [Technical report](docs/technical_report.pdf) | [Reproducibility](#reproducibility-instructions) | [Architecture](#architecture-overview) | [API](#api)
 
 An IDX Exchange product for natural-language search across active California residential listings. The system converts a buyer request into structured constraints, retrieves from a compliance-screened catalog, and ranks results with lexical, semantic, and listing-signal evidence.
 
 This repository contains the full product path: data-derived search artifacts, a FastAPI service, public and administrator Streamlit workspaces, Docker deployment configuration, evaluation notebooks, and tests.
+
+The accompanying [technical report](docs/technical_report.pdf) describes the system design, retrieval profiles, and frozen evaluation results.
 
 ## Core Capabilities
 
