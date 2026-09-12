@@ -244,6 +244,9 @@ data/models/*
 
 # Local experiment notes
 docs/entity_extraction_experiment_notes.md
+docs/search_relevance_annotation_rules.md
+docs/search_relevance_dev_experiment.md
+docs/technical_report/
 
 # Keep the deployment template while excluding the real local environment.
 !infra/
