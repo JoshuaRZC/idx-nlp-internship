@@ -41,6 +41,9 @@ This week deployed the complete IDX Exchange product to Oracle Cloud. The produc
 - Confirmed public search, all three profiles, relevance and price sorting, pagination, listing details, and administrator access.
 - Confirmed the production API and MySQL services report healthy after initialization; MySQL imported `53,122` `rets_property` records.
 - Verified the application account can read the structured filtering table and that city/bedroom queries recover after service initialization.
+- Re-ran the deployment-validation notebook through an SSH tunnel. The active API matched the frozen benchmark on public and retrievable listing counts, `federal-1.1` compliance rules, and the MiniLM dense model.
+- Reproduced the held-out quality baseline across the deployed profiles: `fast` / `balanced` / `quality` Precision@5 of `0.667` / `0.800` / `0.867`, NDCG@5 of `0.566` / `0.744` / `0.901`, and MRR@5 of `0.794` / `0.917` / `0.917`. All explicit city, price, and bedroom constraints remained valid.
+- Observed cache hits at roughly `67-78 ms` P50 across profiles. Cache-miss P50/P95 were `162/553 ms` for `fast`, `173/729 ms` for `balanced`, and `4,133/4,653 ms` for `quality`; the quality cost is dominated by serialized Cross Encoder reranking on the VM.
 - Ran the repository test suite before deployment preparation: `355 passed, 1 skipped`.
 - Validated the production Compose configuration without starting containers locally.
 
